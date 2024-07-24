@@ -7,12 +7,16 @@ import { Repository } from "typeorm";
 export class PlanRepository {
     constructor(@InjectRepository(Plan) private planRepository: Repository<Plan>){}
 
-    async getPlan() {
-        return await this.planRepository.find({ where: { active: true } });
+    async getPlan(page: number, limit: number) {
+        return this.planRepository.find({ 
+            where: { isActive: true },
+            skip: (page - 1) * limit,
+            take: limit
+        });
     }
 
     async getPlanById(id){
-        return await this.planRepository.findOne( { where: {id, active:true} } );
+        return await this.planRepository.findOne( { where: {id, isActive:true} } );
     }
 
     async createPlan(plan) {
@@ -22,13 +26,14 @@ export class PlanRepository {
 
     async updatePlan(plan, id){
         await this.planRepository.update(id, plan);
-        return 'El plan se ha actualizado';
+        const updatedPlan = await this.planRepository.findOneBy({ id, isActive:true });
+        return updatedPlan;
     }
 
     async deletePlan(id){
         const plan = await this.planRepository.findOne({ where: { id: id } });
-        if (!plan || plan.active === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
-        await this.planRepository.update( id, {...plan, active: false});
+        if (!plan || plan.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
+        await this.planRepository.update( id, {...plan, isActive: false});
 
         return id;
     }

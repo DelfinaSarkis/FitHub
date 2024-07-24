@@ -1,6 +1,7 @@
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { Users } from 'src/User/User.entity';
 import {
+  Column,
   Entity,
   JoinColumn,
   JoinTable,
@@ -21,11 +22,20 @@ export class Suscripciones {
   @UpdateDateColumn()
   date: Date;
 
-  @ManyToOne(() => Plan, (plan) => plan.suscripciones)
+  @Column()
+  state: boolean;
+
+  @Column({ default: false })
+  delete: boolean;
+
+  @Column({ default: true })
+  isActive: boolean;
+
+  @ManyToOne(() => Plan, (plan) => plan.subscriptions)
   @JoinColumn({ name: 'plan' })
   plan: Plan;
 
-  @ManyToOne(() => Users, (user) => user.suscripciones)
+  @ManyToOne(() => Users, (user) => user.subsciption)
   @JoinColumn({ name: 'usuario' })
   user: Users;
 }

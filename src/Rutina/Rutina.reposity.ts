@@ -8,11 +8,15 @@ export class RutinaRepository {
     @InjectRepository(Rutina)
     private readonly rutinaRepository: Repository<Rutina>,
   ) {}
-  async getAllRutinas() {
-    return await this.rutinaRepository.find();
+  async getAllRutinas(page: number, limit: number) {
+    return this.rutinaRepository.find({
+      where: { isActive: true},
+      skip: (page - 1) * limit,
+      take: limit
+    });
   }
   async getRutinaById(id) {
-    return await this.rutinaRepository.findOne({ where: { id } });
+    return await this.rutinaRepository.findOne({ where: { id, isActive:true } });
   }
   async createRutina(rutina) {
     await this.rutinaRepository.save(rutina);
@@ -20,12 +24,13 @@ export class RutinaRepository {
   }
   async updateRutina(rutina, id) {
     await this.rutinaRepository.update(id, rutina);
-    return 'La rutina esta actualizada';
+    const updateRutina = await this.rutinaRepository.findOneBy({ id });
+    return updateRutina;
   }
   async deleteRutina(id) {
     const rutina = await this.rutinaRepository.findOne({ where: { id } });
-    if (!rutina) {
-      throw new BadRequestException('La rutina no existe');
+    if (!rutina|| rutina.isActive === false) {
+      throw new BadRequestException('Rutina no encontrada o eliminada');
     }
     await this.rutinaRepository.remove(rutina);
     return 'Rutina eliminada';

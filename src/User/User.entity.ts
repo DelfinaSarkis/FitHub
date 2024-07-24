@@ -12,6 +12,7 @@ import { Comentarios } from 'src/Comentario/Comentarios.entity';
 import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
 import { Rutina } from 'src/Rutina/Rutina.entity';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
+import {v4 as uuid} from 'uuid';
 
 @Entity({
   name: 'users',
@@ -23,47 +24,53 @@ export class Users {
   @Column({ type: 'varchar', length: 100, nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
-  email: string;
+    @Column({ type: 'varchar', unique: true, length: 100, nullable: false })
+    email: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
-  password: string;
+    @Column({ type: 'varchar', length: 100, nullable: false })
+    password: string;
 
-  @Column({ type: 'bigint' })
-  phone: number;
+    @Column({ type: 'bigint', unique: true })
+    dni: number;
 
-  @Column({ default: UserRole.USER })
-  isAdmin: UserRole;
+    @Column({ type: 'bigint' })
+    phone: number;
 
-  @Column({ type: 'varchar', length: 100 })
-  pais: string;
+    @Column({ type: 'varchar', length: 100 })
+    country: string;
 
-  @Column({ type: 'varchar', length: 100 })
-  direccion: string;
+    @Column({ type: 'varchar', length: 100 })
+    address: string;
 
-  @Column({ type: 'varchar', length: 100 })
-  ciudad: string;
+    @Column({ type: 'varchar', length: 100 })
+    city: string;
 
-  @ManyToMany(() => Rutina, (rutina) => rutina.users)
-  @JoinTable({ name: 'usuario-rutina' })
-  rutina: Rutina[];
+    @Column({ default: UserRole.USER })
+    role: UserRole;
 
-  @OneToMany(() => Suscripciones, (suscripcion) => suscripcion.user)
-  @JoinColumn({ name: 'suscripciones' })
-  suscripciones: Suscripciones[];
+    @ManyToMany(() => Rutina, (rutina) => rutina.users)
+    @JoinTable({ name: 'usuario-rutina' })
+    routine: Rutina[];
 
-  @OneToMany(() => Rutina, (rutina) => rutina.admin)
-  @JoinTable({ name: 'admin-rutina' })
-  rutinaAdmin: Rutina[];
+    @OneToMany(() => Suscripciones, (suscripcion) => suscripcion.user)
+    @JoinColumn({ name: 'suscripciones' })
+    subsciption: Suscripciones[];
 
-  @OneToMany(() => Plan, (planes) => planes.admin)
-  @JoinTable({ name: 'admin-planes' })
-  planesAdmin: Plan[];
+    @OneToMany(() => Rutina, (rutina) => rutina.admin)
+    @JoinTable({ name: 'admin-rutina' })
+    routineAdmin: Rutina[];
 
-  @OneToMany(() => Comentarios, (comentario) => comentario.usario)
-  @JoinColumn({ name: 'comentarios' })
-  comentarios: Comentarios[];
+    @OneToMany(() => Plan, (planes) => planes.admin)
+    @JoinTable({ name: 'admin-plan' })
+    planAdmin: Plan[];
 
-  @Column({ default: true })
-  active: boolean;
-}
+    @OneToMany(() => Comentarios, (comentario) => comentario.user)
+    @JoinColumn({ name: 'comentarios' })
+    comments: Comentarios[];
+
+    @Column({ default: false })
+    delete: boolean;
+
+    @Column({ default: true })
+    isActive: boolean;
+    }

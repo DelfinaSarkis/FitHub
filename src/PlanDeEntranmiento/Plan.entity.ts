@@ -17,24 +17,36 @@ export class Plan {
   id: string;
 
   @Column({ type: 'boolean', default: false })
-  verificado: boolean;
+  check: boolean;
+
+  @Column()
+  category: Enumerator;
+
+  @Column({ type: 'varchar' })
+  description: string;
+
+  @Column()
+  location: string;
+
+  @Column()
+  date: Date;
+  
+  @Column({ default: true })
+  isActive: boolean;
 
   @Column({ type: 'boolean' })
   @OneToMany(() => Ejercicio, (ejercicio) => ejercicio.plan)
   @JoinColumn({ name: 'ejercicios' })
-  ejercicios: Ejercicio[];
+  exercise: Ejercicio[];
 
-  @ManyToOne(() => Users, (user) => user.planesAdmin)
+  @ManyToOne(() => Users, (user) => user.planAdmin)
   @JoinColumn({ name: 'admin' })
   admin: Users;
 
   @OneToMany(() => Comentarios, (comentarios) => comentarios.plan)
   @JoinColumn({ name: 'comentarios' })
-  comentarios: Comentarios[];
+  comments: Comentarios[];
 
   @OneToMany(() => Suscripciones, (suscripcion) => suscripcion.plan)
-  suscripciones: Suscripciones[];
-
-  @Column({ default: true })
-  active: boolean;
+  subscriptions: Suscripciones[];
 }

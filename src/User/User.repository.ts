@@ -1,7 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Users } from './User.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './CreateUser.Dto';
 
 @Injectable()
@@ -11,13 +11,12 @@ export class UsersRepository {
   ) {}
 
   async getAllUsers() {
-    const allUsers = await this.userRepository.find();
+    const allUsers = await this.userRepository.find({ where: { isActive:true } });
     return allUsers;
   }
 
-  async getUserById(id: string) {
-    const userFinded = await this.userRepository.findOneBy({ id });
-    return userFinded;
+  async getUserById(id) {
+    return await this.userRepository.findOneBy( { id, isActive:true} );
   }
 
   async createUser(user: CreateUserDto) {
@@ -26,19 +25,20 @@ export class UsersRepository {
   }
 
   async updateUser(user: UpdateUserDto, id: string) {
-    await this.userRepository.update(id, user);
-    const updatedUser = await this.userRepository.findOneBy({ id });
-
-    return updatedUser;
+    //let updatedUser = await this.userRepository.findOneBy({ id });
+    let userUpdated = await this.userRepository.update(id ,user);
+    
+    return userUpdated;
   }
 
   async deleteUser(id: string) {
     const deletedUser = await this.userRepository.findOneBy({ id });
-    this.userRepository.remove(deletedUser);
+    if (!deletedUser || deletedUser.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
+    await this.userRepository.update( id, {...deletedUser, isActive: false});
     return id;
   }
 
   async getUserByEmail(email: string) {
-    return await this.userRepository.findOneBy({ email });
+    return await this.userRepository.findOneBy({ email, isActive:true });
   }
 }

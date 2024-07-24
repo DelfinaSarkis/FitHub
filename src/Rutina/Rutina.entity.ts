@@ -20,26 +20,29 @@ export class Rutina {
   id: string;
 
   @Column({ type: 'boolean', default: false })
-  verificado: boolean;
+  check: boolean;
 
   @Column({ type: 'varchar', length: 100 })
-  categoria: RutinaCategoria[];
+  category: RutinaCategoria[];
+
+  @Column({ type: 'varchar' })
+  description: string;
 
   @OneToMany(() => Ejercicio, (ejercicio) => ejercicio.rutina)
   @JoinColumn({ name: 'ejercicios' })
-  ejercicios: Ejercicio[];
+  exercise: Ejercicio[];
 
-  @ManyToOne(() => Users, (user) => user.rutinaAdmin)
+  @ManyToOne(() => Users, (user) => user.routineAdmin)
   @JoinColumn({ name: 'admin' })
   admin: Users;
 
-  @ManyToMany(() => Users, (user) => user.rutina)
+  @ManyToMany(() => Users, (user) => user.routine)
   users: Users[];
 
-  @OneToMany(() => Comentarios, (comentario) => comentario.rutina)
+  @OneToMany(() => Comentarios, (comentario) => comentario.routine)
   @JoinColumn({ name: 'comentarios' })
-  comentarios: Comentarios[];
+  comments: Comentarios[];
 
   @Column({ default: true })
-  active: boolean;
+  isActive: boolean;
 }
