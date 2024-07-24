@@ -27,11 +27,11 @@ export class Ejercicio {
   })
   imgUrl: string;
 
-  @ManyToOne(() => Rutina, (rutina) => rutina.ejercicios, { nullable: true })
+  @ManyToOne(() => Rutina, (rutina) => rutina.exercise, { nullable: true })
   @JoinColumn({ name: 'rutina' })
   rutina: Rutina;
 
-  @ManyToOne(() => Plan, (plan) => plan.ejercicios, { nullable: true })
+  @ManyToOne(() => Plan, (plan) => plan.exercise, { nullable: true })
   @JoinColumn({ name: 'plan' })
   plan: Rutina;
 }
