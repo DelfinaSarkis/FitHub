@@ -13,10 +13,10 @@ async function bootstrap() {
     .addBearerAuth()
     .setVersion('1.0.0')
     .build();
-  const documentacion = SwaggerModule.createDocument(app,documentConfig)
-  SwaggerModule.setup('api',app,documentacion)
-  app.use(auth(configAuth))
-  app.useGlobalPipes(new ValidationPipe({whitelist:true})); 
+  const documentacion = SwaggerModule.createDocument(app, documentConfig);
+  SwaggerModule.setup('api', app, documentacion);
+  app.use(auth(configAuth));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.listen(3000);
   console.log('Server listening on http://localhost:3000');
 }
