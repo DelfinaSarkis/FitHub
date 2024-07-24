@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
 import { PlanService } from "./Plan.service";
 import { Plan } from "./Plan.entity";
 import { UUID } from "crypto";
@@ -10,8 +10,16 @@ export class PlanController {
     constructor(private readonly planService: PlanService){}
 
     @Get()
-    async getPlan(): Promise<Plan[]> {
-        return await this.planService.getPlan();
+    async getPlan(@Query('page') page: string = '1', @Query('limit') limit: string = '5'): Promise<Plan[]> {
+        try{
+            return await this.planService.getPlan(page, limit);
+        } catch (error) {
+            if (error instanceof NotFoundException){
+                throw error;
+            } else {
+                throw new HttpException('Error en el servidor interno', HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
     }
 
     @Get(':id')

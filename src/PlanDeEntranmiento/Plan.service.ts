@@ -2,8 +2,8 @@ import { PlanRepository } from "./Plan.repository";
 
 export class PlanService {
     constructor(private readonly planRepository: PlanRepository){}
-    async getPlan(){
-        return await this.planRepository.getPlan();
+    async getPlan(page: string, limit: string){
+        return this.planRepository.getPlan(Number(page), Number(limit));
     }
 
     async getPlanById(id){

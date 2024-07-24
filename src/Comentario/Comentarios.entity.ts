@@ -17,17 +17,20 @@ export class Comentarios {
   id: string;
 
   @Column({ type: 'varchar' })
-  contenido: string;
+  description: string;
 
-  @ManyToOne(() => Users, (usuario) => usuario.comentarios)
+  @Column({ default: true })
+  isActive: boolean
+
+  @ManyToOne(() => Users, (usuario) => usuario.comments)
   @JoinColumn({ name: 'usurio' })
-  usario: Users;
+  user: Users;
 
-  @ManyToOne(() => Rutina, (rutina) => rutina.comentarios, { nullable: true })
+  @ManyToOne(() => Rutina, (rutina) => rutina.comments, { nullable: true })
   @JoinColumn({ name: 'rutina' })
-  rutina: Rutina;
+  routine: Rutina;
 
-  @ManyToOne(() => Plan, (plan) => plan.comentarios, { nullable: true })
+  @ManyToOne(() => Plan, (plan) => plan.comments, { nullable: true })
   @JoinColumn({ name: 'plan' })
   plan: Plan;
 }

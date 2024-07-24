@@ -30,8 +30,7 @@ import { FilesUploadModule } from './files-upload/files-upload.module';
       signOptions: { expiresIn: '1h' },
       secret: process.env.JWT_SECRET,
     }),
-    RutinaModule, usersModule,AuthModule, EjercicoModule, PlanModule
-    RutinaModule,
+    RutinaModule, usersModule,AuthModule, EjercicoModule, PlanModule,
     usersModule,
     AuthModule,
     FilesUploadModule,
