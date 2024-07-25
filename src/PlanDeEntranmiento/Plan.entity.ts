@@ -1,3 +1,4 @@
+import { Categoria } from 'src/Categorias/Categoria.entity';
 import { Comentarios } from 'src/Comentario/Comentarios.entity';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
@@ -20,7 +21,8 @@ export class Plan {
   check: boolean;
 
   @Column()
-  category: Enumerator;
+  @OneToMany(() => Categoria, (categoria) => categoria.plan)
+  category: Categoria[];
 
   @Column({ type: 'varchar' })
   description: string;
@@ -30,7 +32,7 @@ export class Plan {
 
   @Column()
   date: Date;
-  
+
   @Column({ default: true })
   isActive: boolean;
 
