@@ -1,3 +1,4 @@
+import { EjercicioDto } from "./CreateEjercicio.dto";
 import { EjercicioRepository } from "./Ejercicios.repository";
 
 export class EjercicioService {
@@ -7,16 +8,16 @@ export class EjercicioService {
         return await this.ejercicioRepository.getEjercicios();
     }
 
-    async getEjerciciosById(id){
+    async getEjerciciosById(id: string){
         return await this.ejercicioRepository.getEjercicioById(id);
     }
 
-    async createEjercicio(ejercicio){
+    async createEjercicio(ejercicio: EjercicioDto){
         await this.ejercicioRepository.createEjercicio(ejercicio);
         return ejercicio;
     }
 
-    async updateEjercicio(ejercicio, id){
+    async updateEjercicio(ejercicio: EjercicioDto, id: string){
         await this.ejercicioRepository.updateEjercicio(id, ejercicio);
     }
 }

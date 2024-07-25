@@ -13,7 +13,7 @@ export class CommentsRepository {
             return this.commentsRepository.find({ where: { isActive:true } });
         }
 
-        async getCommentById(id){
+        async getCommentById(id: string){
             return await this.commentsRepository.findOne({ where: {id, isActive: true}});
         }
 
@@ -22,7 +22,7 @@ export class CommentsRepository {
             return 'Comentario creado';
         }
 
-        async updateComment(comment: CommentDto, id){
+        async updateComment(comment: CommentDto, id: string){
             const existingComment = await this.commentsRepository.findOneBy({ id, isActive: true });
             if(!existingComment){
                 throw new Error('Comentario no econtrado');
@@ -30,5 +30,13 @@ export class CommentsRepository {
             await this.commentsRepository.update(id, comment);
             const commentUpdate = await this.commentsRepository.findOneBy({ id });
             return commentUpdate;
+        }
+
+        async deleteComment(id: string){
+            const deletedComment = await this.commentsRepository.findOneBy({ id });
+            if(!deletedComment || deletedComment.isActive === false) {
+                throw new Error('Comentario no encontrado');
+            } await this.commentsRepository.update(id, {...deletedComment, isActive: false});
+            return id;
         }
 }

@@ -10,6 +10,7 @@ import { AuthModule } from './Auth/Auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { EjercicoModule } from './Ejercicios/Ejercicios.module';
 import { PlanModule } from './PlanDeEntranmiento/Plan.module';
+import { commentsModule } from './Comentario/Comentarios.module';
 //import { FilesUploadModule } from './files-upload/files-upload.module';
 
 @Module({
@@ -31,7 +32,7 @@ import { PlanModule } from './PlanDeEntranmiento/Plan.module';
       secret: process.env.JWT_SECRET,
     }),
     RutinaModule, usersModule,AuthModule, EjercicoModule, PlanModule,
-    usersModule,
+    usersModule, commentsModule,
     AuthModule,
     /*FilesUploadModule,*/
   ],
