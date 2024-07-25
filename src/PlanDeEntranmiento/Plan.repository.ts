@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Plan } from "./Plan.entity";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, ObjectId, Repository } from "typeorm";
 
 @Injectable()
 export class PlanRepository {
@@ -24,9 +24,13 @@ export class PlanRepository {
         return 'Plan creado';
     }
 
-    async updatePlan(plan, id){
+    async updatePlan(plan, id) {
+        const existingPlan = await this.planRepository.findOneBy({ id });
+        if(!existingPlan){
+            throw new Error('Plan no encontrado');
+        }
         await this.planRepository.update(id, plan);
-        const updatedPlan = await this.planRepository.findOneBy({ id, isActive:true });
+        const updatedPlan = await this.planRepository.findOneBy({ id });
         return updatedPlan;
     }
 
