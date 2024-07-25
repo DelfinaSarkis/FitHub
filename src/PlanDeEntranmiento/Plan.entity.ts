@@ -10,31 +10,51 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { DifficultyLevel } from './difficultyLevel.enum';
 
 @Entity({ name: 'plan' })
 export class Plan {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  name: string;
+
   @Column({ type: 'boolean', default: false })
-  verificado: boolean;
+  check: boolean;
 
-  @Column({ type: 'boolean' })
-  @OneToMany(() => Ejercicio, (ejercicio) => ejercicio.plan)
-  @JoinColumn({ name: 'ejercicios' })
-  ejercicios: Ejercicio[];
+  @Column()
+  category: string;
 
-  @ManyToOne(() => Users, (user) => user.planesAdmin)
+
+  @Column({ type: 'varchar' })
+  description: string;
+
+  @Column()
+  location: string;
+
+  @Column()
+  date: Date;
+  
+  @Column({ default: true })
+  isActive: boolean;
+
+  @Column({type: 'varchar', length: 100})
+  difficultyLevel:DifficultyLevel
+
+  //@Column({ type: 'boolean' })
+  //@OneToMany(() => Ejercicio, (ejercicio) => ejercicio.plan)
+  //@JoinColumn({ name: 'ejercicios' })
+  //exercise: Ejercicio[];
+
+  @ManyToOne(() => Users, (user) => user.planAdmin)
   @JoinColumn({ name: 'admin' })
   admin: Users;
 
   @OneToMany(() => Comentarios, (comentarios) => comentarios.plan)
   @JoinColumn({ name: 'comentarios' })
-  comentarios: Comentarios[];
+  comments: Comentarios[];
 
   @OneToMany(() => Suscripciones, (suscripcion) => suscripcion.plan)
-  suscripciones: Suscripciones[];
-
-  @Column({ default: true })
-  active: boolean;
+  subscriptions: Suscripciones[];
 }
