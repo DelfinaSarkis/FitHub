@@ -1,26 +1,30 @@
 import { Comentarios } from 'src/Comentario/Comentarios.entity';
-import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
 import { Users } from 'src/User/User.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { DifficultyLevel } from './difficultyLevel.enum';
 
 @Entity({ name: 'plan' })
 export class Plan {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ type: 'varchar', length: 100, nullable: false })
+  name: string;
+
   @Column({ type: 'boolean', default: false })
   check: boolean;
 
   @Column()
-  category: Enumerator;
+  category: string;
 
   @Column({ type: 'varchar' })
   description: string;
@@ -28,16 +32,14 @@ export class Plan {
   @Column()
   location: string;
 
-  @Column()
+  @CreateDateColumn()
   date: Date;
   
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ type: 'boolean' })
-  @OneToMany(() => Ejercicio, (ejercicio) => ejercicio.plan)
-  @JoinColumn({ name: 'ejercicios' })
-  exercise: Ejercicio[];
+  @Column({type: 'varchar', length: 100})
+  difficultyLevel:DifficultyLevel
 
   @ManyToOne(() => Users, (user) => user.planAdmin)
   @JoinColumn({ name: 'admin' })

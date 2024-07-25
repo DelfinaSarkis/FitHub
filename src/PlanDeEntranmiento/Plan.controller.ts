@@ -1,40 +1,45 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, NotFoundException, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
 import { PlanService } from "./Plan.service";
 import { Plan } from "./Plan.entity";
 import { UUID } from "crypto";
 import { ApiTags } from "@nestjs/swagger";
-import { PlanDto } from "./CreatePlan.dto";
+import { PlanCreateDto, PlanUpdateDto } from "./CreatePlan.dto";
+import { Category } from "src/Category/Category.entity";
+import { query, Request } from "express";
+import { DifficultyLevel } from "./difficultyLevel.enum";
+import { AuthGuard } from "src/Guard/AuthGuar.guard";
+import { Console } from "console";
 @ApiTags('Plan')
 @Controller('plan')
 export class PlanController {
     constructor(private readonly planService: PlanService){}
 
+    //Queda funcionando correctamente, filtrando por categoría, localización, nivel de dificultad y búsqueda en el nombre
     @Get()
-    async getPlan(@Query('page') page: string = '1', @Query('limit') limit: string = '5'): Promise<Plan[]> {
-        try{
-            return await this.planService.getPlan(page, limit);
-        } catch (error) {
-            if (error instanceof NotFoundException){
-                throw error;
-            } else {
-                throw new HttpException('Error en el servidor interno', HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
+    async getPlan(@Query('page') page: string = '1', @Query('limit') limit: string = '10',@Query('category') category?:string,@Query('location')location?: string,@Query('difficultyLevel')difficultyLevel?:DifficultyLevel, @Query('search')search?:string): Promise<Plan[]> {
+        return await this.planService.getPlan(page, limit,category,location,difficultyLevel,search);
     }
-
+    //Queda funcionand correctamnete, trae un plan por id
     @Get(':id')
     async getPlanById(@Param('id') id:UUID){
         return await this.planService.getPlanById(id);
     }
 
     @Post()
-    async createPlan(@Body() plan: PlanDto){
-        return await this.planService.createPlan(plan);
+    @UseGuards(AuthGuard)
+    async createPlan(@Req()req,@Body() plan: PlanCreateDto){
+        const user = req.user
+        const admin = user.id
+        return await this.planService.createPlan(plan,admin);
     }
 
     @Put(':id')
-    async updatePlan(@Body() plan: PlanDto, @Param('id') id:UUID){
-        return await this.planService.updatePlan(plan, id);
+    @UseGuards(AuthGuard)
+    async updatePlan(@Req()req,@Body() plan:PlanUpdateDto, @Param('id') id:UUID){
+        const user = req.user
+        const admin = user.id
+        const identifiacion = id
+        return await this.planService.updatePlan(plan, admin, identifiacion);
     }
 
     @Delete(':id')
