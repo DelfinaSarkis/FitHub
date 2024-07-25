@@ -1,22 +1,24 @@
-import { EjercicioRepository } from "./Ejercicios.repository";
+import { Injectable } from '@nestjs/common';
+import { EjercicioRepository } from './Ejercicios.repository';
 
+@Injectable()
 export class EjercicioService {
-    constructor(private readonly ejercicioRepository:EjercicioRepository){}
+  constructor(private readonly ejercicioRepository: EjercicioRepository) {}
 
-    async getEjercicios(){
-        return await this.ejercicioRepository.getEjercicios();
-    }
+  async getEjercicios() {
+    return await this.ejercicioRepository.getEjercicios();
+  }
 
-    async getEjerciciosById(id){
-        return await this.ejercicioRepository.getEjercicioById(id);
-    }
+  async getEjerciciosById(id) {
+    return await this.ejercicioRepository.getEjercicioById(id);
+  }
 
-    async createEjercicio(ejercicio){
-        await this.ejercicioRepository.createEjercicio(ejercicio);
-        return ejercicio;
-    }
+  async createEjercicio(ejercicio) {
+    await this.ejercicioRepository.createEjercicio(ejercicio);
+    return ejercicio;
+  }
 
-    async updateEjercicio(ejercicio, id){
-        await this.ejercicioRepository.updateEjercicio(id, ejercicio);
-    }
+  async updateEjercicio(ejercicio, id) {
+    await this.ejercicioRepository.updateEjercicio(id, ejercicio);
+  }
 }

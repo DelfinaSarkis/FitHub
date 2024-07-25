@@ -12,6 +12,6 @@ export function LoggerMidleware(
   const method = req.method;
   const ip = req.ip;
 
-  console.log(`[${date} ${time}] ${method} IP: ${ip} -- ${url}`);
+  console.log(`[${date} ${time}] IP: ${ip} - ${method} ${url}`);
   next();
 }

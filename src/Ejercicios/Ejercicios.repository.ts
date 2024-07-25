@@ -18,7 +18,7 @@ export class EjercicioRepository {
 
   async createEjercicio(ejercicio) {
     await this.ejercicioRepository.save(ejercicio);
-    return 'Ejercicio creado';
+    return ejercicio;
   }
 
   async updateEjercicio(ejercicio, id) {
