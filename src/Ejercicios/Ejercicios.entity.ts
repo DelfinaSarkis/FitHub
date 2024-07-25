@@ -31,7 +31,7 @@ export class Ejercicio {
   @JoinColumn({ name: 'rutina' })
   rutina: Rutina;
 
-  @ManyToOne(() => Plan, (plan) => plan.exercise, { nullable: true })
-  @JoinColumn({ name: 'plan' })
-  plan: Rutina;
+  //@ManyToOne(() => Plan, (plan) => plan.exercise, { nullable: true })
+  //@JoinColumn({ name: 'plan' })
+  //plan: Rutina;
 }

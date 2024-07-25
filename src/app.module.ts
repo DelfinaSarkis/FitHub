@@ -10,7 +10,7 @@ import { AuthModule } from './Auth/Auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { EjercicoModule } from './Ejercicios/Ejercicios.module';
 import { PlanModule } from './PlanDeEntranmiento/Plan.module';
-import { FilesUploadModule } from './files-upload/files-upload.module';
+//import { FilesUploadModule } from './files-upload/files-upload.module';
 
 @Module({
   imports: [
@@ -38,7 +38,7 @@ import { FilesUploadModule } from './files-upload/files-upload.module';
     RutinaModule,
     usersModule,
     AuthModule,
-    FilesUploadModule,
+    /*FilesUploadModule,*/
   ],
   controllers: [AppController],
   providers: [AppService],
