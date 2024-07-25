@@ -1,6 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './User.service';
 import { UpdateUserDto } from './CreateUser.Dto';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { UserMiddleware } from 'src/Middleware/user.middleware';
 
 @Controller('users')
 export class UserController {
@@ -11,7 +13,9 @@ export class UserController {
     return this.userService.getUsers();
   }
 
-  @Get()
+  @Get(':id')
+  //@UseGuards(RolesGuard)
+  //@UseInterceptors(UserMiddleware)
   getUserById(@Param('id') id: string) {
     return this.userService.getUsersById(id);
   }
