@@ -30,6 +30,10 @@ export class CreateUserDto {
   })
   email: string;
 
+  @IsInt()
+  @IsNotEmpty()
+  dni: number;
+
   @IsString()
   @IsNotEmpty()
   @Matches(
@@ -73,16 +77,16 @@ export class CreateUserDto {
     description: 'Pais de residencia del usuario',
     example: 'Argentina',
   })
-  pais: string;
+  country: string;
 
   @IsString()
   @IsNotEmpty()
-  @Length(3, 100)
+  @Length(15, 100)
   @ApiProperty({
     description: 'Direccion de residencia del usuario',
     example: 'Calle Falsa 123',
   })
-  direccion: string;
+  address: string;
 
   @IsString()
   @IsNotEmpty()
@@ -91,7 +95,7 @@ export class CreateUserDto {
     description: 'Ciudad de residencia del usuario',
     example: 'San Luis',
   })
-  ciudad: string;
+  city: string;
 }
 
 export class UpdateUserDto {
@@ -103,6 +107,7 @@ export class UpdateUserDto {
     example: 'Juan Gomez',
   })
   name?: string;
+  
 
   @IsString()
   @IsOptional()
@@ -148,7 +153,7 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
-  @Length(5, 20)
+  @Length(5, 30)
   @ApiPropertyOptional({
     description: 'Ciudad de residencia del usuario // Puede ser pasado o no',
     example: 'Villa Mercedes',

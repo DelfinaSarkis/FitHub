@@ -1,10 +1,10 @@
 import { Categoria } from 'src/Categorias/Categoria.entity';
 import { Comentarios } from 'src/Comentario/Comentarios.entity';
-import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
 import { Users } from 'src/User/User.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -27,14 +27,13 @@ export class Plan {
   @Column()
   category: string;
 
-
   @Column({ type: 'varchar' })
   description: string;
 
   @Column()
   location: string;
 
-  @Column()
+  @CreateDateColumn()
   date: Date;
 
   @Column({ default: true })
@@ -42,11 +41,6 @@ export class Plan {
 
   @Column({type: 'varchar', length: 100})
   difficultyLevel:DifficultyLevel
-
-  //@Column({ type: 'boolean' })
-  //@OneToMany(() => Ejercicio, (ejercicio) => ejercicio.plan)
-  //@JoinColumn({ name: 'ejercicios' })
-  //exercise: Ejercicio[];
 
   @ManyToOne(() => Users, (user) => user.planAdmin)
   @JoinColumn({ name: 'admin' })
