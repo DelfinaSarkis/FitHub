@@ -14,8 +14,9 @@ async function bootstrap() {
     .addBearerAuth()
     .setVersion('1.0.0')
     .build();
-  const documentacion = SwaggerModule.createDocument(app,documentConfig)
-  SwaggerModule.setup('api',app,documentacion)
+
+  const documentacion = SwaggerModule.createDocument(app, documentConfig);
+  SwaggerModule.setup('api', app, documentacion);
   app.use(auth(configAuth));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(LoggerMidleware);

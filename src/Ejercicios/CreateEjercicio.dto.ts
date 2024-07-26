@@ -1,5 +1,9 @@
-export class EjercicioDto{
-    titulo: string;
-    descripcion: string;
-    imgUrl: string;
+import { IsNotEmpty } from 'class-validator';
+
+export class EjercicioDto {
+  @IsNotEmpty()
+  titulo: string;
+  @IsNotEmpty()
+  descripcion: string;
+  imgUrl: string;
 }

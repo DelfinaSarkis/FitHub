@@ -1,12 +1,15 @@
+import { Injectable } from '@nestjs/common';
+import { EjercicioRepository } from './Ejercicios.repository';
 import { EjercicioDto } from "./CreateEjercicio.dto";
-import { EjercicioRepository } from "./Ejercicios.repository";
 
+
+@Injectable()
 export class EjercicioService {
-    constructor(private readonly ejercicioRepository:EjercicioRepository){}
+  constructor(private readonly ejercicioRepository: EjercicioRepository) {}
 
-    async getEjercicios(){
-        return await this.ejercicioRepository.getEjercicios();
-    }
+  async getEjercicios() {
+    return await this.ejercicioRepository.getEjercicios();
+  }
 
     async getEjerciciosById(id: string){
         return await this.ejercicioRepository.getEjercicioById(id);
@@ -21,3 +24,4 @@ export class EjercicioService {
         await this.ejercicioRepository.updateEjercicio(id, ejercicio);
     }
 }
+

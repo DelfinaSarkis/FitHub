@@ -11,12 +11,14 @@ export class UsersRepository {
   ) {}
 
   async getAllUsers() {
-    const allUsers = await this.userRepository.find({ where: { isActive:true } });
+    const allUsers = await this.userRepository.find({
+      where: { isActive: true },
+    });
     return allUsers;
   }
 
   async getUserById(id) {
-    return await this.userRepository.findOneBy( { id, isActive:true} );
+    return await this.userRepository.findOneBy({ id, isActive: true });
   }
 
   async createUser(user: CreateUserDto) {
@@ -36,12 +38,14 @@ export class UsersRepository {
 
   async deleteUser(id: string) {
     const deletedUser = await this.userRepository.findOneBy({ id });
-    if (!deletedUser || deletedUser.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
-    await this.userRepository.update( id, {...deletedUser, isActive: false});
+    if (!deletedUser || deletedUser.isActive === false) {
+      throw new NotFoundException('Plan no encontrado o eliminado');
+    }
+    await this.userRepository.update(id, { ...deletedUser, isActive: false });
     return id;
   }
 
   async getUserByEmail(email: string) {
-    return await this.userRepository.findOneBy({ email, isActive:true });
+    return await this.userRepository.findOneBy({ email, isActive: true });
   }
 }
