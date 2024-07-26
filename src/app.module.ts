@@ -11,7 +11,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { EjercicoModule } from './Ejercicios/Ejercicios.module';
 import { PlanModule } from './PlanDeEntranmiento/Plan.module';
 import { FilesUploadModule } from './files-upload/files-upload.module';
-//import { FilesUploadModule } from './files-upload/files-upload.module';
+import { commentsModule } from './Comentario/Comentarios.module';
+
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { FilesUploadModule } from './files-upload/files-upload.module';
     }),
     RutinaModule,
     usersModule,
+    commentsModule,
     AuthModule,
     EjercicoModule,
     PlanModule,
