@@ -1,4 +1,15 @@
-import { Controller, Delete, HttpException, HttpStatus, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  Controller,
+  Delete,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { Body, Get } from '@nestjs/common';
 import { RutinaService } from './Rutinas.Service';
 import { CreateRutinaDto } from './Rutinas.Dto';
@@ -13,14 +24,20 @@ export class RutinaController {
   constructor(private readonly rutinaService: RutinaService) {}
 
   @Get()
-  async getRutinas(@Query('page') page: string = '1', @Query('limit') limit: string = '5'): Promise<Rutina[]> {
-    try{
+  async getRutinas(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '5',
+  ): Promise<Rutina[]> {
+    try {
       return await this.rutinaService.getRutinas(page, limit);
-    } catch (error){
-      if (error instanceof NotFoundException){
+    } catch (error) {
+      if (error instanceof NotFoundException) {
         throw error;
       } else {
-        throw new HttpException('Error en el servidor interno', HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new HttpException(
+          'Error en el servidor interno',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
     }
   }

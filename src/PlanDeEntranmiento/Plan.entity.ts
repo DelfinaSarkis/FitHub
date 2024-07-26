@@ -1,3 +1,4 @@
+import { Categoria } from 'src/Categorias/Categoria.entity';
 import { Comentarios } from 'src/Comentario/Comentarios.entity';
 import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
 import { Users } from 'src/User/User.entity';
@@ -34,7 +35,7 @@ export class Plan {
 
   @CreateDateColumn()
   date: Date;
-  
+
   @Column({ default: true })
   isActive: boolean;
 

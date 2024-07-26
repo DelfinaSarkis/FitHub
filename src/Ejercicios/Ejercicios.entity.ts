@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { Rutina } from 'src/Rutina/Rutina.entity';
 import {
@@ -19,13 +20,14 @@ export class Ejercicio {
   titulo: string;
 
   @Column({ type: 'varchar', length: 300 })
-  desripcion: string;
+  descripcion: string;
 
-  @Column({
-    default:
-      'https://png.pngtree.com/png-clipart/20190630/original/pngtree-img-file-document-icon-png-image_4166554.jpg',
+  @Column('text', {
+    array: true,
+    default: () =>
+      `'{"https://png.pngtree.com/png-clipart/20190630/original/pngtree-img-file-document-icon-png-image_4166554.jpg"}'`,
   })
-  imgUrl: string;
+  imgUrl: string[];
 
   @ManyToOne(() => Rutina, (rutina) => rutina.exercise, { nullable: true })
   @JoinColumn({ name: 'rutina' })

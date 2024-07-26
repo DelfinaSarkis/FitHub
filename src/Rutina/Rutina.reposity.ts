@@ -23,6 +23,10 @@ export class RutinaRepository {
     return 'Rutina creada';
   }
   async updateRutina(rutina, id) {
+    const existingRoutine = await this.rutinaRepository.findOneBy({ id });
+    if(!existingRoutine){
+      throw new Error('Rutina no encontrada');
+    }
     await this.rutinaRepository.update(id, rutina);
     const updateRutina = await this.rutinaRepository.findOneBy({ id });
     return updateRutina;
