@@ -75,4 +75,3 @@ export class PlanRepository {
         }
         return 'El plan de entrenamiento ha sido eliminado';
     }
-}

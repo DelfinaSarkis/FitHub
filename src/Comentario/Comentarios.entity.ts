@@ -20,7 +20,7 @@ export class Comentarios {
   description: string;
 
   @Column({ default: true })
-  isActive: boolean
+  isActive: boolean;
 
   @ManyToOne(() => Users, (usuario) => usuario.comments)
   @JoinColumn({ name: 'usurio' })

@@ -1,7 +1,5 @@
-
-import { Rutina } from "src/Rutina/Rutina.entity";
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-
+import { Rutina } from 'src/Rutina/Rutina.entity';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'category' })
 export class Category {
@@ -11,7 +9,7 @@ export class Category {
   @Column({ type: 'varchar', length: 50 })
   name: string;
 
-  @ManyToMany(()=>Rutina,(rutina)=>rutina.category)
-  rutinas:Rutina[]
+  @ManyToMany(() => Rutina, (rutina) => rutina.category)
+  rutinas: Rutina[];
 }
 
