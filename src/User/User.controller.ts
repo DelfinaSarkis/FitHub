@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Put, UseGuards, UseInterceptors } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Put,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { UserService } from './User.service';
 import { UpdateUserDto } from './CreateUser.Dto';
 import { RolesGuard } from 'src/guards/roles.guard';
