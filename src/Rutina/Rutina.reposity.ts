@@ -1,19 +1,40 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Rutina } from './Rutina.entity';
-import { Repository } from 'typeorm';
-import { BadRequestException } from '@nestjs/common';
+import { ILike, In, Repository } from 'typeorm';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
+@Injectable()
 export class RutinaRepository {
   constructor(
     @InjectRepository(Rutina)
     private readonly rutinaRepository: Repository<Rutina>,
   ) {}
-  async getAllRutinas(page: number, limit: number) {
-    return this.rutinaRepository.find({
-      where: { isActive: true},
-      skip: (page - 1) * limit,
-      take: limit
-    });
+  async getAllRutinas(page: number, limit: number, category?:string[], location?:string, difficultyLevel?:string, search?:string) {
+    console.log('hoal2')
+    let whereConditions: any = { isActive: true, check: true };
+        if (category !== undefined) {
+          whereConditions.categoria = In(category)
+        }
+        
+        if (location !== undefined) {
+            whereConditions.location = location;
+        }
+
+        if (difficultyLevel !== undefined) {
+            whereConditions.difficultyLevel = difficultyLevel;
+        }
+        if (search !== undefined) {
+            const stopWords = new Set(['de', 'y', 'el', 'la', 'en', 'a', 'o']); // Lista de palabras de parada
+            const arrSearch = search.split(' ').filter(term => term.trim() !== '' && !stopWords.has(term.toLowerCase()));
+        
+            whereConditions = arrSearch.map(term => ({...whereConditions,name:(ILike(`%${term}%`))}));
+        }
+        console.log(whereConditions)
+        return this.rutinaRepository.find({ 
+            where: whereConditions,
+            skip: (page - 1) * limit,
+            take: limit
+        });
   }
   async getRutinaById(id) {
     return await this.rutinaRepository.findOne({ where: { id, isActive:true } });

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './CreateUser.Dto';
 import { UsersRepository } from './User.repository';
 
@@ -10,8 +10,11 @@ export class UserService {
     return this.usersRepository.getAllUsers();
   }
 
-  getUsersById(id: string) {
-    return this.usersRepository.getUserById(id);
+  getUsersById(id: string, idUser) {
+    if (id===idUser) {
+      return this.usersRepository.getUserById(id)
+    }
+    throw new BadRequestException('No tienes acceso a esta informacion')
   }
 
   createUser(user: CreateUserDto) {

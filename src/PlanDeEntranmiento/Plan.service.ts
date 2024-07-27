@@ -4,6 +4,7 @@ import { DifficultyLevel } from "./difficultyLevel.enum";
 import { Inject, Injectable } from "@nestjs/common";
 import { PlanCreateDto, PlanUpdateDto } from "./CreatePlan.dto";
 import { log } from "console";
+import { Users } from "src/User/User.entity";
 
 @Injectable()
 export class PlanService {
@@ -17,6 +18,7 @@ export class PlanService {
     }
 
     async createPlan(plan:PlanCreateDto, admin:string){
+        console.log(admin)
         return await this.planRepository.createPlan(plan,admin);
     }
 
@@ -24,7 +26,7 @@ export class PlanService {
         await this.planRepository.updatePlan(plan, admin, identificacion);
     }
 
-    async deletePlan(id){
-        return await this.planRepository.deletePlan(id);
+    async deletePlan(id: string, user){
+        return await this.planRepository.deletePlan(id, user);
     }
 }
