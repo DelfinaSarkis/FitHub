@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Plan } from "./Plan.entity";
 import { Check, ILike, Repository } from "typeorm";
@@ -6,6 +6,7 @@ import { Category } from "src/Category/Category.entity";
 import { DifficultyLevel } from "./difficultyLevel.enum";
 import { PlanCreateDto } from "./CreatePlan.dto";
 import { Users } from "src/User/User.entity";
+import { UserRole } from "src/User/User.enum";
 
 @Injectable()
 export class PlanRepository {
@@ -42,8 +43,10 @@ export class PlanRepository {
         return await this.planRepository.findOne( { where: {id, isActive:true}, } );
     }
 
+    //Validar que es profe
     async createPlan(plan: PlanCreateDto, admin:string) {
         const adm = await this.userRepository.findOne({ where: { id: admin } });
+        console.log(adm)
         if (!adm) { throw new NotFoundException('Usuario no encontrado')};
         const planCreado = await this.planRepository.create(plan);
         planCreado.admin = adm;
@@ -51,18 +54,24 @@ export class PlanRepository {
         return 'Plan creado';
     }
 
-    async updatePlan(plan, identificacion, admin){
+    async updatePlan(plan, admin, identificacion){
         const userAdmin = await this.userRepository.findOne({ where: { id: admin } });
+        console.log(userAdmin);
         const planToUpdate = await this.planRepository.findOne({ where: { id:identificacion, admin:userAdmin} });
         if (!planToUpdate || planToUpdate.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
         return await this.planRepository.update(identificacion, plan);
     }
 
-    async deletePlan(id){
+    async deletePlan(id:string, user){
+
         const plan = await this.planRepository.findOne({ where: { id: id } });
         if (!plan || plan.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
-        await this.planRepository.update( id, {...plan, isActive: false});
 
-        return id;
+        if(user.role!==UserRole.ADMIN){
+            if (plan.admin!==user.sub) { throw new BadRequestException('No tines capacidad de eliminar este plan')}
+            await this.planRepository.update( id, {...plan, isActive: false});
+        }else {
+            await this.planRepository.update( id, {...plan, isActive: false});
+        }
+        return 'El plan de entrenamiento ha sido eliminado';
     }
-}

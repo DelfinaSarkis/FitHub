@@ -107,7 +107,6 @@ export class UpdateUserDto {
     example: 'Juan Gomez',
   })
   name?: string;
-  
 
   @IsString()
   @IsOptional()

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Categoria } from 'src/Categorias/Categoria.entity';
 import { Comentarios } from 'src/Comentario/Comentarios.entity';
 import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
@@ -39,8 +40,8 @@ export class Plan {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({type: 'varchar', length: 100})
-  difficultyLevel:DifficultyLevel
+  @Column({ type: 'varchar', length: 100 })
+  difficultyLevel: DifficultyLevel;
 
   @ManyToOne(() => Users, (user) => user.planAdmin)
   @JoinColumn({ name: 'admin' })
