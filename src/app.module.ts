@@ -10,7 +10,9 @@ import { AuthModule } from './Auth/Auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { EjercicoModule } from './Ejercicios/Ejercicios.module';
 import { PlanModule } from './PlanDeEntranmiento/Plan.module';
-//import { FilesUploadModule } from './files-upload/files-upload.module';
+import { FilesUploadModule } from './files-upload/files-upload.module';
+import { commentsModule } from './Comentario/Comentarios.module';
+
 
 @Module({
   imports: [
@@ -30,10 +32,16 @@ import { PlanModule } from './PlanDeEntranmiento/Plan.module';
       signOptions: { expiresIn: '1h' },
       secret: process.env.JWT_SECRET,
     }),
-    RutinaModule, usersModule,AuthModule, EjercicoModule, PlanModule,
+    RutinaModule,
+    usersModule,
+    commentsModule,
+    AuthModule,
+    EjercicoModule,
+    PlanModule,
+    RutinaModule,
     usersModule,
     AuthModule,
-    /*FilesUploadModule,*/
+    FilesUploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

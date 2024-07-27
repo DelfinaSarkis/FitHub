@@ -1,4 +1,15 @@
-import { Controller, Delete, HttpException, HttpStatus, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  Controller,
+  Delete,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { Body, Get } from '@nestjs/common';
 import { RutinaService } from './Rutinas.Service';
 import { CreateRutinaDto } from './Rutinas.Dto';
