@@ -1,4 +1,15 @@
-import { Controller, Delete, Param, Post, Put, Query } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  Controller,
+  Delete,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { Body, Get } from '@nestjs/common';
 import { RutinaService } from './Rutinas.Service';
 import { CreateRutinaDto } from './Rutinas.Dto';
@@ -6,6 +17,7 @@ import { UpdateRutinaDto } from './Rutinas.Dto';
 import { Rutina } from './Rutina.entity';
 import { UUID } from 'crypto';
 import { ApiTags } from '@nestjs/swagger';
+import { throwError } from 'rxjs';
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 @ApiTags('Rutina')
 @Controller('rutina')
@@ -13,22 +25,8 @@ export class RutinaController {
   constructor(private readonly rutinaService: RutinaService) {}
 
   @Get()
-  async getRutinas(
-    @Query('page') page: string = '1',
-    @Query('limit') limit: string = '10',
-    @Query('category') category?: string[],
-    @Query('location') location?: string,
-    @Query('difficultyLevel') difficultyLevel?: DifficultyLevel,
-    @Query('search') search?: string,
-  ): Promise<Rutina[]> {
-    return await this.rutinaService.getRutinas(
-      page,
-      limit,
-      category,
-      location,
-      difficultyLevel,
-      search,
-    );
+  async getRutinas(@Query('page') page: string = '1', @Query('limit') limit: string = '10',@Query('category') category?:string[],@Query('location')location?: string,@Query('difficultyLevel')difficultyLevel?:DifficultyLevel, @Query('search')search?:string): Promise<Rutina[]> {
+    return await this.rutinaService.getRutinas(page, limit, category, location, difficultyLevel, search);
   }
 
   @Get(':id')
