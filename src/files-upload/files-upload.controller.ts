@@ -15,9 +15,9 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 export class FilesUploadController {
   constructor(private readonly filesUploadService: FilesUploadService) {}
 
-  @Post('upload/:id')
+  @Post('ejercicio/:id')
   @UseInterceptors(FilesInterceptor('files'))
-  uploadFiles(
+  uploadFilesEjercicio(
     @Param('id') ejercicioId: string,
     @UploadedFiles(
       new ParseFilePipe({
@@ -37,7 +37,35 @@ export class FilesUploadController {
     const resourceType = files[0]?.mimetype.includes('video')
       ? 'video'
       : 'image';
-    return this.filesUploadService.uploadFiles(
+    return this.filesUploadService.uploadFilesEjercicio(
+      files,
+      ejercicioId,
+      resourceType,
+    );
+  }
+  @Post('rutina/:id')
+  @UseInterceptors(FilesInterceptor('files'))
+  uploadFilesRutina(
+    @Param('id') ejercicioId: string,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 1500000,
+            message: 'Tamaño máximo permitido: 1,5 MB',
+          }),
+          new FileTypeValidator({
+            fileType: /(.jpg|.png|.jpeg|.webp|.mp4|.avi|.mov)/,
+          }),
+        ],
+      }),
+    )
+    files: Express.Multer.File[],
+  ) {
+    const resourceType = files[0]?.mimetype.includes('video')
+      ? 'video'
+      : 'image';
+    return this.filesUploadService.uploadFilesRutina(
       files,
       ejercicioId,
       resourceType,

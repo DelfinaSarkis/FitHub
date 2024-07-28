@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { UUID } from 'crypto';
 import { RutinaCategoria } from './Rutina.enum';
 import {
@@ -47,7 +48,7 @@ export class UpdateRutinaDto {
   admin?: UUID;
 
   @IsArray()
-  @IsUUID('all', { each: true })  
+  @IsUUID('all', { each: true })
   @IsOptional()
   categoria?: RutinaCategoria;
 

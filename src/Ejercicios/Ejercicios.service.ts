@@ -27,7 +27,7 @@ export class EjercicioService {
   }
 
   async createEjercicio(ejercicio: EjercicioDto) {
-    await this.ejercicioRepository.createEjercicio(ejercicio);
+    return await this.ejercicioRepository.createEjercicio(ejercicio);
   }
 
   async updateEjercicio(ejercicio: EjercicioDto, id: string) {

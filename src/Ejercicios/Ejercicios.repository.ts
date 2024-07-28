@@ -49,8 +49,8 @@ export class EjercicioRepository {
   }
 
   async createEjercicio(ejercicio: EjercicioDto) {
-    await this.ejercicioRepository.save(ejercicio);
-    return ejercicio;
+    const createdEjercicio = await this.ejercicioRepository.save(ejercicio);
+    return createdEjercicio;
   }
 
   async updateEjercicio(ejercicio, id) {
