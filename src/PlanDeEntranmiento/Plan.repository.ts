@@ -86,15 +86,19 @@ export class PlanRepository {
     }
 
     async deletePlan(id:string, user){
-
-        const plan = await this.planRepository.findOne({ where: { id: id } });
+        const plan = await this.planRepository.findOne({ where: { id: id }, relations: ['admin'] });
         if (!plan || plan.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
 
         if(user.role!==UserRole.ADMIN){
-            if (plan.admin!==user.sub) { throw new BadRequestException('No tines capacidad de eliminar este plan')}
+            const userSub = await this.userRepository.findOne({ where: { id: user.sub } });
+            console.log(userSub)
+            console.log('--------------------')
+            console.log(plan.admin)
+            if (plan.admin.id!==userSub.id) { throw new BadRequestException('No tines capacidad de eliminar este plan')}
             await this.planRepository.update( id, {...plan, isActive: false});
         }else {
             await this.planRepository.update( id, {...plan, isActive: false});
         }
         return 'El plan de entrenamiento ha sido eliminado';
     }
+}
