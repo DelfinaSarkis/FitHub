@@ -39,13 +39,13 @@ export class Rutina {
   difficultyLevel:DifficultyLevel
 
 
-  @OneToMany(() => Ejercicio, (ejercicio) => ejercicio.rutina)
-  @JoinColumn({ name: 'ejercicios' })
+  @ManyToMany(() => Ejercicio, (ejercicio) => ejercicio.rutina)
+  @JoinTable({ name: 'rutina-ejercicios' })
   exercise: Ejercicio[];
 
   @ManyToMany(() => Category, (categorias) => categorias.rutinas)
-  @JoinTable({ name: 'categoria' })
-  category: Categorias[];
+  @JoinTable({ name: 'rutina-categoria' })
+  category: Category[];
 
   @ManyToOne(() => Users, (user) => user.routineAdmin)
   @JoinColumn({ name: 'admin' })

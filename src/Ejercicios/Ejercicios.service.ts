@@ -26,8 +26,8 @@ export class EjercicioService {
     return await this.ejercicioRepository.getEjercicioById(id);
   }
 
-  async createEjercicio(ejercicio: EjercicioDto) {
-    await this.ejercicioRepository.createEjercicio(ejercicio);
+  async createEjercicio(ejercicio: EjercicioDto, userId:string){
+      return await this.ejercicioRepository.createEjercicio(ejercicio,userId);
   }
 
   async updateEjercicio(ejercicio: EjercicioDto, id: string) {

@@ -14,16 +14,15 @@ import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 export class CreateRutinaDto {
   @IsArray()
   @IsUUID('all', { each: true })
-  @IsNotEmpty()
-  ejercicio: UUID[];
+  exercise: string[];
 
   @IsUUID('all')
   @IsNotEmpty()
-  admin: UUID;
+  admin: string;
 
-  @IsEnum(RutinaCategoria)
-  @IsNotEmpty()
-  categoria: RutinaCategoria;
+  @IsArray()
+  @IsUUID('all', { each: true })
+  category: string[];
 
   @IsNotEmpty()
   name: string;
