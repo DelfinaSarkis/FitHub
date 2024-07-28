@@ -26,7 +26,6 @@ import { Console } from 'console';
 export class PlanController {
   constructor(private readonly planService: PlanService) {}
 
-  //Queda funcionando correctamente, filtrando por categoría, localización, nivel de dificultad y búsqueda en el nombre
   @Get()
   async getPlan(
     @Query('page') page: string = '1',
@@ -45,7 +44,7 @@ export class PlanController {
       search,
     );
   }
-  //Queda funcionand correctamnete, trae un plan por id
+
   @Get(':id')
   async getPlanById(@Param('id') id: UUID) {
     return await this.planService.getPlanById(id);
@@ -69,8 +68,10 @@ export class PlanController {
   }
 
   @Delete(':id')
-  async deletePlan(@Param('id') id: UUID) {
-    return await this.planService.deletePlan(id);
+  @UseGuards(AuthGuard)
+  async deletePlan(@Req() req, @Param('id') id: UUID) {
+    const user = req.user;
+    console.log(user);
+    return await this.planService.deletePlan(id, user);
   }
 }
-

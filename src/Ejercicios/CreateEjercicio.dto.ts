@@ -1,9 +1,10 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class EjercicioDto {
   @IsNotEmpty()
   titulo: string;
   @IsNotEmpty()
   descripcion: string;
-  imgUrl: string;
+  @IsOptional()
+  imgUrl: string[];
 }

@@ -20,3 +20,4 @@ export class Category {
   @ManyToMany(()=>Plan, (plan) => plan.category)
   plan:Plan[]
 }
+

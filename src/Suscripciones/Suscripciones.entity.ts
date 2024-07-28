@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { Users } from 'src/User/User.entity';
 import {

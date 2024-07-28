@@ -1,9 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Body, Controller, Delete, Get, Param, Put, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Put,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './User.service';
 import { UpdateUserDto } from './CreateUser.Dto';
 import { AuthGuard } from 'src/Guard/AuthGuar.guard';
-
 
 @Controller('users')
 export class UserController {
@@ -16,9 +24,9 @@ export class UserController {
 
   @Get(':id')
   @UseGuards(AuthGuard)
-  getUserById(@Req()req,@Param('id') id: string) {
-    const user=req.user
-    const idUser =user.sub 
+  getUserById(@Req() req, @Param('id') id: string) {
+    const user = req.user;
+    const idUser = user.sub;
     return this.userService.getUsersById(id, idUser);
   }
 
