@@ -4,6 +4,7 @@ import { RutinaRepository } from './Rutina.reposity';
 @Injectable()
 export class RutinaService {
   constructor(private readonly rutinasRepository: RutinaRepository) {}
+
   async getRutinas(page: string, limit: string, category?:string[], location?:string, difficultyLevel?:string, search?:string) {
     return this.rutinasRepository.getAllRutinas(Number(page), Number(limit), category, location, difficultyLevel, search);
   }

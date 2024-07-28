@@ -20,7 +20,12 @@ async function bootstrap() {
   app.use(auth(configAuth));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(LoggerMidleware);
-  await app.listen(3000);
-  console.log('Server listening on http://localhost:3000');
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+  await app.listen(3001);
+  console.log('Server listening on http://localhost:3001');
 }
 bootstrap();

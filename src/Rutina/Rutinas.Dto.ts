@@ -9,6 +9,7 @@ import {
   IsOptional,
   IsUUID,
 } from 'class-validator';
+import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 
 export class CreateRutinaDto {
   @IsArray()
@@ -23,6 +24,16 @@ export class CreateRutinaDto {
   @IsEnum(RutinaCategoria)
   @IsNotEmpty()
   categoria: RutinaCategoria;
+
+  @IsNotEmpty()
+  name: string;
+
+  @IsNotEmpty()
+  description: string;
+
+  @IsEnum(DifficultyLevel)
+  @IsNotEmpty()
+  difficultyLevel: DifficultyLevel;
 }
 
 export class UpdateRutinaDto {

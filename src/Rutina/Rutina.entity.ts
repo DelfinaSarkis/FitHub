@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Comentarios } from 'src/Comentario/Comentarios.entity';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { Users } from 'src/User/User.entity';
@@ -22,8 +23,8 @@ export class Rutina {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({type:'varchar'})
-  name:string
+  @Column({ type: 'varchar' })
+  name: string;
 
   @Column({ type: 'boolean', default: false })
   check: boolean;
@@ -37,13 +38,15 @@ export class Rutina {
   @Column({type: 'varchar', length: 100})
   difficultyLevel:DifficultyLevel
 
+
   @OneToMany(() => Ejercicio, (ejercicio) => ejercicio.rutina)
   @JoinColumn({ name: 'ejercicios' })
   exercise: Ejercicio[];
 
-  @ManyToMany(()=> Category, (categorias) => categorias.rutinas)
-  @JoinTable({name:'categoria'})
-  category:Categorias[]
+  @ManyToMany(() => Category, (categorias) => categorias.rutinas)
+  @JoinTable({ name: 'categoria' })
+  category: Categorias[];
+
 
   @ManyToOne(() => Users, (user) => user.routineAdmin)
   @JoinColumn({ name: 'admin' })

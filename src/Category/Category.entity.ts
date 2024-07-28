@@ -1,3 +1,4 @@
+
 import { UUID } from "crypto";
 import { Plan } from "src/PlanDeEntranmiento/Plan.entity";
 
@@ -10,12 +11,12 @@ export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-    @Column({ type: 'varchar', length: 50, unique:true })
-    name: string;
+  @Column({ type: 'varchar', length: 50, unique:true })
+  name: string;
 
-    @ManyToMany(()=>Rutina,(rutina)=>rutina.category)
-    rutinas:Rutina[]
+  @ManyToMany(() => Rutina, (rutina) => rutina.category)
+  rutinas: Rutina[];
 
-    @ManyToMany(()=>Plan, (plan) => plan.category)
-    plan:Plan[]
+  @ManyToMany(()=>Plan, (plan) => plan.category)
+  plan:Plan[]
 }
