@@ -1,24 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Plan } from './Plan.entity';
-import { Check, ILike, Repository } from 'typeorm';
-import { Category } from 'src/Category/Category.entity';
-import { DifficultyLevel } from './difficultyLevel.enum';
-import { PlanCreateDto } from './CreatePlan.dto';
-import { Users } from 'src/User/User.entity';
-import { UserRole } from 'src/User/User.enum';
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Plan } from "./Plan.entity";
+import { Check, ILike, In, Repository } from "typeorm";
+import { Category } from "src/Category/Category.entity";
+import { DifficultyLevel } from "./difficultyLevel.enum";
+import { PlanCreateDto } from "./CreatePlan.dto";
+import { Users } from "src/User/User.entity";
+import { UserRole } from "src/User/User.enum";
 
 @Injectable()
 export class PlanRepository {
-  constructor(
-    @InjectRepository(Plan) private planRepository: Repository<Plan>,
-    @InjectRepository(Users) private userRepository: Repository<Users>,
-  ) {}
+    constructor(@InjectRepository(Plan) private planRepository:Repository<Plan>, @InjectRepository(Users) private userRepository:Repository<Users>, @InjectRepository(Category) private categoryRepository:Repository<Category>){}
 
   async getPlan(
     page: number,
@@ -48,11 +40,13 @@ export class PlanRepository {
           (term) => term.trim() !== '' && !stopWords.has(term.toLowerCase()),
         );
 
+
       whereConditions = arrSearch.map((term) => ({
         ...whereConditions,
         name: ILike(`%${term}%`),
       }));
-    }
+      
+       }
     return this.planRepository.find({
       where: whereConditions,
       skip: (page - 1) * limit,
@@ -60,16 +54,52 @@ export class PlanRepository {
     });
   }
 
+    //Validar que es profe
+    async createPlan(plan: PlanCreateDto, admin:string) {
+        const adm = await this.userRepository.findOne({ where: { id: admin } });
+        if (!adm) { throw new NotFoundException('Usuario no encontrado')};
+
+        const category = await this.categoryRepository.find({ where:{ id: In(plan.category)}});
+        if (category.length !== plan.category.length) { throw new NotFoundException('Categoria no encontrada')};
+
+        console.log(category);
+        
+        const planCreado = await this.planRepository.create({ ...plan, admin:adm, category:category});
+        await this.planRepository.save(planCreado);
+        return planCreado;
+    }
+  
+   
+
   async getPlanById(id) {
     return await this.planRepository.findOne({ where: { id, isActive: true } });
   }
 
-  //Validar que es profe
-  async createPlan(plan: PlanCreateDto, admin: string) {
-    const adm = await this.userRepository.findOne({ where: { id: admin } });
-    console.log(adm);
-    if (!adm) {
-      throw new NotFoundException('Usuario no encontrado');
+    async updatePlan(plan, admin, identificacion){
+        const userAdmin = await this.userRepository.findOne({ where: { id: admin } });
+        if (userAdmin.role !== UserRole.ADMIN) { 
+            let planToUpdate = await this.planRepository.findOne({ where: { id:identificacion, admin:userAdmin} });
+            if (!planToUpdate || planToUpdate.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
+            if(plan.categoryToUpdate){
+                const category = await this.categoryRepository.find({ where:{ id: In(plan.categoryToUpdate)}});
+                if (category.length !== plan.categoryToUpdate.length) { throw new NotFoundException('Categoria no encontrada')};
+                planToUpdate.category = category;
+                await this.planRepository.save(planToUpdate);
+            }
+            const {categoryToUpdate, ...planSinCategory} = plan;
+            console.log(planSinCategory);
+            return await this.planRepository.update(identificacion,planSinCategory);
+        }else if (userAdmin.role === UserRole.ADMIN) {
+            const planToUpdate = await this.planRepository.findOne({ where: { id:identificacion} });
+            if (!planToUpdate || planToUpdate.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
+            if(plan.category){
+                const category = await this.categoryRepository.find({ where:{ id: In(plan.category)}});
+                if (category.length !== plan.category.length) { throw new NotFoundException('Categoria no encontrada')};
+                planToUpdate.category = category;
+            }
+            return await this.planRepository.update(identificacion, plan);
+        }
+        
     }
     const planCreado = await this.planRepository.create(plan);
     planCreado.admin = adm;

@@ -50,6 +50,7 @@ export class RutinaController {
 
   @Post()
   async createRutina(@Body() rutina: CreateRutinaDto) {
+    console.log(rutina);
     return await this.rutinaService.createRutina(rutina);
   }
 

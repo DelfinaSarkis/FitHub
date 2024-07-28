@@ -6,9 +6,10 @@ import { PlanRepository } from "./Plan.repository";
 import { PlanService } from "./Plan.service";
 import { AuthGuard } from "src/Guard/AuthGuar.guard";
 import { Users } from "src/User/User.entity";
+import { Category } from "src/Category/Category.entity";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Plan, Users])],
+    imports: [TypeOrmModule.forFeature([Plan, Users, Category])],
     providers:[PlanService, PlanRepository,AuthGuard],
     controllers: [PlanController],
 })
