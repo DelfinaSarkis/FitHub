@@ -2,6 +2,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ejercicio } from './Ejercicios.entity';
 import { ILike, Repository } from 'typeorm';
+import { EjercicioDto } from './CreateEjercicio.dto';
 
 export class EjercicioRepository {
   constructor(
@@ -47,7 +48,7 @@ export class EjercicioRepository {
     return await this.ejercicioRepository.findOne({ where: { id } });
   }
 
-  async createEjercicio(ejercicio) {
+  async createEjercicio(ejercicio: EjercicioDto) {
     await this.ejercicioRepository.save(ejercicio);
     return ejercicio;
   }

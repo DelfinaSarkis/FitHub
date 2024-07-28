@@ -33,7 +33,8 @@ export class EjercicioController {
   }
 
   @Post()
-  async createEjercicio(@Body() ejercicio: EjercicioDto) {
+  async createEjercicio(@Body() ejercicio) {
+    console.log(ejercicio);
     return await this.ejercicioService.createEjercicio(ejercicio);
   }
 
