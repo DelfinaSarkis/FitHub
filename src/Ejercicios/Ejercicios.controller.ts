@@ -1,9 +1,11 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+
 import { ApiTags } from '@nestjs/swagger';
 import { EjercicioService } from './Ejercicios.service';
 import { Ejercicio } from './Ejercicios.entity';
 import { UUID } from 'crypto';
 import { EjercicioDto } from './CreateEjercicio.dto';
+import { AuthGuard } from 'src/Guard/AuthGuar.guard';
 
 @ApiTags('Ejercicios')
 @Controller('ejercicio')
@@ -11,8 +13,20 @@ export class EjercicioController {
   constructor(private readonly ejercicioService: EjercicioService) {}
 
   @Get()
-  async getEjercicios(): Promise<Ejercicio[]> {
-    return await this.ejercicioService.getEjercicios();
+  async getEjercicios(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+    @Query('titulo') titulo?: string,
+    @Query('descripcion') descripcion?: string,
+    @Query('search') search?: string,
+  ): Promise<Ejercicio[]> {
+    return await this.ejercicioService.getEjercicios(
+      page,
+      limit,
+      titulo,
+      descripcion,
+      search,
+    );
   }
 
   @Get(':id')
@@ -20,9 +34,11 @@ export class EjercicioController {
     return await this.ejercicioService.getEjerciciosById(id);
   }
 
-  @Post()
-  async createEjercicio(@Body() ejercicio: EjercicioDto) {
-    return await this.ejercicioService.createEjercicio(ejercicio);
+  //Bloquear para usuarios no coach
+  @UseGuards(AuthGuard)
+  async createEjercicio(@Req() req,@Body() ejercicio: EjercicioDto) {
+    const userId= req.user.sub;
+    return await this.ejercicioService.createEjercicio(ejercicio, userId);
   }
 
   @Put(':id')
