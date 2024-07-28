@@ -1,9 +1,9 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsUUID } from 'class-validator';
 
 export class EjercicioDto {
   @IsNotEmpty()
   titulo: string;
+
   @IsNotEmpty()
   descripcion: string;
-  imgUrl: string;
 }
