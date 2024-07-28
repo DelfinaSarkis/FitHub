@@ -1,30 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { UUID } from 'crypto';
-import { RutinaCategoria } from './Rutina.enum';
-import {
-  isArray,
-  IsArray,
-  IsBoolean,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsUUID,
-} from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 
 export class CreateRutinaDto {
   @IsArray()
   @IsUUID('all', { each: true })
-  @IsNotEmpty()
-  ejercicio: UUID[];
+  exercise: string[];
 
   @IsUUID('all')
   @IsNotEmpty()
-  admin: UUID;
+  admin: string;
 
-  @IsEnum(RutinaCategoria)
-  @IsNotEmpty()
-  categoria: RutinaCategoria;
+  @IsArray()
+  @IsUUID('all', { each: true })
+  category: string[];
 
   @IsNotEmpty()
   name: string;
@@ -40,34 +29,23 @@ export class CreateRutinaDto {
 export class UpdateRutinaDto {
   @IsArray()
   @IsUUID('all', { each: true })
-  @IsOptional()
-  ejercicio?: UUID[];
+  exercise?: string[];
 
   @IsUUID('all')
-  @IsOptional()
-  admin?: UUID;
+  @IsNotEmpty()
+  admin?: string;
 
   @IsArray()
   @IsUUID('all', { each: true })
-  @IsOptional()
-  categoria?: RutinaCategoria;
+  category?: string[];
 
-  @IsBoolean()
-  @IsOptional()
-  verificado?: boolean;
+  @IsNotEmpty()
+  name?: string;
 
-  @IsArray()
-  @IsUUID('all', { each: true })
-  @IsOptional()
-  ejercicios?: UUID[];
+  @IsNotEmpty()
+  description?: string;
 
-  @IsArray()
-  @IsUUID('all', { each: true })
-  @IsOptional()
-  users?: UUID[];
-
-  @IsArray()
-  @IsUUID('all', { each: true })
-  @IsOptional()
-  comentarios?: UUID[];
+  @IsEnum(DifficultyLevel)
+  @IsNotEmpty()
+  difficultyLevel?: DifficultyLevel;
 }

@@ -19,7 +19,7 @@ import { UUID } from 'crypto';
 import { ApiTags } from '@nestjs/swagger';
 import { throwError } from 'rxjs';
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
-@ApiTags('Rutina')
+@ApiTags('Rutinas')
 @Controller('rutina')
 export class RutinaController {
   constructor(private readonly rutinaService: RutinaService) {}
