@@ -10,5 +10,6 @@ import { Users } from 'src/User/User.entity';
   imports: [TypeOrmModule.forFeature([Ejercicio, Users])],
   providers: [EjercicioService, EjercicioRepository],
   controllers: [EjercicioController],
+  exports: [EjercicioService],
 })
 export class EjercicoModule {}

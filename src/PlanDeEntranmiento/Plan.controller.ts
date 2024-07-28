@@ -24,6 +24,7 @@ export class PlanController {
         return await this.planService.getPlanById(id);
     }
 
+
     @Post()
     @UseGuards(AuthGuard)
     async createPlan(@Req()req,@Body() plan: PlanCreateDto){
@@ -50,3 +51,4 @@ export class PlanController {
         return await this.planService.deletePlan(id, user);
     }
 }
+

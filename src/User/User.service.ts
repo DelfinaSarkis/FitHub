@@ -11,10 +11,10 @@ export class UserService {
   }
 
   getUsersById(id: string, idUser) {
-    if (id===idUser) {
-      return this.usersRepository.getUserById(id)
+    if (id === idUser) {
+      return this.usersRepository.getUserById(id);
     }
-    throw new BadRequestException('No tienes acceso a esta informacion')
+    throw new BadRequestException('No tienes acceso a esta informacion');
   }
 
   createUser(user: CreateUserDto) {

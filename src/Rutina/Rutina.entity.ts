@@ -47,7 +47,6 @@ export class Rutina {
   @JoinTable({ name: 'rutina-categoria' })
   category: Category[];
 
-
   @ManyToOne(() => Users, (user) => user.routineAdmin)
   @JoinColumn({ name: 'admin' })
   admin: Users;

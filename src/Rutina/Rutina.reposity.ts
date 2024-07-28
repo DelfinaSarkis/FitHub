@@ -6,7 +6,6 @@ import { Category } from 'src/Category/Category.entity';
 import { CreateRutinaDto } from './Rutinas.Dto';
 import { Users } from 'src/User/User.entity';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class RutinaRepository {
@@ -74,3 +73,4 @@ export class RutinaRepository {
     return 'Rutina eliminada';
   }
 }
+
