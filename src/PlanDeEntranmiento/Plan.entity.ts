@@ -28,7 +28,6 @@ export class Plan {
   @Column({ type: 'boolean', default: false })
   check: boolean;
 
-
   @Column({ type: 'varchar' })
   description: string;
 
@@ -55,7 +54,7 @@ export class Plan {
   @OneToMany(() => Suscripciones, (suscripcion) => suscripcion.plan)
   subscriptions: Suscripciones[];
 
-  @ManyToMany(()=>Category, (category) => category.plan)
-  @JoinTable({name:'category-plan'})
-  category:Category[]
+  @ManyToMany(() => Category, (category) => category.plan)
+  @JoinTable({ name: 'category-plan' })
+  category: Category[];
 }

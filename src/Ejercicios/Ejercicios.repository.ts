@@ -61,6 +61,7 @@ export class EjercicioRepository {
     exercise.user = usuarioAdmin;
 
     return await this.ejercicioRepository.save(exercise);
+
   }
 
   async updateEjercicio(ejercicio, id) {

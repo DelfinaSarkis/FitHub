@@ -32,12 +32,11 @@ export class Rutina {
   @Column({ type: 'varchar' })
   description: string;
 
-  @Column({ type: 'varchar' , nullable: true})  
-  imageUrl: string;
+  @Column('text', { array: true, nullable: true })
+  imgUrl: string[];
 
-  @Column({type: 'varchar', length: 100})
-  difficultyLevel:DifficultyLevel
-
+  @Column({ type: 'varchar', length: 100 })
+  difficultyLevel: DifficultyLevel;
 
   @ManyToMany(() => Ejercicio, (ejercicio) => ejercicio.rutina)
   @JoinTable({ name: 'rutina-ejercicios' })
