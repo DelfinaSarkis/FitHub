@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ejercicio } from './Ejercicios.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 export class EjercicioRepository {
   constructor(
@@ -8,8 +9,38 @@ export class EjercicioRepository {
     private readonly ejercicioRepository: Repository<Ejercicio>,
   ) {}
 
-  async getEjercicios() {
-    return await this.ejercicioRepository.find();
+  async getEjercicios(
+    page: number,
+    limit: number,
+    titulo?: string,
+    descripcion?: string,
+    search?: string,
+  ) {
+    let whereConditions: any = {};
+    if (titulo !== undefined) {
+      whereConditions.titulo = titulo;
+    }
+    if (descripcion !== undefined) {
+      whereConditions.descripcion = descripcion;
+    }
+    if (search !== undefined) {
+      const stopWords = new Set(['de', 'y', 'el', 'la', 'en', 'a', 'o']); // Lista de palabras de parada
+      const arrSearch = search
+        .split(' ')
+        .filter(
+          (term) => term.trim() !== '' && !stopWords.has(term.toLowerCase()),
+        );
+
+      whereConditions = arrSearch.map((term) => ({
+        ...whereConditions,
+        name: ILike(`%${term}%`),
+      }));
+    }
+    return await this.ejercicioRepository.find({
+      where: whereConditions,
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
 
   async getEjercicioById(id) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { EjercicioService } from './Ejercicios.service';
 import { Ejercicio } from './Ejercicios.entity';
@@ -11,8 +11,20 @@ export class EjercicioController {
   constructor(private readonly ejercicioService: EjercicioService) {}
 
   @Get()
-  async getEjercicios(): Promise<Ejercicio[]> {
-    return await this.ejercicioService.getEjercicios();
+  async getEjercicios(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+    @Query('titulo') titulo?: string,
+    @Query('descripcion') descripcion?: string,
+    @Query('search') search?: string,
+  ): Promise<Ejercicio[]> {
+    return await this.ejercicioService.getEjercicios(
+      page,
+      limit,
+      titulo,
+      descripcion,
+      search,
+    );
   }
 
   @Get(':id')

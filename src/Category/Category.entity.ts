@@ -12,4 +12,3 @@ export class Category {
   @ManyToMany(() => Rutina, (rutina) => rutina.category)
   rutinas: Rutina[];
 }
-

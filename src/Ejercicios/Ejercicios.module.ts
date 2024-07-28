@@ -9,5 +9,6 @@ import { EjercicioRepository } from './Ejercicios.repository';
   imports: [TypeOrmModule.forFeature([Ejercicio])],
   providers: [EjercicioService, EjercicioRepository],
   controllers: [EjercicioController],
+  exports: [EjercicioService],
 })
 export class EjercicoModule {}

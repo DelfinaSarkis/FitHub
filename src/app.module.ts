@@ -12,7 +12,7 @@ import { EjercicoModule } from './Ejercicios/Ejercicios.module';
 import { PlanModule } from './PlanDeEntranmiento/Plan.module';
 import { FilesUploadModule } from './files-upload/files-upload.module';
 import { commentsModule } from './Comentario/Comentarios.module';
-
+import { SeederModule } from './Seeder/seeder.module';
 
 @Module({
   imports: [
@@ -42,6 +42,7 @@ import { commentsModule } from './Comentario/Comentarios.module';
     usersModule,
     AuthModule,
     FilesUploadModule,
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [AppService],
