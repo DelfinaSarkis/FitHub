@@ -9,6 +9,8 @@ import {
   Post,
   Put,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Body, Get } from '@nestjs/common';
 import { RutinaService } from './Rutinas.Service';
@@ -19,28 +21,17 @@ import { UUID } from 'crypto';
 import { ApiTags } from '@nestjs/swagger';
 import { throwError } from 'rxjs';
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
-@ApiTags('Rutinas')
+import { auth } from 'express-openid-connect';
+import { AuthGuard } from 'src/Guard/AuthGuar.guard';
+@ApiTags('Rutina')
 @Controller('rutina')
 export class RutinaController {
   constructor(private readonly rutinaService: RutinaService) {}
 
   @Get()
-  async getRutinas(
-    @Query('page') page: string = '1',
-    @Query('limit') limit: string = '10',
-    @Query('category') category?: string[],
-    @Query('location') location?: string,
-    @Query('difficultyLevel') difficultyLevel?: DifficultyLevel,
-    @Query('search') search?: string,
-  ): Promise<Rutina[]> {
-    return await this.rutinaService.getRutinas(
-      page,
-      limit,
-      category,
-      location,
-      difficultyLevel,
-      search,
-    );
+  async getRutinas(@Query('page') page: string = '1', @Query('limit') limit: string = '10',@Query('category') category?:string,@Query('location')location?: string,@Query('difficultyLevel')difficultyLevel?:DifficultyLevel, @Query('search')search?:string): Promise<Rutina[]> {
+    console.log(category)
+    return await this.rutinaService.getRutinas(page, limit, category, location, difficultyLevel, search);
   }
 
   @Get(':id')
@@ -49,9 +40,10 @@ export class RutinaController {
   }
 
   @Post()
-  async createRutina(@Body() rutina: CreateRutinaDto) {
-    console.log(rutina);
-    return await this.rutinaService.createRutina(rutina);
+  @UseGuards(AuthGuard)
+  async createRutina(@Req() req,@Body() rutina: CreateRutinaDto) {
+    const userId = req.user.sub;
+    return await this.rutinaService.createRutina(rutina, userId);
   }
 
   @Put(':id')

@@ -14,6 +14,7 @@ import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
 import { Rutina } from 'src/Rutina/Rutina.entity';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { v4 as uuid } from 'uuid';
+import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 
 @Entity({
   name: 'users',
@@ -64,6 +65,10 @@ export class Users {
   @OneToMany(() => Plan, (planes) => planes.admin)
   @JoinTable({ name: 'admin-plan' })
   planAdmin: Plan[];
+
+  @OneToMany(()=>Ejercicio, (ejercicio) => ejercicio.user)
+  @JoinColumn({name: 'ejercicios'})
+  exercise: Ejercicio[];
 
   @OneToMany(() => Comentarios, (comentario) => comentario.user)
   @JoinColumn({ name: 'comentarios' })
