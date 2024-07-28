@@ -150,6 +150,53 @@ const entrenadores: CreateUserDto[] = [
   },
 ];
 
+const usuarios: CreateUserDto[] = [
+  {
+    name: 'Lucía Fernández',
+    email: 'lucia.fernandez@mail.com',
+    dni: 25000000,
+    password: 'Password123!',
+    passwordConfirm: 'Password123!',
+    phone: 2664455566,
+    country: 'Argentina',
+    address: 'Avenida Siempreviva 742',
+    city: 'Buenos Aires',
+  },
+  {
+    name: 'Joaquín Pérez',
+    email: 'joaquin.perez@mail.com',
+    dni: 30000000,
+    password: 'SecurePass99!',
+    passwordConfirm: 'SecurePass99!',
+    phone: 2664411122,
+    country: 'Argentina',
+    address: 'Calle Mayor 456',
+    city: 'Córdoba',
+  },
+  {
+    name: 'Valentina López',
+    email: 'valentina.lopez@mail.com',
+    dni: 35000000,
+    password: 'MyPassword1!',
+    passwordConfirm: 'MyPassword1!',
+    phone: 2664422233,
+    country: 'Argentina',
+    address: 'Boulevard Central 789',
+    city: 'Rosario',
+  },
+  {
+    name: 'Santiago Gómez',
+    email: 'santiago.gomez@mail.com',
+    dni: 40000000,
+    password: 'StrongPass77!',
+    passwordConfirm: 'StrongPass77!',
+    phone: 2664433344,
+    country: 'Argentina',
+    address: 'Camino Real 101',
+    city: 'La Plata',
+  },
+];
+
 @Injectable()
 export class SeederService {
   constructor(
@@ -165,6 +212,9 @@ export class SeederService {
       await this.authService.signupEntrenador(entrenador);
     });
 
-    return 'Ejercicios y entrenadores creados';
+    usuarios.map(async (usuario) => {
+      await this.authService.signup(usuario);
+    });
+    return 'Ejercicios, usuarios y entrenadores creados';
   }
 }
