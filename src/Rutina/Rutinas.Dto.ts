@@ -1,6 +1,7 @@
 import { UUID } from 'crypto';
 import { RutinaCategoria } from './Rutina.enum';
 import {
+  isArray,
   IsArray,
   IsBoolean,
   IsEnum,
@@ -34,7 +35,8 @@ export class UpdateRutinaDto {
   @IsOptional()
   admin?: UUID;
 
-  @IsEnum(RutinaCategoria)
+  @IsArray()
+  @IsUUID('all', { each: true })  
   @IsOptional()
   categoria?: RutinaCategoria;
 

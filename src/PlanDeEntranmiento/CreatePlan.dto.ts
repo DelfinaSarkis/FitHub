@@ -1,15 +1,17 @@
-import { IsEnum, IsNotEmpty, IsOptional, isString, IsString } from "class-validator";
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, isString, IsString, IsUUID } from "class-validator";
 
 import { DifficultyLevel } from "./difficultyLevel.enum";
+import { UUID } from "crypto";
 
 export class PlanCreateDto {
     @IsString()
     @IsNotEmpty()
     name:string
 
-    @IsString()
+    @IsArray()
+    @IsUUID('all', { each: true })
     @IsNotEmpty()
-    category:string
+    category:UUID[]
 
     @IsString()
     @IsNotEmpty()
@@ -30,10 +32,10 @@ export class PlanUpdateDto {
     @IsNotEmpty()
     name:string
 
-    @IsString()
-    @IsOptional()
+    @IsArray()
+    @IsUUID('all', { each: true })
     @IsNotEmpty()
-    category:string
+    categoryToUpdate:UUID[]
 
     @IsString()
     @IsOptional()

@@ -27,6 +27,7 @@ export class PlanController {
     @Post()
     @UseGuards(AuthGuard)
     async createPlan(@Req()req,@Body() plan: PlanCreateDto){
+        console.log(plan)
         const user = req.user
         console.log(user)
         const admin = user.sub
@@ -38,7 +39,6 @@ export class PlanController {
     async updatePlan(@Req()req,@Body() plan:PlanUpdateDto, @Param('id') id:UUID){
         const user = req.user
         const admin = user.sub
-        console.log(admin)
         const identifiacion = id
         return await this.planService.updatePlan(plan, identifiacion, admin);
     }

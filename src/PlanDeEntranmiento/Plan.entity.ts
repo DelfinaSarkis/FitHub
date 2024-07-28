@@ -7,11 +7,14 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DifficultyLevel } from './difficultyLevel.enum';
+import { Category } from 'src/Category/Category.entity';
 
 @Entity({ name: 'plan' })
 export class Plan {
@@ -24,8 +27,6 @@ export class Plan {
   @Column({ type: 'boolean', default: false })
   check: boolean;
 
-  @Column()
-  category: string;
 
   @Column({ type: 'varchar' })
   description: string;
@@ -52,4 +53,8 @@ export class Plan {
 
   @OneToMany(() => Suscripciones, (suscripcion) => suscripcion.plan)
   subscriptions: Suscripciones[];
+
+  @ManyToMany(()=>Category, (category) => category.plan)
+  @JoinTable({name:'category-plan'})
+  category:Category[]
 }
