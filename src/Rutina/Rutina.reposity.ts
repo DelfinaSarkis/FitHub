@@ -27,7 +27,7 @@ export class RutinaRepository {
     difficultyLevel?: string,
     search?: string,
   ) {
-    let whereConditions: any = { isActive: true, check: true };
+    let whereConditions: any = { isActive: true, /*check: true*/ };
 
     if (category) {
       const categoria = await this.categoryRepository.findOne({
@@ -61,11 +61,12 @@ export class RutinaRepository {
       where: whereConditions,
       skip: (page - 1) * limit,
       take: limit,
-    });
+      relations: ['category', 'exercise']
+  });
   }
   async getRutinaById(id) {
     return await this.rutinaRepository.findOne({
-      where: { id, isActive: true },
+      where: { id, isActive: true },relations:['category', 'exercise']
     });
   }
   async createRutina(rutina: CreateRutinaDto, userId: string) {
