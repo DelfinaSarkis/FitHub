@@ -1,6 +1,15 @@
-import { IsArray, IsEnum, IsNotEmpty, IsOptional, isString, IsString, IsUUID } from "class-validator";
-import { DifficultyLevel } from "./difficultyLevel.enum";
-import { UUID } from "crypto";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  isString,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+import { DifficultyLevel } from './difficultyLevel.enum';
+import { UUID } from 'crypto';
 
 export class PlanCreateDto {
   /**
@@ -10,7 +19,7 @@ export class PlanCreateDto {
   @IsString()
   @IsNotEmpty()
   name: string;
-  
+
   /**
     * Lista de UUIDs de las categorías
     * @example ["d4e5f6e7-8e4e-4aee-bbe4-fff67f46b33d", "e4e5f6e7-8e4e-4aee-bbe4-fff67f46b33d"]
@@ -18,7 +27,7 @@ export class PlanCreateDto {
   @IsArray()
   @IsUUID('all', { each: true })
   @IsNotEmpty()
-  category:UUID[]
+  category: UUID[];
 
   /**
     * Descripción del plan
@@ -53,7 +62,7 @@ export class PlanUpdateDto {
   @IsString()
   @IsOptional()
   @IsNotEmpty()
-  name:string
+  name: string;
 
   /**
     * Lista de UUIDs de las categorías a actualizar
@@ -62,7 +71,7 @@ export class PlanUpdateDto {
   @IsArray()
   @IsUUID('all', { each: true })
   @IsNotEmpty()
-  categoryToUpdate:UUID[]
+  categoryToUpdate: UUID[];
 
   /**
     * Descripción del plan (opcional)
@@ -71,7 +80,7 @@ export class PlanUpdateDto {
   @IsString()
   @IsOptional()
   @IsNotEmpty()
-  description:string
+  description: string;
 
   /**
     * Ubicación del plan (opcional)
@@ -80,7 +89,7 @@ export class PlanUpdateDto {
   @IsString()
   @IsOptional()
   @IsNotEmpty()
-  location:string
+  location: string;
 
   /**
     * Nivel de dificultad del plan (opcional)
@@ -89,6 +98,5 @@ export class PlanUpdateDto {
   @IsEnum(DifficultyLevel)
   @IsOptional()
   @IsNotEmpty()
-  difficultyLevel:DifficultyLevel
+  difficultyLevel: DifficultyLevel;
 }
-

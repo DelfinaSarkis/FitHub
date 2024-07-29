@@ -78,4 +78,20 @@ export class FilesUploadService {
     }
     return updatedRutina;
   }
+
+  async uploadFiles(
+    files: Express.Multer.File[],
+    rutinaId: string,
+    resourceType: 'auto' | 'image' | 'video' = 'auto',
+  ) {
+    const uploadResults = await this.filesUploadRepository.uploadFiles(
+      files,
+      resourceType,
+    );
+    if (uploadResults.length === 0) {
+      throw new NotFoundException('No se pudieron cargar los archivos');
+    }
+    const fileUrls = uploadResults.map((result) => result.secure_url);
+    return fileUrls;
+  }
 }

@@ -74,4 +74,34 @@ export class FilesUploadController {
       resourceType,
     );
   }
+
+  @Post()
+  @UseInterceptors(FilesInterceptor('files'))
+  uploadFiles(
+    @Param('id') ejercicioId: string,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 1500000,
+            message: 'Tamaño máximo permitido: 1,5 MB',
+          }),
+          new FileTypeValidator({
+            fileType: /(.jpg|.png|.jpeg|.webp|.mp4|.avi|.mov)/,
+          }),
+        ],
+      }),
+    )
+    files: Express.Multer.File[],
+  ) {
+    const resourceType = files[0]?.mimetype.includes('video')
+      ? 'video'
+      : 'image';
+
+    return this.filesUploadService.uploadFiles(
+      files,
+      ejercicioId,
+      resourceType,
+    );
+  }
 }

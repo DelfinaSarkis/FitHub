@@ -67,60 +67,98 @@ export class PlanRepository {
   }
 
   //Validar que es profe
-  async createPlan(plan: PlanCreateDto, admin:string) {
-        const adm = await this.userRepository.findOne({ where: { id: admin } });
-        if (!adm) { throw new NotFoundException('Usuario no encontrado')};
-
-        const category = await this.categoryRepository.find({ where:{ id: In(plan.category)}});
-        if (category.length !== plan.category.length) { throw new NotFoundException('Categoria no encontrada')};
-
-        console.log(category);
-        
-        const planCreado = await this.planRepository.create({ ...plan, admin:adm, category:category});
-        await this.planRepository.save(planCreado);
-        return planCreado;
+  async createPlan(plan: PlanCreateDto, admin: string) {
+    const adm = await this.userRepository.findOne({ where: { id: admin } });
+    if (!adm) {
+      throw new NotFoundException('Usuario no encontrado');
     }
- async updatePlan(plan, admin, identificacion){
-        const userAdmin = await this.userRepository.findOne({ where: { id: admin } });
-        if (userAdmin.role !== UserRole.ADMIN) { 
-            let planToUpdate = await this.planRepository.findOne({ where: { id:identificacion, admin:userAdmin} });
-            if (!planToUpdate || planToUpdate.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
-            if(plan.categoryToUpdate){
-                const category = await this.categoryRepository.find({ where:{ id: In(plan.categoryToUpdate)}});
-                if (category.length !== plan.categoryToUpdate.length) { throw new NotFoundException('Categoria no encontrada')};
-                planToUpdate.category = category;
-                await this.planRepository.save(planToUpdate);
-            }
-            const {categoryToUpdate, ...planSinCategory} = plan;
-            console.log(planSinCategory);
-            return await this.planRepository.update(identificacion,planSinCategory);
-        }else if (userAdmin.role === UserRole.ADMIN) {
-            const planToUpdate = await this.planRepository.findOne({ where: { id:identificacion} });
-            if (!planToUpdate || planToUpdate.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
-            if(plan.category){
-                const category = await this.categoryRepository.find({ where:{ id: In(plan.category)}});
-                if (category.length !== plan.category.length) { throw new NotFoundException('Categoria no encontrada')};
-                planToUpdate.category = category;
-            }
-            return await this.planRepository.update(identificacion, plan);
+
+    const category = await this.categoryRepository.find({
+      where: { id: In(plan.category) },
+    });
+    if (category.length !== plan.category.length) {
+      throw new NotFoundException('Categoria no encontrada');
+    }
+
+    console.log(category);
+
+    const planCreado = await this.planRepository.create({
+      ...plan,
+      admin: adm,
+      category: category,
+    });
+    await this.planRepository.save(planCreado);
+    return planCreado;
+  }
+  async updatePlan(plan, admin, identificacion) {
+    const userAdmin = await this.userRepository.findOne({
+      where: { id: admin },
+    });
+    if (userAdmin.role !== UserRole.ADMIN) {
+      const planToUpdate = await this.planRepository.findOne({
+        where: { id: identificacion, admin: userAdmin },
+      });
+      if (!planToUpdate || planToUpdate.isActive === false) {
+        throw new NotFoundException('Plan no encontrado o eliminado');
+      }
+      if (plan.categoryToUpdate) {
+        const category = await this.categoryRepository.find({
+          where: { id: In(plan.categoryToUpdate) },
+        });
+        if (category.length !== plan.categoryToUpdate.length) {
+          throw new NotFoundException('Categoria no encontrada');
         }
-        
-    }
-
-    async deletePlan(id:string, user){
-        const plan = await this.planRepository.findOne({ where: { id: id }, relations: ['admin'] });
-        if (!plan || plan.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
-
-        if(user.role!==UserRole.ADMIN){
-            const userSub = await this.userRepository.findOne({ where: { id: user.sub } });
-            console.log(userSub)
-            console.log('--------------------')
-            console.log(plan.admin)
-            if (plan.admin.id!==userSub.id) { throw new BadRequestException('No tines capacidad de eliminar este plan')}
-            await this.planRepository.update( id, {...plan, isActive: false});
-        }else {
-            await this.planRepository.update( id, {...plan, isActive: false});
+        planToUpdate.category = category;
+        await this.planRepository.save(planToUpdate);
+      }
+      const { categoryToUpdate, ...planSinCategory } = plan;
+      console.log(planSinCategory);
+      return await this.planRepository.update(identificacion, planSinCategory);
+    } else if (userAdmin.role === UserRole.ADMIN) {
+      const planToUpdate = await this.planRepository.findOne({
+        where: { id: identificacion },
+      });
+      if (!planToUpdate || planToUpdate.isActive === false) {
+        throw new NotFoundException('Plan no encontrado o eliminado');
+      }
+      if (plan.category) {
+        const category = await this.categoryRepository.find({
+          where: { id: In(plan.category) },
+        });
+        if (category.length !== plan.category.length) {
+          throw new NotFoundException('Categoria no encontrada');
         }
-        return 'El plan de entrenamiento ha sido eliminado';
+        planToUpdate.category = category;
+      }
+      return await this.planRepository.update(identificacion, plan);
     }
+  }
+
+  async deletePlan(id: string, user) {
+    const plan = await this.planRepository.findOne({
+      where: { id: id },
+      relations: ['admin'],
+    });
+    if (!plan || plan.isActive === false) {
+      throw new NotFoundException('Plan no encontrado o eliminado');
+    }
+
+    if (user.role !== UserRole.ADMIN) {
+      const userSub = await this.userRepository.findOne({
+        where: { id: user.sub },
+      });
+      console.log(userSub);
+      console.log('--------------------');
+      console.log(plan.admin);
+      if (plan.admin.id !== userSub.id) {
+        throw new BadRequestException(
+          'No tines capacidad de eliminar este plan',
+        );
+      }
+      await this.planRepository.update(id, { ...plan, isActive: false });
+    } else {
+      await this.planRepository.update(id, { ...plan, isActive: false });
+    }
+    return 'El plan de entrenamiento ha sido eliminado';
+  }
 }

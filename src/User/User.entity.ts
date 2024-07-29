@@ -66,8 +66,8 @@ export class Users {
   @JoinTable({ name: 'admin-plan' })
   planAdmin: Plan[];
 
-  @OneToMany(()=>Ejercicio, (ejercicio) => ejercicio.user)
-  @JoinColumn({name: 'ejercicios'})
+  @OneToMany(() => Ejercicio, (ejercicio) => ejercicio.user)
+  @JoinColumn({ name: 'ejercicios' })
   exercise: Ejercicio[];
 
   @OneToMany(() => Comentarios, (comentario) => comentario.user)
