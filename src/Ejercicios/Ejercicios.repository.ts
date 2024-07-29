@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ejercicio } from './Ejercicios.entity';
-import { Repository } from 'typeorm';
-import { CreateUserDto } from 'src/User/CreateUser.Dto';
 import { EjercicioDto } from './CreateEjercicio.dto';
 import { Users } from 'src/User/User.entity';
 import { ILike, Repository } from 'typeorm';
-import { EjercicioDto } from './CreateEjercicio.dto';
 
 export class EjercicioRepository {
   constructor(
