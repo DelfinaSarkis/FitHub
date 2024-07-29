@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/Auth/Auth.Sevice';
 import { CategoryService } from 'src/Category/Category.service';
-import { CreateCategoryDto } from 'src/Category/CreateCategory.Dto';
+import { CreateCategoryDto } from 'src/Category/CreateCategory.dto';
 // import { EjercicioDto } from 'src/Ejercicios/CreateEjercicio.dto';
 // import { EjercicioService } from 'src/Ejercicios/Ejercicios.service';
 import { CreateUserDto } from 'src/User/CreateUser.Dto';

@@ -117,7 +117,7 @@ export class CreateUserDto {
     */
   @IsString()
   @IsNotEmpty()
-  @Length(15, 100)
+  @Length(5, 100)
   @ApiProperty({
     description: 'Dirección de residencia del usuario',
     example: 'Calle Falsa 123',
