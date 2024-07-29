@@ -13,6 +13,7 @@ import { PlanModule } from './PlanDeEntranmiento/Plan.module';
 import { FilesUploadModule } from './files-upload/files-upload.module';
 import { commentsModule } from './Comentario/Comentarios.module';
 import { SeederModule } from './Seeder/seeder.module';
+import { CategoryModule } from './Category/Category.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SeederModule } from './Seeder/seeder.module';
     AuthModule,
     SeederModule,
     FilesUploadModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

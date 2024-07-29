@@ -1,16 +1,25 @@
-import { IsArray, IsEnum, IsNotEmpty, IsOptional, isString, IsString, IsUUID } from "class-validator";
-import { DifficultyLevel } from "./difficultyLevel.enum";
-import { UUID } from "crypto";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  isString,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+import { DifficultyLevel } from './difficultyLevel.enum';
+import { UUID } from 'crypto';
 
 export class PlanCreateDto {
   @IsString()
   @IsNotEmpty()
   name: string;
-  
+
   @IsArray()
   @IsUUID('all', { each: true })
   @IsNotEmpty()
-  category:UUID[]
+  category: UUID[];
 
   @IsString()
   @IsNotEmpty()
@@ -29,26 +38,25 @@ export class PlanUpdateDto {
   @IsString()
   @IsOptional()
   @IsNotEmpty()
-  name:string
+  name: string;
 
   @IsArray()
   @IsUUID('all', { each: true })
   @IsNotEmpty()
-  categoryToUpdate:UUID[]
+  categoryToUpdate: UUID[];
 
   @IsString()
   @IsOptional()
   @IsNotEmpty()
-  description:string
+  description: string;
 
   @IsString()
   @IsOptional()
   @IsNotEmpty()
-  location:string
+  location: string;
 
   @IsEnum(DifficultyLevel)
   @IsOptional()
   @IsNotEmpty()
-  difficultyLevel:DifficultyLevel
+  difficultyLevel: DifficultyLevel;
 }
-

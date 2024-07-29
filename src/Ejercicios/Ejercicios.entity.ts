@@ -31,8 +31,8 @@ export class Ejercicio {
   })
   imgUrl: string[];
 
-  @ManyToOne(()=>Users, (user) => user.exercise)
-  @JoinColumn({name: 'usuario'})
+  @ManyToOne(() => Users, (user) => user.exercise)
+  @JoinColumn({ name: 'usuario' })
   user: Users;
 
   @ManyToMany(() => Rutina, (rutina) => rutina.exercise, { nullable: true })
