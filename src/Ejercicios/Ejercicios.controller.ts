@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
-
 import { ApiTags } from '@nestjs/swagger';
 import { EjercicioService } from './Ejercicios.service';
 import { Ejercicio } from './Ejercicios.entity';
@@ -36,8 +35,9 @@ export class EjercicioController {
 
   //Bloquear para usuarios no coach
   @UseGuards(AuthGuard)
-  async createEjercicio(@Req() req,@Body() ejercicio: EjercicioDto) {
-    const userId= req.user.sub;
+  @Post()
+  async createEjercicio(@Req() req, @Body() ejercicio: EjercicioDto) {
+    const userId = req.user.sub;
     return await this.ejercicioService.createEjercicio(ejercicio, userId);
   }
 
