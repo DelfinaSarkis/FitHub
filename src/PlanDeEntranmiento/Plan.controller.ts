@@ -9,7 +9,7 @@ import { query, Request } from "express";
 import { DifficultyLevel } from "./difficultyLevel.enum";
 import { AuthGuard } from "src/Guard/AuthGuar.guard";
 import { Console } from "console";
-@ApiTags('Plan')
+@ApiTags('Planes de Entrenamiento')
 @Controller('plan')
 export class PlanController {
     constructor(private readonly planService:PlanService){}
@@ -23,7 +23,6 @@ export class PlanController {
     async getPlanById(@Param('id') id:UUID){
         return await this.planService.getPlanById(id);
     }
-
 
     @Post()
     @UseGuards(AuthGuard)

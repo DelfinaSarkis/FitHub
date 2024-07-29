@@ -15,10 +15,10 @@ export class RutinaService {
   async createRutina(rutina:CreateRutinaDto, userId) {
     return await this.rutinasRepository.createRutina(rutina, userId);
   }
-  async updateRutina(rutina, id) {
-    return await this.rutinasRepository.updateRutina(rutina, id);
+  async updateRutina(rutina, id, user) {
+    return await this.rutinasRepository.updateRutina(rutina, id, user);
   }
-  async deleteRutina(id) {
-    return await this.rutinasRepository.deleteRutina(id);
+  async deleteRutina(id, user) {
+    return await this.rutinasRepository.deleteRutina(id, user);
   }
 }

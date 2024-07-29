@@ -47,12 +47,16 @@ export class RutinaController {
   }
 
   @Put(':id')
-  async updateRutina(@Body() rutina: UpdateRutinaDto, @Param('id') id: UUID) {
-    return await this.rutinaService.updateRutina(rutina, id);
+  @UseGuards(AuthGuard)
+  async updateRutina(@Req()req,@Body() rutina: UpdateRutinaDto, @Param('id') id: UUID) {
+    const user = req.user;
+    return await this.rutinaService.updateRutina(rutina, id, user);
   }
 
   @Delete(':id')
-  async deleteRutina(@Param('id') id: UUID) {
-    return await this.rutinaService.deleteRutina(id);
+  @UseGuards(AuthGuard)
+  async deleteRutina(@Req()req,@Param('id') id: UUID) {
+    const user = req.user;
+    return await this.rutinaService.deleteRutina(id, user);
   }
 }
