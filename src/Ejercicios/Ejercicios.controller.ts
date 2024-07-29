@@ -1,16 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
-
+import { Body, Controller, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { EjercicioService } from './Ejercicios.service';
 import { Ejercicio } from './Ejercicios.entity';
