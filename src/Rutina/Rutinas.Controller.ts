@@ -9,6 +9,8 @@ import {
   Post,
   Put,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Body, Get } from '@nestjs/common';
 import { RutinaService } from './Rutinas.Service';
@@ -18,28 +20,18 @@ import { Rutina } from './Rutina.entity';
 import { UUID } from 'crypto';
 import { ApiTags } from '@nestjs/swagger';
 import { throwError } from 'rxjs';
+import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
+import { auth } from 'express-openid-connect';
+import { AuthGuard } from 'src/Guard/AuthGuar.guard';
 @ApiTags('Rutina')
 @Controller('rutina')
 export class RutinaController {
   constructor(private readonly rutinaService: RutinaService) {}
 
   @Get()
-  async getRutinas(
-    @Query('page') page: string = '1',
-    @Query('limit') limit: string = '5',
-  ): Promise<Rutina[]> {
-    try {
-      return await this.rutinaService.getRutinas(page, limit);
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else {
-        throw new HttpException(
-          'Error en el servidor interno',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-    }
+  async getRutinas(@Query('page') page: string = '1', @Query('limit') limit: string = '10',@Query('category') category?:string,@Query('location')location?: string,@Query('difficultyLevel')difficultyLevel?:DifficultyLevel, @Query('search')search?:string): Promise<Rutina[]> {
+    console.log(category)
+    return await this.rutinaService.getRutinas(page, limit, category, location, difficultyLevel, search);
   }
 
   @Get(':id')
@@ -48,8 +40,10 @@ export class RutinaController {
   }
 
   @Post()
-  async createRutina(@Body() rutina: CreateRutinaDto) {
-    return await this.rutinaService.createRutina(rutina);
+  @UseGuards(AuthGuard)
+  async createRutina(@Req() req,@Body() rutina: CreateRutinaDto) {
+    const userId = req.user.sub;
+    return await this.rutinaService.createRutina(rutina, userId);
   }
 
   @Put(':id')

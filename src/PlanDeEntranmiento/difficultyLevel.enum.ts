@@ -1,6 +1,6 @@
 export enum DifficultyLevel {
-    INICIAL= 'inicial',
-    INTERMEDIO= 'intermedio',
-    AVANZADO= 'avanzado',
-    PROFESIONAL= 'profesional',
+  INICIAL = 'inicial',
+  INTERMEDIO = 'intermedio',
+  AVANZADO = 'avanzado',
+  PROFESIONAL = 'profesional',
 }

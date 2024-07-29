@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { Rutina } from 'src/Rutina/Rutina.entity';
+import { Users } from 'src/User/User.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -29,11 +31,10 @@ export class Ejercicio {
   })
   imgUrl: string[];
 
-  @ManyToOne(() => Rutina, (rutina) => rutina.exercise, { nullable: true })
-  @JoinColumn({ name: 'rutina' })
-  rutina: Rutina;
+  @ManyToOne(()=>Users, (user) => user.exercise)
+  @JoinColumn({name: 'usuario'})
+  user: Users;
 
-  //@ManyToOne(() => Plan, (plan) => plan.exercise, { nullable: true })
-  //@JoinColumn({ name: 'plan' })
-  //plan: Rutina;
+  @ManyToMany(() => Rutina, (rutina) => rutina.exercise, { nullable: true })
+  rutina: Rutina[];
 }

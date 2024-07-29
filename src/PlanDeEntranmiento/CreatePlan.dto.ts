@@ -1,92 +1,94 @@
-import { IsEnum, IsNotEmpty, IsOptional, isString, IsString } from "class-validator";
-
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, isString, IsString, IsUUID } from "class-validator";
 import { DifficultyLevel } from "./difficultyLevel.enum";
+import { UUID } from "crypto";
 
 export class PlanCreateDto {
-    /**
+  /**
     * Nombre del plan
     * @example "Plan de Entrenamiento Básico"
-    */
-    @IsString()
-    @IsNotEmpty()
-    name:string
+  */
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+  
+  /**
+    * Lista de UUIDs de las categorías
+    * @example ["d4e5f6e7-8e4e-4aee-bbe4-fff67f46b33d", "e4e5f6e7-8e4e-4aee-bbe4-fff67f46b33d"]
+  */
+  @IsArray()
+  @IsUUID('all', { each: true })
+  @IsNotEmpty()
+  category:UUID[]
 
-    /**
-    * Categoría del plan
-    * @example "Cardio"
-    */
-    @IsString()
-    @IsNotEmpty()
-    category:string
-
-    /**
+  /**
     * Descripción del plan
-    * @example "Este es un plan diseñado para mejorar la resistencia cardiovascular."
-    */
-    @IsString()
-    @IsNotEmpty()
-    description:string
+    * @example "Este plan está diseñado para principiantes."
+  */
+  @IsString()
+  @IsNotEmpty()
+  description: string;
 
-    /**
+  /**
     * Ubicación del plan
     * @example "Gimnasio Central"
-    */
-    @IsString()
-    @IsNotEmpty()
-    location:string
+  */
+  @IsString()
+  @IsNotEmpty()
+  location: string;
 
-    /**
+  /**
     * Nivel de dificultad del plan
-    * @example DifficultyLevel.MEDIUM
-    */
-    @IsEnum(DifficultyLevel)
-    @IsNotEmpty()
-    difficultyLevel:DifficultyLevel
+    * @example "Easy"
+  */
+  @IsEnum(DifficultyLevel)
+  @IsNotEmpty()
+  difficultyLevel: DifficultyLevel;
 }
 
 export class PlanUpdateDto {
-    /**
+  /**
     * Nombre del plan (opcional)
     * @example "Plan de Entrenamiento Avanzado"
-    */
-    @IsString()
-    @IsOptional()
-    @IsNotEmpty()
-    name:string
+  */
+  @IsString()
+  @IsOptional()
+  @IsNotEmpty()
+  name:string
 
-    /**
-    * Categoría del plan (opcional)
-    * @example "Fuerza"
-    */
-    @IsString()
-    @IsOptional()
-    @IsNotEmpty()
-    category:string
+  /**
+    * Lista de UUIDs de las categorías a actualizar
+    * @example ["d4e5f6e7-8e4e-4aee-bbe4-fff67f46b33d", "e4e5f6e7-8e4e-4aee-bbe4-fff67f46b33d"]
+  */
+  @IsArray()
+  @IsUUID('all', { each: true })
+  @IsNotEmpty()
+  categoryToUpdate:UUID[]
 
-    /**
+  /**
     * Descripción del plan (opcional)
-    * @example "Este es un plan diseñado para aumentar la fuerza muscular."
-    */
-    @IsString()
-    @IsOptional()
-    @IsNotEmpty()
-    description:string
+    * @example "Este plan está diseñado para usuarios avanzados."
+  */
+  @IsString()
+  @IsOptional()
+  @IsNotEmpty()
+  description:string
 
-    /**
+  /**
     * Ubicación del plan (opcional)
-    * @example "Gimnasio Este"
-    */
-    @IsString()
-    @IsOptional()
-    @IsNotEmpty()
-    location:string
+    * @example "Gimnasio Norte"
+  */
+  @IsString()
+  @IsOptional()
+  @IsNotEmpty()
+  location:string
 
-    /**
+  /**
     * Nivel de dificultad del plan (opcional)
-    * @example DifficultyLevel.HARD
-    */
-    @IsEnum(DifficultyLevel)
-    @IsOptional()
-    @IsNotEmpty()
-    difficultyLevel:DifficultyLevel
+    * @example "Advanced"
+  */
+  @IsEnum(DifficultyLevel)
+  @IsOptional()
+  @IsNotEmpty()
+  difficultyLevel:DifficultyLevel
 }
+

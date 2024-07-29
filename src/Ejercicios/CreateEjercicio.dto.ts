@@ -1,4 +1,5 @@
-import { IsNotEmpty } from 'class-validator';
+
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class EjercicioDto {
   /**
@@ -10,14 +11,16 @@ export class EjercicioDto {
 
   /**
     * Descripción del ejercicio
-    * @example "Ejercicio básico para fortalecer los músculos del pecho y los tríceps."
+    * @example "Ejercicio para fortalecer los músculos del pecho"
   */
   @IsNotEmpty()
   descripcion: string;
 
   /**
-    * URL de la imagen del ejercicio
-    * @example "https://example.com/images/flexiones.jpg"
+    * URL(s) de la(s) imagen(es) del ejercicio (opcional)
+    * @example ["http://example.com/image1.jpg", "http://example.com/image2.jpg"]
   */
-  imgUrl: string;
+  @IsOptional()
+  imgUrl: string[];
 }
+

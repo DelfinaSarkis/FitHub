@@ -27,12 +27,9 @@ export class UsersRepository {
   }
 
   async updateUser(user: UpdateUserDto, id: string) {
-    const existingUser = await this.userRepository.findOneBy({ id });
-    if(!existingUser){
-      throw new Error('Usuario no encontrado');
-    }
-    await this.userRepository.update(id, user);
-    const userUpdated = await this.userRepository.findOneBy({ id });
+    //let updatedUser = await this.userRepository.findOneBy({ id });
+    const userUpdated = await this.userRepository.update(id, user);
+
     return userUpdated;
   }
 

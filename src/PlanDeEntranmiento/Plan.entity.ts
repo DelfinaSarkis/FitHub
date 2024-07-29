@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Categoria } from 'src/Categorias/Categoria.entity';
 import { Comentarios } from 'src/Comentario/Comentarios.entity';
 import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
@@ -7,11 +8,14 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DifficultyLevel } from './difficultyLevel.enum';
+import { Category } from 'src/Category/Category.entity';
 
 @Entity({ name: 'plan' })
 export class Plan {
@@ -23,9 +27,6 @@ export class Plan {
 
   @Column({ type: 'boolean', default: false })
   check: boolean;
-
-  @Column()
-  category: string;
 
   @Column({ type: 'varchar' })
   description: string;
@@ -39,8 +40,8 @@ export class Plan {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({type: 'varchar', length: 100})
-  difficultyLevel:DifficultyLevel
+  @Column({ type: 'varchar', length: 100 })
+  difficultyLevel: DifficultyLevel;
 
   @ManyToOne(() => Users, (user) => user.planAdmin)
   @JoinColumn({ name: 'admin' })
@@ -52,4 +53,8 @@ export class Plan {
 
   @OneToMany(() => Suscripciones, (suscripcion) => suscripcion.plan)
   subscriptions: Suscripciones[];
+
+  @ManyToMany(() => Category, (category) => category.plan)
+  @JoinTable({ name: 'category-plan' })
+  category: Category[];
 }

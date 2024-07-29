@@ -183,6 +183,10 @@ export class UpdateUserDto {
   })
   phone?: number;
 
+    /**
+    * País de residencia del usuario (opcional)
+    * @example Argentina
+    */
   @IsString()
   @IsOptional()
   @Length(5, 20)
