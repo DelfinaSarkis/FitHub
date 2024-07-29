@@ -12,5 +12,6 @@ import { Category } from 'src/Category/Category.entity';
   imports: [TypeOrmModule.forFeature([Plan, Users, Category])],
   providers: [PlanService, PlanRepository, AuthGuard],
   controllers: [PlanController],
+  exports: [PlanService, PlanRepository],
 })
 export class PlanModule {}

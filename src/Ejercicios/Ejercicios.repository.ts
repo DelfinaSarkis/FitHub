@@ -22,10 +22,10 @@ export class EjercicioRepository {
   ) {
     let whereConditions: any = {};
     if (titulo !== undefined) {
-      whereConditions.titulo = titulo;
+      whereConditions.titulo = ILike(`%${titulo}%`);
     }
     if (descripcion !== undefined) {
-      whereConditions.descripcion = descripcion;
+      whereConditions.descripcion = ILike(`%${descripcion}%`);
     }
     if (search !== undefined) {
       const stopWords = new Set(['de', 'y', 'el', 'la', 'en', 'a', 'o']); // Lista de palabras de parada
@@ -37,7 +37,7 @@ export class EjercicioRepository {
 
       whereConditions = arrSearch.map((term) => ({
         ...whereConditions,
-        name: ILike(`%${term}%`),
+        titulo: ILike(`%${term}%`),
       }));
     }
     return await this.ejercicioRepository.find({

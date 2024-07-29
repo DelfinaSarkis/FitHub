@@ -9,4 +9,14 @@ export class SeederController {
   async addSeeders() {
     return await this.seederService.addSeeders();
   }
+
+  @Get('2')
+  async addSeeders2() {
+    return await this.seederService.addSeeders2();
+  }
+
+  @Get('3')
+  async addSeeders3() {
+    return await this.seederService.addSeeders3();
+  }
 }
