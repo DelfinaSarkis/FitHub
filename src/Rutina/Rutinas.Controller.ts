@@ -30,7 +30,6 @@ export class RutinaController {
 
   @Get()
   async getRutinas(@Query('page') page: string = '1', @Query('limit') limit: string = '10',@Query('category') category?:string,@Query('location')location?: string,@Query('difficultyLevel')difficultyLevel?:DifficultyLevel, @Query('search')search?:string): Promise<Rutina[]> {
-    console.log(category)
     return await this.rutinaService.getRutinas(page, limit, category, location, difficultyLevel, search);
   }
 
