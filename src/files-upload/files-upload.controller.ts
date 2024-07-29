@@ -11,7 +11,6 @@ import {
 import { FilesUploadService } from './files-upload.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Archivos')
 @Controller('files')

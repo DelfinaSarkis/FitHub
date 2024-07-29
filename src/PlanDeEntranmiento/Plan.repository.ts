@@ -30,13 +30,13 @@ export class PlanRepository {
     difficultyLevel?: DifficultyLevel,
     search?: string,
   ) {
-    let whereConditions: any = { isActive: true, check: true };
+    let whereConditions: any = { isActive: true };
     if (category !== undefined) {
-      whereConditions.category = category;
+      whereConditions.category = ILike(`%${category}`);
     }
 
     if (location !== undefined) {
-      whereConditions.location = location;
+      whereConditions.location = ILike(`%${location}`);
     }
 
     if (difficultyLevel !== undefined) {
