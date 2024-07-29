@@ -13,7 +13,7 @@ const config = {
   password: 'leopieroni',
   autoLoadEntities: true,
   synchronize: true,
-  dropSchema: true,
+  dropSchema: false,
   logging: ['errors'],
   schema: 'public',
   entities: ['dist/**/*.entity{.ts,.js}'],

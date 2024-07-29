@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { InjectRepository } from '@nestjs/typeorm';
 import { Rutina } from './Rutina.entity';
 import { ILike, In, Repository } from 'typeorm';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Category } from 'src/Category/Category.entity';
 import { CreateRutinaDto } from './Rutinas.Dto';
 import { Users } from 'src/User/User.entity';
@@ -27,7 +32,9 @@ export class RutinaRepository {
     difficultyLevel?: string,
     search?: string,
   ) {
+
     let whereConditions: any = { isActive: true, /*check: true*/ };
+
 
     if (category) {
       const categoria = await this.categoryRepository.findOne({
@@ -99,46 +106,69 @@ export class RutinaRepository {
   }
 
   async updateRutina(rutina, id, user) {
-    const userAdmin = await this.userRepository.findOne({where:{id:user.sub}});
-    if(userAdmin.role !== UserRole.ADMIN){
-      let rutinaToUpdate = await this.rutinaRepository.findOne({ where: { id:id, admin:userAdmin} });
-      if (!rutinaToUpdate || rutinaToUpdate.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
-            if(rutina.category){
-                const category = await this.categoryRepository.find({ where:{ id: In(rutina.category)}});
-                if (category.length !== rutina.category.length) { throw new NotFoundException('Categoria no encontrada')};
-                rutinaToUpdate.category = category;
-                await this.rutinaRepository.save(rutinaToUpdate);
-            }
-      const {category, ...rutinaSinCategory} = rutinaToUpdate;
-      return await this.rutinaRepository.update(id,rutinaToUpdate);
-    }else if (userAdmin.role === UserRole.ADMIN) {
-      const rutinaToUpdate = await this.rutinaRepository.findOne({ where: { id:id} });
-      if (!rutinaToUpdate || rutinaToUpdate.isActive === false) { throw new NotFoundException('Plan no encontrado o eliminado')};
-      if(rutina.category){
-        const category = await this.categoryRepository.find({ where:{ id: In(rutina.category)}});
-        if (category.length !== rutina.category.length) { throw new NotFoundException('Categoria no encontrada')};
-          rutinaToUpdate.category = category;
+    const userAdmin = await this.userRepository.findOne({
+      where: { id: user.sub },
+    });
+    if (userAdmin.role !== UserRole.ADMIN) {
+      const rutinaToUpdate = await this.rutinaRepository.findOne({
+        where: { id: id, admin: userAdmin },
+      });
+      if (!rutinaToUpdate || rutinaToUpdate.isActive === false) {
+        throw new NotFoundException('Plan no encontrado o eliminado');
       }
-      const {category, ...rutinaSinCategory} = rutinaToUpdate;
+      if (rutina.category) {
+        const category = await this.categoryRepository.find({
+          where: { id: In(rutina.category) },
+        });
+        if (category.length !== rutina.category.length) {
+          throw new NotFoundException('Categoria no encontrada');
+        }
+        rutinaToUpdate.category = category;
+        await this.rutinaRepository.save(rutinaToUpdate);
+      }
+      const { category, ...rutinaSinCategory } = rutinaToUpdate;
+      return await this.rutinaRepository.update(id, rutinaToUpdate);
+    } else if (userAdmin.role === UserRole.ADMIN) {
+      const rutinaToUpdate = await this.rutinaRepository.findOne({
+        where: { id: id },
+      });
+      if (!rutinaToUpdate || rutinaToUpdate.isActive === false) {
+        throw new NotFoundException('Plan no encontrado o eliminado');
+      }
+      if (rutina.category) {
+        const category = await this.categoryRepository.find({
+          where: { id: In(rutina.category) },
+        });
+        if (category.length !== rutina.category.length) {
+          throw new NotFoundException('Categoria no encontrada');
+        }
+        rutinaToUpdate.category = category;
+      }
+      const { category, ...rutinaSinCategory } = rutinaToUpdate;
       return await this.rutinaRepository.update(id, rutinaSinCategory);
-  }
-    
-
+    }
   }
   async deleteRutina(id, user) {
     const rutina = await this.rutinaRepository.findOne({ where: { id } });
 
-    if (!rutina || rutina.isActive === false) { throw new NotFoundException('Rutina no encontrada o eliminada')};
+    if (!rutina || rutina.isActive === false) {
+      throw new NotFoundException('Rutina no encontrada o eliminada');
+    }
 
-    if(user.role !== UserRole.ADMIN){
-      const userSolicitud = await this.userRepository.findOne({where:{id:user.sub}});
-      if (rutina.admin.id!==user.id) { throw new BadRequestException('No tines capacidad de eliminar esta rutina')}
+    if (user.role !== UserRole.ADMIN) {
+      const userSolicitud = await this.userRepository.findOne({
+        where: { id: user.sub },
+      });
+      if (rutina.admin.id !== user.id) {
+        throw new BadRequestException(
+          'No tines capacidad de eliminar esta rutina',
+        );
+      }
       await this.rutinaRepository.update(id, { isActive: false });
       return 'Rutina eliminada';
     } else {
       await this.rutinaRepository.update(id, { isActive: false });
       return 'Rutina eliminada';
-
     }
   }
 }

@@ -6,15 +6,22 @@ import { usersModule } from 'src/User/User.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from 'src/User/User.entity';
 import { CategoryModule } from 'src/Category/Category.module';
+import { EjercicoModule } from 'src/Ejercicios/Ejercicios.module';
+import { UsersRepository } from 'src/User/User.repository';
+import { PlanModule } from 'src/PlanDeEntranmiento/Plan.module';
+import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
+import { PlanService } from 'src/PlanDeEntranmiento/Plan.service';
 
 @Module({
   imports: [
+    PlanModule,
+    EjercicoModule,
     CategoryModule,
     AuthModule,
     usersModule,
-    TypeOrmModule.forFeature([Users]),
+    TypeOrmModule.forFeature([Users, Plan]),
   ],
-  providers: [SeederService],
+  providers: [SeederService, UsersRepository, PlanService],
   controllers: [SeederController],
 })
 export class SeederModule {}
