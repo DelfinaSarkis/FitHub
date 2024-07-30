@@ -9,6 +9,7 @@ import {
   Put,
   Query,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { PlanService } from './Plan.service';
@@ -58,6 +59,12 @@ export class PlanController {
     console.log(user);
     const admin = user.sub;
     return await this.planService.createPlan(plan, admin);
+  }
+
+  @Post('create-order')
+  async createSubscription(@Req() req: Request, @Res() res: Response){
+    //const result = await this.planService.createSubscription(req);
+    //return result
   }
 
   @Put(':id')

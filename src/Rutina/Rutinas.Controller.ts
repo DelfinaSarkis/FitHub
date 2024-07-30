@@ -10,6 +10,7 @@ import {
   Put,
   Query,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { Body, Get } from '@nestjs/common';
@@ -43,6 +44,12 @@ export class RutinaController {
   async createRutina(@Req() req,@Body() rutina: CreateRutinaDto) {
     const userId = req.user.sub;
     return await this.rutinaService.createRutina(rutina, userId);
+  }
+
+  @Post('create-order')
+  async createOrder(@Req()req: Request, @Res()res: Response){
+    const result = await this.rutinaService.createOrderRoutine(req, res);
+    return result
   }
 
   @Put(':id')

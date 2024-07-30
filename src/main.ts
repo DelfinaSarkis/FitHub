@@ -5,6 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { auth } from 'express-openid-connect';
 import { configAuth } from 'config/Auth0.congug';
 import { LoggerMidleware } from './Middleware/logger.middleware';
+import MercadoPagoConfig from 'mercadopago';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

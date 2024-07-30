@@ -12,6 +12,9 @@ import { CreateRutinaDto } from './Rutinas.Dto';
 import { Users } from 'src/User/User.entity';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { UserRole } from 'src/User/User.enum';
+import { Preference } from 'mercadopago';
+import { client } from 'config/mercadoPagoRoutine.config';
+import { error } from 'console';
 
 @Injectable()
 export class RutinaRepository {
@@ -171,4 +174,36 @@ export class RutinaRepository {
       return 'Rutina eliminada';
     }
   }
+
+  ////////////////////////////////Mercado Pago///////////////////////////////////////////
+
+  async createOrderRoutine(req, res){
+    try{
+      const body = {
+        items: [
+          {
+            id: req.body.id,
+            title: req.body.title,
+            quantity: 1,
+            unit_price: 100,
+            currency_id: "ARS",
+          },
+        ],
+        back_urls: {
+          success: 'http://localhost:3000/mercadoPago/success',
+          failure: 'http://localhost:3000/mercadoPago/failure'
+      },
+      auto_return: "approved",
+      };
+
+      const preference = new Preference(client);
+      const result = await preference.create({ body });
+      res.json({
+        id: result.id
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error al crear la preferencia de pago');
+  }
+  } 
 }
