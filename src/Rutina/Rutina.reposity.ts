@@ -198,8 +198,8 @@ export class RutinaRepository {
 
       const preference = new Preference(client);
       const result = await preference.create({ body });
-      res.json({
-        id: result.id
+      res.json({ 
+        id: result.id 
       });
     } catch (error) {
       console.error(error);

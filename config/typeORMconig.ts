@@ -6,11 +6,11 @@ dotenvConfig({ path: '.env' });
 
 const config = {
   type: 'postgres',
-  database:'fithub',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: 'leopieroni',
+  database: process.env.DATABASE_NAME,
+  host: process.env.DATABASE_HOST,
+  port: process.env.DATABASE_PORT,
+  username: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
   autoLoadEntities: true,
   synchronize: true,
   dropSchema: false,

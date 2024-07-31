@@ -12,7 +12,7 @@ import { DifficultyLevel } from './difficultyLevel.enum';
 import { PlanCreateDto } from './CreatePlan.dto';
 import { Users } from 'src/User/User.entity';
 import { UserRole } from 'src/User/User.enum';
-import { PreApproval } from 'mercadopago';
+import * as mercadopago from 'mercadopago';
 
 @Injectable()
 export class PlanRepository {
@@ -163,28 +163,29 @@ export class PlanRepository {
     return 'El plan de entrenamiento ha sido eliminado';
   }
 
-  async createSubscription(req: Request){
-    const subscriptionData = {
-      reason: "Suscripción mensual",
-      auto_recurring: {
-        frequency: 1,
-        frequency_type: 'months',
-        transaction_amount: 1000,
-        currency_id: 'ARS',
-        repetitions: 12,
-        free_trial: {
-          frequency: 1,
-          frequency_type: "months",
-        },
-        payment_method_id: "visa",
-        payer_email: "test_user@test.com",
-      },
-      back_urls: {
-        success: 'http://localhost:3000/mercadoPago/success',
-        failure: 'http://localhost:3000/mercadoPago/failure'
-    },
-    }
-    const result = await preapproval.create(subscriptionData);
-    return result.response;
+  // async createSubscription(req: Request){
+  //   const subscriptionData = {
+  //     reason: "Suscripción mensual",
+  //     auto_recurring: {
+  //       frequency: 1,
+  //       frequency_type: 'months',
+  //       transaction_amount: 1000,
+  //       currency_id: 'ARS',
+  //       repetitions: 12,
+  //       free_trial: {
+  //         frequency: 1,
+  //         frequency_type: "months",
+  //       },
+  //       payment_method_id: "visa",
+  //       payer_email: "test_user@test.com",
+  //     },
+  //     back_urls: {
+  //       success: 'http://localhost:3000/mercadoPago/success',
+  //       failure: 'http://localhost:3000/mercadoPago/failure'
+  //   },
+  //   }
+    // const preapproval = new mercadopago.PreApproval(subscriptionData);
+    // const result = await preapproval.save();
+    // return result.response;
   }
-}
+

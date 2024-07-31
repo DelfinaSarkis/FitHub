@@ -22,6 +22,7 @@ import { query, Request } from 'express';
 import { DifficultyLevel } from './difficultyLevel.enum';
 import { AuthGuard } from 'src/Guard/AuthGuar.guard';
 import { Console } from 'console';
+import * as mercadopago from "mercadopago";
 @ApiTags('Planes de Entrenamiento')
 @Controller('plan')
 export class PlanController {
@@ -61,11 +62,13 @@ export class PlanController {
     return await this.planService.createPlan(plan, admin);
   }
 
-  @Post('create-order')
-  async createSubscription(@Req() req: Request, @Res() res: Response){
-    //const result = await this.planService.createSubscription(req);
-    //return result
-  }
+  // @Post('create-order')
+  // async createSubscription(@Req() req: Request, @Res() res: Response){
+  //   //const result = await this.planService.createSubscription(req);
+  //   //return result
+  //   console.log(mercadopago.PreApproval);
+    
+  // }
 
   @Put(':id')
   @UseGuards(AuthGuard)

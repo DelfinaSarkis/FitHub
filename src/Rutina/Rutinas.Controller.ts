@@ -24,6 +24,7 @@ import { throwError } from 'rxjs';
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 import { auth } from 'express-openid-connect';
 import { AuthGuard } from 'src/Guard/AuthGuar.guard';
+import MercadoPagoConfig from 'mercadopago';
 @ApiTags('Rutina')
 @Controller('rutina')
 export class RutinaController {
@@ -49,7 +50,10 @@ export class RutinaController {
   @Post('create-order')
   async createOrder(@Req()req: Request, @Res()res: Response){
     const result = await this.rutinaService.createOrderRoutine(req, res);
+    console.log(req.body);
     return result
+    
+    
   }
 
   @Put(':id')
