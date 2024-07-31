@@ -27,4 +27,3 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: S{{secrets.DOCKERHUB_USERNAME}}
