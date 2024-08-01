@@ -37,9 +37,9 @@ export class PlanService {
     return await this.planRepository.createPlan(plan, admin);
   }
 
-  // async createSubscription(req: Request){
-  //   return await this.planRepository.createSubscription(req);
-  // }
+  async createSubscription(req, res){
+    return await this.planRepository.createOrderPlan(req, res);
+  }
 
   async updatePlan(plan: PlanUpdateDto, identificacion: string, admin: string) {
     await this.planRepository.updatePlan(plan, admin, identificacion);

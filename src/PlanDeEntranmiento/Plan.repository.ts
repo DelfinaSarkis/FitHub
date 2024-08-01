@@ -12,15 +12,18 @@ import { DifficultyLevel } from './difficultyLevel.enum';
 import { PlanCreateDto } from './CreatePlan.dto';
 import { Users } from 'src/User/User.entity';
 import { UserRole } from 'src/User/User.enum';
-import * as mercadopago from 'mercadopago';
+import { Preference } from 'mercadopago';
+import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
+import { SubscriptionsRepository } from 'src/Suscripciones/suscripciones.repository';
+import { planClient } from 'config/mercadoPagoPlan.config';
 
 @Injectable()
 export class PlanRepository {
   constructor(
     @InjectRepository(Plan) private planRepository: Repository<Plan>,
     @InjectRepository(Users) private userRepository: Repository<Users>,
-    @InjectRepository(Category)
-    private categoryRepository: Repository<Category>,
+    @InjectRepository(Category) private categoryRepository: Repository<Category>,
+    @InjectRepository(SubscriptionsRepository) private readonly subscriptionsRepository: SubscriptionsRepository,
   ) {}
 
   async getPlan(
@@ -163,29 +166,48 @@ export class PlanRepository {
     return 'El plan de entrenamiento ha sido eliminado';
   }
 
-  // async createSubscription(req: Request){
-  //   const subscriptionData = {
-  //     reason: "Suscripción mensual",
-  //     auto_recurring: {
-  //       frequency: 1,
-  //       frequency_type: 'months',
-  //       transaction_amount: 1000,
-  //       currency_id: 'ARS',
-  //       repetitions: 12,
-  //       free_trial: {
-  //         frequency: 1,
-  //         frequency_type: "months",
-  //       },
-  //       payment_method_id: "visa",
-  //       payer_email: "test_user@test.com",
-  //     },
-  //     back_urls: {
-  //       success: 'http://localhost:3000/mercadoPago/success',
-  //       failure: 'http://localhost:3000/mercadoPago/failure'
-  //   },
-  //   }
-    // const preapproval = new mercadopago.PreApproval(subscriptionData);
-    // const result = await preapproval.save();
-    // return result.response;
+  ////////////////////////////////Mercado Pago///////////////////////////////////////////
+  
+  private async handlePaymentSucces(userId: string, planId: string){
+    try{
+      await this.subscriptionsRepository.createSubscription(userId, planId);
+    } catch (error){
+      console.error('Error al crear la suscripción:', error);
+      
+    }
+  }
+
+  async createOrderPlan(req, res){
+    try{
+      const body = {
+        items: [
+          {
+          id: req.body.id,
+          title: req.body.title,
+          quantity: 1,
+          unit_price: req.body.price,
+          currency_id: "ARS"
+          },
+        ],
+        back_urls: {
+          success: 'http://localhost:3000/mercadoPago/success',
+          failure: 'http://localhost:3000/mercadoPago/failure'
+      },
+      auto_return: "approved",
+      };
+
+      const preference = new Preference(planClient);
+      const result = await preference.create({ body });
+      res.json({ id: result.id });
+
+      const userId = req.body.userId;
+      const planId = req.body.planId;
+
+      this.handlePaymentSucces(userId, planId);
+    } catch(error){
+      console.error(error);
+      res.status(500).send('Error al crear la preferencia de pago');
+    }
+  }
   }
 

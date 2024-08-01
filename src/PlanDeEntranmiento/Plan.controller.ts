@@ -62,13 +62,11 @@ export class PlanController {
     return await this.planService.createPlan(plan, admin);
   }
 
-  // @Post('create-order')
-  // async createSubscription(@Req() req: Request, @Res() res: Response){
-  //   //const result = await this.planService.createSubscription(req);
-  //   //return result
-  //   console.log(mercadopago.PreApproval);
-    
-  // }
+  @Post('create-order')
+  async createSubscription(@Req() req: Request, @Res() res: Response){
+    const result = await this.planService.createSubscription(req, res);
+    return result
+  }
 
   @Put(':id')
   @UseGuards(AuthGuard)

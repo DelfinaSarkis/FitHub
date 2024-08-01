@@ -52,8 +52,6 @@ export class RutinaController {
     const result = await this.rutinaService.createOrderRoutine(req, res);
     console.log(req.body);
     return result
-    
-    
   }
 
   @Put(':id')

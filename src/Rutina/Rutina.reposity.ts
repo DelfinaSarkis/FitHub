@@ -185,7 +185,7 @@ export class RutinaRepository {
             id: req.body.id,
             title: req.body.title,
             quantity: 1,
-            unit_price: 100,
+            unit_price: req.body.price,
             currency_id: "ARS",
           },
         ],
