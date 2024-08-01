@@ -6,7 +6,7 @@ import { Suscripciones } from './Suscripciones.entity';
 import { SubscriptionsRepository } from './suscripciones.repository';
 import { SubscriptionsScheduler } from './suscripciones.scheduler';
 
-Module({
+@Module({
     imports: [TypeOrmModule.forFeature([Suscripciones, Users, Plan])],
     providers: [SubscriptionsRepository, SubscriptionsScheduler],
     exports: [SubscriptionsRepository]

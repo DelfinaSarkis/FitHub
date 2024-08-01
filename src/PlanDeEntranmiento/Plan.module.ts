@@ -11,7 +11,7 @@ import { SubscriptionsModule } from 'src/Suscripciones/suscripciones.module';
 import { SubscriptionsRepository } from 'src/Suscripciones/suscripciones.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Plan, Users, Category, SubscriptionsRepository])],
+  imports: [TypeOrmModule.forFeature([Plan, Users, Category, ]),SubscriptionsModule],
   providers: [PlanService, PlanRepository, AuthGuard],
   controllers: [PlanController],
   exports: [PlanService, PlanRepository],

@@ -23,7 +23,7 @@ export class PlanRepository {
     @InjectRepository(Plan) private planRepository: Repository<Plan>,
     @InjectRepository(Users) private userRepository: Repository<Users>,
     @InjectRepository(Category) private categoryRepository: Repository<Category>,
-    @InjectRepository(SubscriptionsRepository) private readonly subscriptionsRepository: SubscriptionsRepository,
+    private readonly subscriptionsRepository: SubscriptionsRepository, 
   ) {}
 
   async getPlan(
