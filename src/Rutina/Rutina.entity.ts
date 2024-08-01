@@ -32,6 +32,9 @@ export class Rutina {
   @Column({ type: 'varchar' })
   description: string;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2  })
+  price: number;
+
   @Column('text', { array: true, nullable: true })
   imgUrl: string[];
 
