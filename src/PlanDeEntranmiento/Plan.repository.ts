@@ -167,15 +167,6 @@ export class PlanRepository {
   }
 
   ////////////////////////////////Mercado Pago///////////////////////////////////////////
-  
-  private async handlePaymentSucces(userId: string, planId: string){
-    try{
-      await this.subscriptionsRepository.createSubscription(userId, planId);
-    } catch (error){
-      console.error('Error al crear la suscripción:', error);
-      
-    }
-  }
 
   async createOrderPlan(req, res){
     try{
@@ -203,10 +194,18 @@ export class PlanRepository {
       const userId = req.body.userId;
       const planId = req.body.planId;
 
-      this.handlePaymentSucces(userId, planId);
-    } catch(error){
-      console.error(error);
+      this.handlePaymentSuccess(userId, planId);
+    } catch (error) {
+      console.error('Error al crear la preferencia de pago:', error);
       res.status(500).send('Error al crear la preferencia de pago');
+    }
+  }
+
+  async handlePaymentSuccess(userId: string, planId: string) {
+    try {
+      await this.subscriptionsRepository.createSubscription(userId, planId);
+    } catch (error) {
+      console.error('Error al crear la suscripción:', error);
     }
   }
   }
