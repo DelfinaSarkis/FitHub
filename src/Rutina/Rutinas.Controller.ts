@@ -29,8 +29,22 @@ export class RutinaController {
   constructor(private readonly rutinaService: RutinaService) {}
 
   @Get()
-  async getRutinas(@Query('page') page: string = '1', @Query('limit') limit: string = '10',@Query('category') category?:string,@Query('location')location?: string,@Query('difficultyLevel')difficultyLevel?:DifficultyLevel, @Query('search')search?:string): Promise<Rutina[]> {
-    return await this.rutinaService.getRutinas(page, limit, category, location, difficultyLevel, search);
+  async getRutinas(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+    @Query('category') category?: string,
+    @Query('location') location?: string,
+    @Query('difficultyLevel') difficultyLevel?: DifficultyLevel,
+    @Query('search') search?: string,
+  ): Promise<Rutina[]> {
+    return await this.rutinaService.getRutinas(
+      page,
+      limit,
+      category,
+      location,
+      difficultyLevel,
+      search,
+    );
   }
 
   @Get(':id')
@@ -40,21 +54,25 @@ export class RutinaController {
 
   @Post()
   @UseGuards(AuthGuard)
-  async createRutina(@Req() req,@Body() rutina: CreateRutinaDto) {
+  async createRutina(@Req() req, @Body() rutina: CreateRutinaDto) {
     const userId = req.user.sub;
     return await this.rutinaService.createRutina(rutina, userId);
   }
 
   @Put(':id')
   @UseGuards(AuthGuard)
-  async updateRutina(@Req()req,@Body() rutina: UpdateRutinaDto, @Param('id') id: UUID) {
+  async updateRutina(
+    @Req() req,
+    @Body() rutina: UpdateRutinaDto,
+    @Param('id') id: UUID,
+  ) {
     const user = req.user;
     return await this.rutinaService.updateRutina(rutina, id, user);
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  async deleteRutina(@Req()req,@Param('id') id: UUID) {
+  async deleteRutina(@Req() req, @Param('id') id: UUID) {
     const user = req.user;
     return await this.rutinaService.deleteRutina(id, user);
   }

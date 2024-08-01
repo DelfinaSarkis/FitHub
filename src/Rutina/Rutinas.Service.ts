@@ -6,13 +6,27 @@ import { CreateRutinaDto } from './Rutinas.Dto';
 export class RutinaService {
   constructor(private readonly rutinasRepository: RutinaRepository) {}
 
-  async getRutinas(page: string, limit: string, category?:string, location?:string, difficultyLevel?:string, search?:string) {
-    return await this.rutinasRepository.getAllRutinas(Number(page), Number(limit), category, location, difficultyLevel, search);
+  async getRutinas(
+    page: string,
+    limit: string,
+    category?: string,
+    location?: string,
+    difficultyLevel?: string,
+    search?: string,
+  ) {
+    return await this.rutinasRepository.getAllRutinas(
+      Number(page),
+      Number(limit),
+      category,
+      location,
+      difficultyLevel,
+      search,
+    );
   }
   async getRutinaById(id) {
     return await this.rutinasRepository.getRutinaById(id);
   }
-  async createRutina(rutina:CreateRutinaDto, userId) {
+  async createRutina(rutina: CreateRutinaDto, userId) {
     return await this.rutinasRepository.createRutina(rutina, userId);
   }
   async updateRutina(rutina, id, user) {

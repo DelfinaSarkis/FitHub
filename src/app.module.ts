@@ -14,6 +14,7 @@ import { FilesUploadModule } from './files-upload/files-upload.module';
 import { commentsModule } from './Comentario/Comentarios.module';
 import { SeederModule } from './Seeder/seeder.module';
 import { CategoryModule } from './Category/Category.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { CategoryModule } from './Category/Category.module';
     SeederModule,
     FilesUploadModule,
     CategoryModule,
+    MailerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
