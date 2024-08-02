@@ -32,6 +32,21 @@ export class UserController {
     return this.userService.getUsersById(id, idUser);
   }
 
+  @Get('/userpyr/:id')
+  @UseGuards(AuthGuard)
+  getUserByIdPyR(@Req() req, @Param('id') id: string) {
+    const user = req.user;
+    const idUser = user.sub;
+    return this.userService.getUserByIdPyR(id, idUser);
+  }
+  @Get('/entrenadorpyr/:id')
+  @UseGuards(AuthGuard)
+  getEntrenadorByIdPyR(@Req() req, @Param('id') id: string) {
+    const user = req.user;
+    const idUser = user.sub;
+    return this.userService.getEntrenadorByIdPyR(id, idUser);
+  }
+
   @Put()
   updateUser(@Body() user: UpdateUserDto, @Param('id') id: string) {
     return this.userService.updateUser(user, id);
