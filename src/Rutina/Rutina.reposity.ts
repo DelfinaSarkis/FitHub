@@ -12,6 +12,7 @@ import { CreateRutinaDto } from './Rutinas.Dto';
 import { Users } from 'src/User/User.entity';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { UserRole } from 'src/User/User.enum';
+import { decrypt } from 'dotenv';
 
 @Injectable()
 export class RutinaRepository {
@@ -61,6 +62,7 @@ export class RutinaRepository {
       whereConditions = arrSearch.map((term) => ({
         ...whereConditions,
         name: ILike(`%${term}%`),
+        description: ILike(`%${term}%`),
       }));
     }
     console.log(whereConditions);
@@ -90,8 +92,8 @@ export class RutinaRepository {
     }
 
     const exercise = await this.exerciceRepository.find({
-      where: { id: In(rutina.exercise), user: { id: userId } },
-      relations: ['user'],
+      where: { id: In(rutina.exercise), /*user: { id: userId }*/ },
+      //relations: ['user'],
     });
 
     if (!exercise.length) {
