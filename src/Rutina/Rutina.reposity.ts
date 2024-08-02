@@ -15,6 +15,8 @@ import { UserRole } from 'src/User/User.enum';
 import { Preference } from 'mercadopago';
 import { client } from 'config/mercadoPagoRoutine.config';
 import { error } from 'console';
+import { decrypt } from 'dotenv';
+
 
 @Injectable()
 export class RutinaRepository {
@@ -64,6 +66,7 @@ export class RutinaRepository {
       whereConditions = arrSearch.map((term) => ({
         ...whereConditions,
         name: ILike(`%${term}%`),
+        description: ILike(`%${term}%`),
       }));
     }
     console.log(whereConditions);
@@ -93,8 +96,8 @@ export class RutinaRepository {
     }
 
     const exercise = await this.exerciceRepository.find({
-      where: { id: In(rutina.exercise), user: { id: userId } },
-      relations: ['user'],
+      where: { id: In(rutina.exercise), /*user: { id: userId }*/ },
+      //relations: ['user'],
     });
 
     if (!exercise.length) {
