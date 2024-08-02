@@ -21,13 +21,13 @@ export class Suscripciones {
   id: string;
 
   @UpdateDateColumn()
-  date: Date;
+  startDate: Date;
+
+  @Column()
+  endDate: Date;
 
   @Column()
   state: boolean;
-
-  @Column({ default: false })
-  delete: boolean;
 
   @Column({ default: true })
   isActive: boolean;

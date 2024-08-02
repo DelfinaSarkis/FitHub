@@ -462,6 +462,7 @@ export class SeederService {
         location: 'Tucuman',
         difficultyLevel: DifficultyLevel.AVANZADO,
         admin: entrenador1,
+        price: 500
       },
       {
         name: 'Plan de entrenamiento cardiovascular',
@@ -471,6 +472,7 @@ export class SeederService {
         location: 'Tucuman',
         difficultyLevel: DifficultyLevel.INICIAL,
         admin: entrenador1,
+        price: 600
       },
       {
         name: 'Plan de entrenamiento funcional',
@@ -480,6 +482,7 @@ export class SeederService {
         location: 'Cali',
         difficultyLevel: DifficultyLevel.INTERMEDIO,
         admin: entrenador2,
+        price: 700
       },
       {
         name: 'Plan de entrenamiento de brazos',
@@ -489,6 +492,7 @@ export class SeederService {
         location: 'Cali',
         difficultyLevel: DifficultyLevel.INICIAL,
         admin: entrenador2,
+        price: 800
       },
       {
         name: 'Plan de entrenamiento funcional',
@@ -498,6 +502,7 @@ export class SeederService {
         location: 'Buenos Aires',
         difficultyLevel: DifficultyLevel.INTERMEDIO,
         admin: entrenador3,
+        price: 900
       },
       {
         name: 'Plan de entrenamiento de brazos',
@@ -507,6 +512,7 @@ export class SeederService {
         location: 'Buenos Aires',
         difficultyLevel: DifficultyLevel.INTERMEDIO,
         admin: entrenador3,
+        price: 1000
       },
       {
         name: 'Plan de entrenamiento funcional',
@@ -516,6 +522,7 @@ export class SeederService {
         location: 'Cordoba',
         difficultyLevel: DifficultyLevel.AVANZADO,
         admin: entrenador4,
+        price: 500
       },
       {
         name: 'Plan de entrenamiento de pecho y espalda',
@@ -525,6 +532,7 @@ export class SeederService {
         location: 'Cordoba',
         difficultyLevel: DifficultyLevel.AVANZADO,
         admin: entrenador4,
+        price: 500
       },
       {
         name: 'Plan de estiramiento',
@@ -534,6 +542,7 @@ export class SeederService {
         location: 'Mendoza',
         difficultyLevel: DifficultyLevel.INICIAL,
         admin: entrenador5,
+        price: 500
       },
       {
         name: 'Plan de entrenamiento de la flexibilidad',
@@ -543,6 +552,7 @@ export class SeederService {
         location: 'Mendoza',
         difficultyLevel: DifficultyLevel.INICIAL,
         admin: entrenador5,
+        price: 500
       },
     ];
     console.log(categoria1, categoria2);
