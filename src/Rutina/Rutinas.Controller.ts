@@ -62,10 +62,10 @@ export class RutinaController {
   }
 
   @Post('create-order')
-  async createOrder(@Req()req: Request, @Res()res: Response){
+  async createOrder(@Req() req: Request, @Res() res: Response) {
     const result = await this.rutinaService.createOrderRoutine(req, res);
     console.log(req.body);
-    return result
+    return result;
   }
 
   @Put(':id')

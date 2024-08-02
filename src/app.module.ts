@@ -17,7 +17,7 @@ import { CategoryModule } from './Category/Category.module';
 import { MailerModule } from './mailer/mailer.module';
 import { SubscriptionsModule } from './Suscripciones/suscripciones.module';
 import { ScheduleModule } from '@nestjs/schedule';
-
+import { ReciboModule } from './Recibo/recibo.module';
 
 @Module({
   imports: [
@@ -52,6 +52,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     CategoryModule,
     MailerModule,
     SubscriptionsModule,
+    ReciboModule,
   ],
   controllers: [AppController],
   providers: [AppService],

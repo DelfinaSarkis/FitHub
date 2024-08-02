@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IsArray, IsEnum, IsNotEmpty, IsUUID } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 
 export class CreateRutinaDto {
@@ -48,6 +48,9 @@ export class CreateRutinaDto {
   @IsEnum(DifficultyLevel)
   @IsNotEmpty()
   difficultyLevel: DifficultyLevel;
+
+  @IsNumber()
+  price: number;
 }
 
 export class UpdateRutinaDto {
