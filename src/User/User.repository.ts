@@ -20,6 +20,34 @@ export class UsersRepository {
   async getUserById(id) {
     return await this.userRepository.findOneBy({ id, isActive: true });
   }
+  async getUserByIdPyR(id) {
+    const userRyP = await this.userRepository.findOne({
+      where: { id, isActive: true },
+      select: ['id'],
+      relations: ['routine', 'subsciption'],
+    });
+
+    return {
+      id: userRyP.id,
+      routine: userRyP.routine,
+      subsciption: userRyP.subsciption,
+    };
+  }
+
+  async getEntrenadorByIdPyR(id) {
+    const entrenadorRyP = await this.userRepository.findOne({
+      where: { id, isActive: true },
+      select: ['id'],
+      relations: ['routineAdmin', 'planAdmin', 'exercise'],
+    });
+
+    return {
+      id: entrenadorRyP.id,
+      routineAdmin: entrenadorRyP.routineAdmin,
+      planAdmin: entrenadorRyP.planAdmin,
+      exercise: entrenadorRyP.exercise,
+    };
+  }
 
   async createUser(user: CreateUserDto) {
     const createdUser = await this.userRepository.save(user);
