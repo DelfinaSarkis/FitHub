@@ -29,6 +29,9 @@ export class RutinaService {
   async createRutina(rutina: CreateRutinaDto, userId) {
     return await this.rutinasRepository.createRutina(rutina, userId);
   }
+  async createOrderRoutine(req,res){
+    return await this.rutinasRepository.createOrderRoutine(req,res);
+  }
   async updateRutina(rutina, id, user) {
     return await this.rutinasRepository.updateRutina(rutina, id, user);
   }

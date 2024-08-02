@@ -31,6 +31,9 @@ export class Plan {
   @Column({ type: 'varchar' })
   description: string;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2  })
+  price: number;
+
   @Column()
   location: string;
 

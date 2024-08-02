@@ -12,14 +12,18 @@ import { DifficultyLevel } from './difficultyLevel.enum';
 import { PlanCreateDto } from './CreatePlan.dto';
 import { Users } from 'src/User/User.entity';
 import { UserRole } from 'src/User/User.enum';
+import { Preference } from 'mercadopago';
+import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
+import { SubscriptionsRepository } from 'src/Suscripciones/suscripciones.repository';
+import { planClient } from 'config/mercadoPagoPlan.config';
 
 @Injectable()
 export class PlanRepository {
   constructor(
     @InjectRepository(Plan) private planRepository: Repository<Plan>,
     @InjectRepository(Users) private userRepository: Repository<Users>,
-    @InjectRepository(Category)
-    private categoryRepository: Repository<Category>,
+    @InjectRepository(Category) private categoryRepository: Repository<Category>,
+    private readonly subscriptionsRepository: SubscriptionsRepository, 
   ) {}
 
   async getPlan(
@@ -31,8 +35,10 @@ export class PlanRepository {
     search?: string,
   ) {
     let whereConditions: any = { isActive: true };
-    if (category !== undefined) {
-      whereConditions.category = ILike(`%${category}`);
+
+    if (category) {
+      const categoria = await this.categoryRepository.find({where: { id: category }});
+      whereConditions.category = categoria;
     }
 
     if (location !== undefined) {
@@ -43,22 +49,25 @@ export class PlanRepository {
       whereConditions.difficultyLevel = difficultyLevel;
     }
     if (search !== undefined) {
-      const stopWords = new Set(['de', 'y', 'el', 'la', 'en', 'a', 'o']); // Lista de palabras de parada
-      const arrSearch = search
-        .split(' ')
-        .filter(
-          (term) => term.trim() !== '' && !stopWords.has(term.toLowerCase()),
-        );
-
-      whereConditions = arrSearch.map((term) => ({
-        ...whereConditions,
-        name: ILike(`%${term}%`),
-      }));
+      whereConditions.name = ILike(`%${search}%`);
+      //const stopWords = new Set(['de', 'y', 'el', 'la', 'en', 'a', 'o']); // Lista de palabras de parada
+      //const arrSearch = search
+      //  .split(' ')
+      //  .filter(
+      //    (term) => term.trim() !== '' && !stopWords.has(term.toLowerCase()),
+      //  );
+//
+      //whereConditions = arrSearch.map((term) => ({
+      //  ...whereConditions,
+      //  name: ILike(`%${term}%`),
+      //  description: ILike(`%${term}%`)
+      //}));
     }
     return this.planRepository.find({
       where: whereConditions,
       skip: (page - 1) * limit,
       take: limit,
+      relations: ['category'],
     });
   }
 
@@ -161,4 +170,49 @@ export class PlanRepository {
     }
     return 'El plan de entrenamiento ha sido eliminado';
   }
-}
+
+  ////////////////////////////////Mercado Pago///////////////////////////////////////////
+
+  async createOrderPlan(req, res){
+    try{
+      const body = {
+        items: [
+          {
+          id: req.body.id,
+          title: req.body.title,
+          planId: req.body.planId,
+          quantity: 1,
+          unit_price: 100,
+          currency_id: "ARS"
+          },
+        ],
+        back_urls: {
+          success: 'http://localhost:3000/mercadoPago/success',
+          failure: 'http://localhost:3000/mercadoPago/failure'
+      },
+      auto_return: "approved",
+      };
+
+      const preference = new Preference(planClient);
+      const result = await preference.create({ body });
+      res.json({ id: result.id });
+
+      const userId = req.body.userId;
+      const planId = req.body.planId;
+
+      this.handlePaymentSuccess(userId, planId);
+    } catch (error) {
+      console.error('Error al crear la preferencia de pago:', error);
+      res.status(500).send('Error al crear la preferencia de pago');
+    }
+  }
+
+  async handlePaymentSuccess(userId: string, planId: string) {
+    try {
+      await this.subscriptionsRepository.createSubscription(userId, planId);
+    } catch (error) {
+      console.error('Error al crear la suscripción:', error);
+    }
+  }
+  }
+

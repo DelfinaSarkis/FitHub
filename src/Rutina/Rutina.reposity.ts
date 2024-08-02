@@ -12,6 +12,11 @@ import { CreateRutinaDto } from './Rutinas.Dto';
 import { Users } from 'src/User/User.entity';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { UserRole } from 'src/User/User.enum';
+import { Preference } from 'mercadopago';
+import { client } from 'config/mercadoPagoRoutine.config';
+import { error } from 'console';
+import { decrypt } from 'dotenv';
+
 
 @Injectable()
 export class RutinaRepository {
@@ -59,6 +64,7 @@ export class RutinaRepository {
       whereConditions = arrSearch.map((term) => ({
         ...whereConditions,
         name: ILike(`%${term}%`),
+        description: ILike(`%${term}%`),
       }));
     }
     console.log(whereConditions);
@@ -89,8 +95,8 @@ export class RutinaRepository {
     }
 
     const exercise = await this.exerciceRepository.find({
-      where: { id: In(rutina.exercise), user: { id: userId } },
-      relations: ['user'],
+      where: { id: In(rutina.exercise), /*user: { id: userId }*/ },
+      //relations: ['user'],
     });
 
     if (!exercise.length) {
@@ -170,4 +176,36 @@ export class RutinaRepository {
       return 'Rutina eliminada';
     }
   }
+
+  ////////////////////////////////Mercado Pago///////////////////////////////////////////
+
+  async createOrderRoutine(req, res){
+    try{
+      const body = {
+        items: [
+          {
+            id: req.body.id,
+            title: req.body.title,
+            quantity: 1,
+            unit_price: req.body.price,
+            currency_id: "ARS",
+          },
+        ],
+        back_urls: {
+          success: 'http://localhost:3000/mercadoPago/success',
+          failure: 'http://localhost:3000/mercadoPago/failure'
+      },
+      auto_return: "approved",
+      };
+
+      const preference = new Preference(client);
+      const result = await preference.create({ body });
+      res.json({ 
+        id: result.id 
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error al crear la preferencia de pago');
+  }
+  } 
 }
