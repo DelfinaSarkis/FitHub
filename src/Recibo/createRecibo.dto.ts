@@ -1,15 +1,33 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsDecimal,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
+import { StateRecibo } from './recibo.enum';
 
 export class CreateReciboDto {
-  @IsString()
+  @IsUUID('all')
   @IsNotEmpty()
   userId: string;
 
-  @IsString()
+  @IsUUID(undefined, { each: true })
   @IsOptional()
   planId: string[];
 
-  @IsString()
+  @IsUUID(undefined, { each: true })
   @IsOptional()
   rutinaId: string[];
+
+  @IsDecimal()
+  @IsOptional()
+  price: number;
+
+  @IsEnum(StateRecibo)
+  @IsOptional()
+  state: StateRecibo;
 }

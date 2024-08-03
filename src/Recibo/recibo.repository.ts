@@ -1,8 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Recibo } from './recibo.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateReciboDto } from './createRecibo.dto';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class ReciboRepository {
@@ -11,11 +16,24 @@ export class ReciboRepository {
     private readonly reciboRepository: Repository<Recibo>,
   ) {}
 
-  async createRecibo(recibo: CreateReciboDto) {
-    return await this.reciboRepository.save(recibo);
+  async createRecibo(recibo) {
+    const reciboCreado = await this.reciboRepository.create(recibo);
+    await this.reciboRepository.save(reciboCreado);
+    return reciboCreado;
   }
 
-  async getAllRecibos(){
+  async getAllRecibos() {
     return await this.reciboRepository.find();
+  }
+
+  async getReciboById(id: string) {
+    const reciboBuscado = await this.reciboRepository.findOne({
+      where: { id },
+      relations: ['planId', 'rutinaId', 'userId'],
+    });
+    if (!reciboBuscado) {
+      throw new NotFoundException('Recibo no encontrado');
+    }
+    return reciboBuscado;
   }
 }

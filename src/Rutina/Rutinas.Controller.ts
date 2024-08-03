@@ -25,6 +25,7 @@ import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 import { auth } from 'express-openid-connect';
 import { AuthGuard } from 'src/Guard/AuthGuar.guard';
 import MercadoPagoConfig from 'mercadopago';
+import { Request, Response } from 'express';
 @ApiTags('Rutina')
 @Controller('rutina')
 export class RutinaController {

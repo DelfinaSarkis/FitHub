@@ -15,6 +15,7 @@ import { Rutina } from 'src/Rutina/Rutina.entity';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { v4 as uuid } from 'uuid';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
+import { Recibo } from 'src/Recibo/recibo.entity';
 
 @Entity({
   name: 'users',
@@ -79,4 +80,8 @@ export class Users {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => Recibo, (recibo) => recibo.userId)
+  @JoinTable({ name: 'recibos-user' })
+  recibos: Recibo[];
 }

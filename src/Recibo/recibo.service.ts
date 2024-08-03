@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReciboDto } from './createRecibo.dto';
 import { ReciboRepository } from './recibo.repository';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class ReciboService {
@@ -12,5 +13,9 @@ export class ReciboService {
 
   async getAllRecibos() {
     return await this.reciboRepository.getAllRecibos();
+  }
+
+  async getReciboById(id: string) {
+    return await this.reciboRepository.getReciboById(id);
   }
 }

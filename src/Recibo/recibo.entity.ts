@@ -1,4 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Users } from 'src/User/User.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { StateRecibo } from './recibo.enum';
+import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
+import { Rutina } from 'src/Rutina/Rutina.entity';
 
 @Entity({
   name: 'Recibos',
@@ -8,11 +20,18 @@ export class Recibo {
   id: string;
 
   @Column()
-  userId: string;
+  state: StateRecibo;
 
-  @Column('text', { array: true, nullable: true })
-  planId: string[];
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  price: number;
 
-  @Column('text', { array: true, nullable: true })
-  rutinaId: string[];
+  @ManyToOne(() => Users, (user) => user.recibos)
+  @JoinColumn({ name: 'recibos' })
+  userId: Users;
+
+  @ManyToMany(() => Plan, (plan) => plan.recibo)
+  planId: Plan[];
+
+  @ManyToMany(() => Rutina, (rutina) => rutina.recibo)
+  rutinaId: Rutina[];
 }

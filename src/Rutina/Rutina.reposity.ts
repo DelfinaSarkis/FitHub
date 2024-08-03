@@ -18,6 +18,7 @@ import { error } from 'console';
 import { decrypt } from 'dotenv';
 import { ReciboService } from 'src/Recibo/recibo.service';
 import { CreateReciboDto } from 'src/Recibo/createRecibo.dto';
+import { Request, Response } from 'express';
 
 @Injectable()
 export class RutinaRepository {
@@ -181,7 +182,7 @@ export class RutinaRepository {
 
   ////////////////////////////////Mercado Pago///////////////////////////////////////////
 
-  async createOrderRoutine(req, res) {
+  async createOrderRoutine(req: Request, res: Response) {
     try {
       const body = {
         items: [
@@ -206,6 +207,8 @@ export class RutinaRepository {
       res.json({
         id: result.id,
       });
+      console.log(result, ' result.........');
+      return result;
     } catch (error) {
       console.error(error);
       res.status(500).send('Error al crear la preferencia de pago');
