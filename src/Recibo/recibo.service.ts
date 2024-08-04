@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateReciboDto } from './createRecibo.dto';
 import { ReciboRepository } from './recibo.repository';
 import { UUID } from 'crypto';
+import { Recibo } from './recibo.entity';
 
 @Injectable()
 export class ReciboService {

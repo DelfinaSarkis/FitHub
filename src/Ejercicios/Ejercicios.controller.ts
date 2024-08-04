@@ -24,7 +24,7 @@ export class EjercicioController {
   @Get()
   async getEjercicios(
     @Query('page') page: string = '1',
-    @Query('limit') limit: string = '10',
+    @Query('limit') limit: string = '10000',
     @Query('titulo') titulo?: string,
     @Query('descripcion') descripcion?: string,
     @Query('search') search?: string,

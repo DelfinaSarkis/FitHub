@@ -9,6 +9,8 @@ import { Users } from 'src/User/User.entity';
 import { Repository } from 'typeorm';
 import { Recibo } from 'src/Recibo/recibo.entity';
 import { Rutina } from './Rutina.entity';
+import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
+import { CreateReciboDto } from 'src/Recibo/createRecibo.dto';
 
 @Injectable()
 export class RutinaService {
@@ -60,23 +62,23 @@ export class RutinaService {
     if (!user) {
       throw new ConflictException('Usuario no encontrado');
     }
+    console.log(user);
     const rutina = await this.rutinasRepository.getRutinaById(rutinaId);
     if (!rutina) {
       throw new ConflictException('Rutina no encontrada');
     }
+    console.log(rutina);
 
-    const reciboDeCompra = new Recibo();
-    reciboDeCompra.user = user;
-    reciboDeCompra.rutinas = [rutina];
-    reciboDeCompra.planes = [];
-    reciboDeCompra.price = req.body.unit_price;
-    reciboDeCompra.state = StateRecibo.PAGADO;
-
+    const reciboDeCompra: CreateReciboDto = {
+      user: user,
+      rutina,
+      price: req.body.unit_price,
+      state: StateRecibo.PAGADO,
+    };
     const reciboGuardado = await this.reciboRepository.save(reciboDeCompra);
     if (!reciboGuardado) {
       throw new ConflictException('No se pudo crear el recibo');
     }
-
     return 'recibo creado';
   }
   async updateRutina(rutina, id, user) {
@@ -86,25 +88,3 @@ export class RutinaService {
     return await this.rutinasRepository.deleteRutina(id, user);
   }
 }
-
-// const reciboDeCompra = {
-//   userId: user,
-//   rutinaId: [rutina],
-//   planId: [],
-//   price: req.body.unit_price,
-//   state: StateRecibo.PAGADO,
-// };
-
-// const reciboGuardado =
-//   await this.reciboService.createRecibo(reciboDeCompra);
-// if (!reciboGuardado || undefined) {
-//   throw new ConflictException('No se pudo crear el recibo');
-// }
-// return 'recibo creado';
-//   const reciboDeCompra = this.reciboRepository.create({
-//     user: user,
-//     rutina: [rutina],
-//     plan: [],
-//     price: req.body.unit_price,
-//     state: StateRecibo.PAGADO,
-//   });

@@ -12,6 +12,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DifficultyLevel } from './difficultyLevel.enum';
@@ -62,7 +63,9 @@ export class Plan {
   @JoinTable({ name: 'category-plan' })
   category: Category[];
 
-  @ManyToMany(() => Recibo, (recibo) => recibo.planes)
-  @JoinTable({ name: 'planes-recibos' })
-  recibo: Recibo[];
+  @OneToOne(() => Recibo, (recibo) => recibo.plan)
+  recibo: Recibo;
+
+  @Column('text', { array: true, nullable: true })
+  imgUrl: string[];
 }
