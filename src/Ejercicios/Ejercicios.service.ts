@@ -31,6 +31,10 @@ export class EjercicioService {
   }
 
   async updateEjercicio(ejercicio: EjercicioDto, id: string) {
-    await this.ejercicioRepository.updateEjercicio(id, ejercicio);
+    return await this.ejercicioRepository.updateEjercicio(id, ejercicio);
+  }
+
+  async getEjerciciosPropios(id) {
+    return await this.ejercicioRepository.getEjerciciosPropios(id);
   }
 }

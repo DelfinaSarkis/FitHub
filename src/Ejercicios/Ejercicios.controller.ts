@@ -1,7 +1,10 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -15,6 +18,7 @@ import { Ejercicio } from './Ejercicios.entity';
 import { UUID } from 'crypto';
 import { EjercicioDto } from './CreateEjercicio.dto';
 import { AuthGuard } from 'src/Guard/AuthGuar.guard';
+import { Request } from 'express';
 
 @ApiTags('Ejercicios')
 @Controller('ejercicio')
@@ -36,6 +40,17 @@ export class EjercicioController {
       descripcion,
       search,
     );
+  }
+
+  @Get('entrenador')
+  @UseGuards(AuthGuard)
+  async getEjerciciosPropios(@Req() req) {
+    const id = req.user.sub;
+    console.log(id);
+    if (!id || undefined || null) {
+      throw new BadRequestException('Sin acceso a la información');
+    }
+    return await this.ejercicioService.getEjerciciosPropios(id);
   }
 
   @Get(':id')

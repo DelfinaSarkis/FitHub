@@ -1,4 +1,10 @@
-import { IsNumber, IsString, IsUUID } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import { StateRecibo } from './recibo.enum';
 import { Users } from 'src/User/User.entity';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';

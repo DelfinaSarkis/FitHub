@@ -16,7 +16,7 @@ import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { v4 as uuid } from 'uuid';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { Recibo } from 'src/Recibo/recibo.entity';
-import { Invoice } from 'src/invoice/invoice.entity';
+// import { Invoice } from 'src/invoice/invoice.entity';
 
 @Entity({
   name: 'users',
@@ -86,6 +86,6 @@ export class Users {
   @JoinTable({ name: 'recibos-user' })
   recibos: Recibo[];
 
-  @OneToMany(() => Invoice, (invoice) => invoice.user)
-  invoices: Invoice[];
+  // @OneToMany(() => Invoice, (invoice) => invoice.user)
+  // invoices: Invoice[];
 }
