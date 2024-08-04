@@ -177,7 +177,7 @@ export class PlanRepository {
           title: req.body.title,
           planId: req.body.planId,
           quantity: 1,
-          unit_price: 100,
+          unit_price: Number(req.body.price),
           currency_id: "ARS"
           },
         ],
