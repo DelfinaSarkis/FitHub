@@ -29,7 +29,7 @@ export class ReciboRepository {
   async getReciboById(id: string) {
     const reciboBuscado = await this.reciboRepository.findOne({
       where: { id },
-      relations: ['planId', 'rutinaId', 'userId'],
+      relations: ['planes', 'rutinas', 'user'],
     });
     if (!reciboBuscado) {
       throw new NotFoundException('Recibo no encontrado');

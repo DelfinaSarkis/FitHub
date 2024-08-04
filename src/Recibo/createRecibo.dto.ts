@@ -9,6 +9,7 @@ import {
   IsUUID,
 } from 'class-validator';
 import { StateRecibo } from './recibo.enum';
+import { Users } from 'src/User/User.entity';
 
 export class CreateReciboDto {
   @IsUUID('all')

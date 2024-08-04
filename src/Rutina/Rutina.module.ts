@@ -11,6 +11,7 @@ import { ReciboModule } from 'src/Recibo/recibo.module';
 import { ReciboService } from 'src/Recibo/recibo.service';
 import { Recibo } from 'src/Recibo/recibo.entity';
 import { ReciboRepository } from 'src/Recibo/recibo.repository';
+import { UsersRepository } from 'src/User/User.repository';
 
 @Module({
   imports: [
@@ -18,6 +19,12 @@ import { ReciboRepository } from 'src/Recibo/recibo.repository';
     ReciboModule,
   ],
   controllers: [RutinaController],
-  providers: [RutinaService, RutinaRepository, ReciboService, ReciboRepository],
+  providers: [
+    RutinaService,
+    RutinaRepository,
+    ReciboService,
+    ReciboRepository,
+    UsersRepository,
+  ],
 })
 export class RutinaModule {}

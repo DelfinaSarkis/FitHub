@@ -81,7 +81,7 @@ export class Users {
   @Column({ default: true })
   isActive: boolean;
 
-  @OneToMany(() => Recibo, (recibo) => recibo.userId)
+  @OneToMany(() => Recibo, (recibo) => recibo.user)
   @JoinTable({ name: 'recibos-user' })
   recibos: Recibo[];
 }

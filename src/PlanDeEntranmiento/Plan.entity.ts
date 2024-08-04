@@ -62,7 +62,7 @@ export class Plan {
   @JoinTable({ name: 'category-plan' })
   category: Category[];
 
-  @ManyToMany(() => Recibo, (recibo) => recibo.planId)
+  @ManyToMany(() => Recibo, (recibo) => recibo.planes)
   @JoinTable({ name: 'planes-recibos' })
   recibo: Recibo[];
 }

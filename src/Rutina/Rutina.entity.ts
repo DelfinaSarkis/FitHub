@@ -64,7 +64,7 @@ export class Rutina {
   @Column({ default: true })
   isActive: boolean;
 
-  @ManyToMany(() => Recibo, (recibo) => recibo.rutinaId)
+  @ManyToMany(() => Recibo, (recibo) => recibo.rutinas)
   @JoinTable({ name: 'rutinas-recibos' })
   recibo: Recibo[];
 }
