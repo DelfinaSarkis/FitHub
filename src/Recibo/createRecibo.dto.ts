@@ -1,34 +1,22 @@
-import {
-  IsArray,
-  IsDecimal,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  IsUUID,
-} from 'class-validator';
+import { IsNumber, IsString, IsUUID } from 'class-validator';
 import { StateRecibo } from './recibo.enum';
 import { Users } from 'src/User/User.entity';
+import { Rutina } from 'src/Rutina/Rutina.entity';
+import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 
 export class CreateReciboDto {
-  @IsUUID('all')
-  @IsNotEmpty()
-  userId: string;
+  @IsUUID()
+  user: Users;
 
-  @IsUUID(undefined, { each: true })
-  @IsOptional()
-  planId: string[];
+  @IsUUID()
+  rutinas: Rutina[];
 
-  @IsUUID(undefined, { each: true })
-  @IsOptional()
-  rutinaId: string[];
+  @IsUUID()
+  planes: Plan[];
 
-  @IsDecimal()
-  @IsOptional()
+  @IsNumber()
   price: number;
 
-  @IsEnum(StateRecibo)
-  @IsOptional()
+  @IsString()
   state: StateRecibo;
 }

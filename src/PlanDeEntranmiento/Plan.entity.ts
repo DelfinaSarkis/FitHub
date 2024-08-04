@@ -17,6 +17,7 @@ import {
 import { DifficultyLevel } from './difficultyLevel.enum';
 import { Category } from 'src/Category/Category.entity';
 import { Recibo } from 'src/Recibo/recibo.entity';
+import { Invoice } from 'src/invoice/invoice.entity';
 
 @Entity({ name: 'plan' })
 export class Plan {
@@ -65,4 +66,7 @@ export class Plan {
   @ManyToMany(() => Recibo, (recibo) => recibo.planes)
   @JoinTable({ name: 'planes-recibos' })
   recibo: Recibo[];
+
+  @OneToMany(() => Invoice, invoice => invoice.plan)
+  invoices: Invoice[];
 }
