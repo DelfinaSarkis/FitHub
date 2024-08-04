@@ -6,7 +6,7 @@ export class PasswordService {
   private readonly lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
   private readonly uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   private readonly numericChars = '0123456789';
-  private readonly specialChars = '!@#$%^&*()-_=+[]{}|;:,.<>?';
+  private readonly specialChars = '!@#$%?';
 
   generateSecurePassword(length: number = 8): string {
     if (length < 4) {
