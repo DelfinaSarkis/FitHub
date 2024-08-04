@@ -2,8 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { auth } from 'express-openid-connect';
-import { configAuth } from 'config/Auth0.congug';
 import { LoggerMidleware } from './Middleware/logger.middleware';
 import MercadoPagoConfig from 'mercadopago';
 
@@ -18,7 +16,6 @@ async function bootstrap() {
 
   const documentacion = SwaggerModule.createDocument(app, documentConfig);
   SwaggerModule.setup('api', app, documentacion);
-  app.use(auth(configAuth));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(LoggerMidleware);
   app.enableCors({
