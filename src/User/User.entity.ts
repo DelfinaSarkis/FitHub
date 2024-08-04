@@ -29,22 +29,22 @@ export class Users {
   @Column({ type: 'varchar', unique: true, length: 100, nullable: false })
   email: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   password: string;
 
-  @Column({ type: 'bigint', unique: true })
+  @Column({ type: 'bigint', unique: true, nullable: true })
   dni: number;
 
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', nullable: true })
   phone: number;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100 , nullable: true})
   country: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   address: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   city: string;
 
   @Column({ default: UserRole.USER })

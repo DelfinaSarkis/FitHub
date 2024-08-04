@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   async auth0(body: loginAuthDto){
-    return await this.auth0(body)
+    return await this.authRepository.auth0(body)
   }
   async signupEntrenador(body: CreateUserDto): Promise<string> {
     return await this.authRepository.signupEntrenador(body);

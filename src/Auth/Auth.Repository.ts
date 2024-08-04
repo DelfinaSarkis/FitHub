@@ -11,10 +11,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserRole } from 'src/User/User.enum';
 import { loginAuthDto } from './Login.Dto';
+import { randomBytes } from 'crypto';
+import { PasswordService } from './Auth.randonPass';
 
 @Injectable()
 export class AuthRepository {
   constructor(
+    private readonly passwordService:PasswordService,
     @InjectRepository(Users) private usersRepository: Repository<Users>,
     private readonly jwtService: JwtService,
   ) {}
@@ -67,9 +70,15 @@ export class AuthRepository {
       return { token: token };
     }
 
-    const newUser = await this.usersRepository.save({name,email})
+     
+    const password = this.passwordService.generateSecurePassword()
+    const hassPass = await bcrypt.hash(password, 10)
+
+    const newUser = await this.usersRepository.save({name,email,password:hassPass})
     const payload = { email: newUser.email, newUser: newUser.id, role: newUser.role };
     const token = this.jwtService.sign(payload);
+
+    
     return { token: token };
   }
 
