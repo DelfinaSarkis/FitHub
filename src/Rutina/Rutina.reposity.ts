@@ -4,6 +4,7 @@ import { Rutina } from './Rutina.entity';
 import { ILike, In, Repository } from 'typeorm';
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -16,7 +17,10 @@ import { Preference } from 'mercadopago';
 import { client } from 'config/mercadoPagoRoutine.config';
 import { error } from 'console';
 import { decrypt } from 'dotenv';
-
+import { ReciboService } from 'src/Recibo/recibo.service';
+import { CreateReciboDto } from 'src/Recibo/createRecibo.dto';
+import { Request, Response } from 'express';
+import { StateRecibo } from 'src/Recibo/recibo.enum';
 
 @Injectable()
 export class RutinaRepository {
@@ -28,6 +32,7 @@ export class RutinaRepository {
     @InjectRepository(Users) private userRepository: Repository<Users>,
     @InjectRepository(Ejercicio)
     private exerciceRepository: Repository<Ejercicio>,
+    private readonly reciboService: ReciboService,
   ) {}
   async getAllRutinas(
     page: number,
@@ -95,7 +100,7 @@ export class RutinaRepository {
     }
 
     const exercise = await this.exerciceRepository.find({
-      where: { id: In(rutina.exercise), /*user: { id: userId }*/ },
+      where: { id: In(rutina.exercise) /*user: { id: userId }*/ },
       //relations: ['user'],
     });
 
@@ -179,33 +184,57 @@ export class RutinaRepository {
 
   ////////////////////////////////Mercado Pago///////////////////////////////////////////
 
-  async createOrderRoutine(req, res){
-    try{
+  async createOrderRoutine(req: Request, res: Response) {
+    try {
       const body = {
         items: [
           {
             id: req.body.id,
             title: req.body.title,
+            rutinaId: req.body.rutinaId,
             quantity: 1,
-            unit_price: req.body.price,
-            currency_id: "ARS",
+            unit_price: Number(req.body.unit_price),
+            currency_id: 'ARS',
           },
         ],
         back_urls: {
           success: 'http://localhost:3000/mercadoPago/success',
-          failure: 'http://localhost:3000/mercadoPago/failure'
-      },
-      auto_return: "approved",
+          failure: 'http://localhost:3000/mercadoPago/failure',
+        },
+        auto_return: 'approved',
       };
 
       const preference = new Preference(client);
       const result = await preference.create({ body });
-      res.json({ 
-        id: result.id 
+      res.json({
+        id: result.id,
       });
+      console.log(result, ' result.........');
+      const userId = req.body.id;
+      const rutinaId = req.body.rutinaId;
+      const user = await this.userRepository.findOneBy({ id: userId });
+      if (!user) {
+        throw new ConflictException('Usuario no encontrado');
+      }
+      const rutina = await this.rutinaRepository.getId(rutinaId);
+      if (!rutina) {
+        throw new ConflictException('Rutina no encontrada');
+      }
+
+      const reciboData = {
+        user,
+        rutinas: [rutina],
+        planes: [],
+        price: Number(req.body.unit_price),
+        state: StateRecibo.PAGADO,
+      };
+
+      await this.reciboService.createRecibo(reciboData);
+
+      return result;
     } catch (error) {
       console.error(error);
       res.status(500).send('Error al crear la preferencia de pago');
+    }
   }
-  } 
 }

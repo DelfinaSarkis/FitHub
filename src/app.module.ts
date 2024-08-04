@@ -15,9 +15,9 @@ import { commentsModule } from './Comentario/Comentarios.module';
 import { SeederModule } from './Seeder/seeder.module';
 import { CategoryModule } from './Category/Category.module';
 import { MailerModule } from './mailer/mailer.module';
-import { SubscriptionsModule } from './Suscripciones/suscripciones.module';
+// import { SubscriptionsModule } from './Suscripciones/suscripciones.module';
 import { ScheduleModule } from '@nestjs/schedule';
-
+import { ReciboModule } from './Recibo/recibo.module';
 
 @Module({
   imports: [
@@ -51,7 +51,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     FilesUploadModule,
     CategoryModule,
     MailerModule,
-    SubscriptionsModule,
+    //SubscriptionsModule,
+    ReciboModule,
   ],
   controllers: [AppController],
   providers: [AppService],

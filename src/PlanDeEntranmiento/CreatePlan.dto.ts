@@ -3,6 +3,7 @@ import {
   IsArray,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   isString,
   IsString,
@@ -52,6 +53,13 @@ export class PlanCreateDto {
   @IsEnum(DifficultyLevel)
   @IsNotEmpty()
   difficultyLevel: DifficultyLevel;
+
+  @IsNumber()
+  price: number;
+
+  @IsArray()
+  @IsOptional()
+  imgUrl: string[];
 }
 
 export class PlanUpdateDto {
