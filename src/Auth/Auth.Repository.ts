@@ -11,15 +11,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserRole } from 'src/User/User.enum';
 import { loginAuthDto } from './Login.Dto';
-import { randomBytes } from 'crypto';
 import { PasswordService } from './Auth.randonPass';
+import { MailerService } from 'src/mailer/mailer.service';
 
 @Injectable()
 export class AuthRepository {
   constructor(
     private readonly passwordService:PasswordService,
+    private readonly mailerService: MailerService,
     @InjectRepository(Users) private usersRepository: Repository<Users>,
     private readonly jwtService: JwtService,
+
   ) {}
   async signin(email: string, password: string): Promise<object> {
     const user = await this.usersRepository.findOne({
