@@ -16,6 +16,8 @@ import {
 } from 'typeorm';
 import { DifficultyLevel } from './difficultyLevel.enum';
 import { Category } from 'src/Category/Category.entity';
+import { Recibo } from 'src/Recibo/recibo.entity';
+import { Invoice } from 'src/invoice/invoice.entity';
 
 @Entity({ name: 'plan' })
 export class Plan {
@@ -31,7 +33,7 @@ export class Plan {
   @Column({ type: 'varchar' })
   description: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2  })
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
 
   @Column()
@@ -60,4 +62,11 @@ export class Plan {
   @ManyToMany(() => Category, (category) => category.plan)
   @JoinTable({ name: 'category-plan' })
   category: Category[];
+
+  @ManyToMany(() => Recibo, (recibo) => recibo.planes)
+  @JoinTable({ name: 'planes-recibos' })
+  recibo: Recibo[];
+
+  @OneToMany(() => Invoice, invoice => invoice.plan)
+  invoices: Invoice[];
 }

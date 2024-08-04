@@ -22,8 +22,9 @@ export class PlanRepository {
   constructor(
     @InjectRepository(Plan) private planRepository: Repository<Plan>,
     @InjectRepository(Users) private userRepository: Repository<Users>,
-    @InjectRepository(Category) private categoryRepository: Repository<Category>,
-    private readonly subscriptionsRepository: SubscriptionsRepository, 
+    @InjectRepository(Category)
+    private categoryRepository: Repository<Category>,
+    private readonly subscriptionsRepository: SubscriptionsRepository,
   ) {}
 
   async getPlan(
@@ -34,10 +35,12 @@ export class PlanRepository {
     difficultyLevel?: DifficultyLevel,
     search?: string,
   ) {
-    let whereConditions: any = { isActive: true };
+    const whereConditions: any = { isActive: true };
 
     if (category) {
-      const categoria = await this.categoryRepository.find({where: { id: category }});
+      const categoria = await this.categoryRepository.find({
+        where: { id: category },
+      });
       whereConditions.category = categoria;
     }
 
@@ -56,7 +59,7 @@ export class PlanRepository {
       //  .filter(
       //    (term) => term.trim() !== '' && !stopWords.has(term.toLowerCase()),
       //  );
-//
+      //
       //whereConditions = arrSearch.map((term) => ({
       //  ...whereConditions,
       //  name: ILike(`%${term}%`),
@@ -173,24 +176,24 @@ export class PlanRepository {
 
   ////////////////////////////////Mercado Pago///////////////////////////////////////////
 
-  async createOrderPlan(req, res){
-    try{
+  async createOrderPlan(req, res) {
+    try {
       const body = {
         items: [
           {
-          id: req.body.id,
-          title: req.body.title,
-          planId: req.body.planId,
-          quantity: 1,
-          unit_price: Number(req.body.price),
-          currency_id: "ARS"
+            id: req.body.id,
+            title: req.body.title,
+            planId: req.body.planId,
+            quantity: 1,
+            unit_price: Number(req.body.unit_price),
+            currency_id: 'ARS',
           },
         ],
         back_urls: {
           success: 'http://localhost:3000/mercadoPago/success',
-          failure: 'http://localhost:3000/mercadoPago/failure'
-      },
-      auto_return: "approved",
+          failure: 'http://localhost:3000/mercadoPago/failure',
+        },
+        auto_return: 'approved',
       };
 
       const preference = new Preference(planClient);
@@ -214,5 +217,4 @@ export class PlanRepository {
       console.error('Error al crear la suscripción:', error);
     }
   }
-  }
-
+}
