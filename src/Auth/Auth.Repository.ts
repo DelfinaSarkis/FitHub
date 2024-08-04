@@ -59,7 +59,7 @@ export class AuthRepository {
     body.password = passHash;
     const user = await this.usersRepository.create(body);
     await this.usersRepository.save(user);
-    return 'Usuario creado';
+    return 'usuario creado';
   }
 
   async auth0(body:loginAuthDto){

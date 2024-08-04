@@ -9,6 +9,7 @@ import {
   Put,
   Query,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { PlanService } from './Plan.service';
@@ -21,6 +22,7 @@ import { query, Request } from 'express';
 import { DifficultyLevel } from './difficultyLevel.enum';
 import { AuthGuard } from 'src/Guard/AuthGuar.guard';
 import { Console } from 'console';
+import * as mercadopago from "mercadopago";
 @ApiTags('Planes de Entrenamiento')
 @Controller('plan')
 export class PlanController {
@@ -58,6 +60,12 @@ export class PlanController {
     console.log(user);
     const admin = user.sub;
     return await this.planService.createPlan(plan, admin);
+  }
+
+  @Post('create-order')
+  async createSubscription(@Req() req: Request, @Res() res: Response){
+    const result = await this.planService.createSubscription(req, res);
+    return result
   }
 
   @Put(':id')

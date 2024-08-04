@@ -15,6 +15,7 @@ import {
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 import { Categorias } from 'src/Dto/Categorias.Dto';
 import { Category } from 'src/Category/Category.entity';
+import { Recibo } from 'src/Recibo/recibo.entity';
 
 @Entity({
   name: 'rutina',
@@ -31,6 +32,9 @@ export class Rutina {
 
   @Column({ type: 'varchar' })
   description: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  price: number;
 
   @Column('text', { array: true, nullable: true })
   imgUrl: string[];
@@ -59,4 +63,8 @@ export class Rutina {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @ManyToMany(() => Recibo, (recibo) => recibo.rutinas)
+  @JoinTable({ name: 'rutinas-recibos' })
+  recibo: Recibo[];
 }
