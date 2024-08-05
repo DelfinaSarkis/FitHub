@@ -4,6 +4,7 @@ import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { Repository } from 'typeorm';
 import { FilesUploadRepository } from './files-upload.repository';
 import { Rutina } from 'src/Rutina/Rutina.entity';
+import { RutinaRepository } from 'src/Rutina/Rutina.reposity';
 
 @Injectable()
 export class FilesUploadService {

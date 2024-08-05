@@ -70,6 +70,9 @@ export class Plan {
   @Column('text', { array: true, nullable: true })
   imgUrl: string[];
 
+  @Column('text', { array: true, nullable: true })
+  videoUrl: string[];
+
   // @OneToOne(() => Invoice, (invoice) => invoice.plan)
   // invoice: Invoice;
 }

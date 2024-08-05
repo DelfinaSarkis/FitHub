@@ -40,6 +40,9 @@ export class Rutina {
   @Column('text', { array: true, nullable: true })
   imgUrl: string[];
 
+  @Column('text', { array: true, nullable: true })
+  videoUrl: string[];
+
   @Column({ type: 'varchar', length: 100 })
   difficultyLevel: DifficultyLevel;
 

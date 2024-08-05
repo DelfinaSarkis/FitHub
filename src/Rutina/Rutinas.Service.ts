@@ -11,16 +11,20 @@ import { Recibo } from 'src/Recibo/recibo.entity';
 import { Rutina } from './Rutina.entity';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { CreateReciboDto } from 'src/Recibo/createRecibo.dto';
+import { FilesUploadService } from 'src/files-upload/files-upload.service';
 
 @Injectable()
 export class RutinaService {
   constructor(
+    private readonly filesUploadService: FilesUploadService,
     private readonly rutinasRepository: RutinaRepository,
     private readonly reciboService: ReciboService,
     @InjectRepository(Users)
     private readonly userRepository: Repository<Users>,
     @InjectRepository(Recibo)
     private readonly reciboRepository: Repository<Recibo>,
+    @InjectRepository(Rutina)
+    private readonly rutinaRepository: Repository<Rutina>,
   ) {}
 
   async getRutinas(
@@ -43,8 +47,26 @@ export class RutinaService {
   async getRutinaById(id) {
     return await this.rutinasRepository.getRutinaById(id);
   }
-  async createRutina(rutina: CreateRutinaDto, userId) {
-    return await this.rutinasRepository.createRutina(rutina, userId);
+  async createRutina(
+    rutina: CreateRutinaDto,
+    userId,
+    files: Express.Multer.File[],
+    resourceType: 'auto' | 'image' | 'video' = 'auto',
+  ) {
+    const newRutina = await this.rutinasRepository.createRutina(rutina, userId);
+
+    if (files) {
+      const filesUrls = await this.filesUploadService.uploadFiles(
+        files,
+        resourceType,
+      );
+      if (resourceType === 'image') {
+        newRutina.imgUrl = filesUrls;
+      } else if (resourceType === 'video') {
+        newRutina.videoUrl = filesUrls;
+      }
+    }
+    return await this.rutinaRepository.save(newRutina);
   }
   async createOrderRoutine(req: Request, res: Response) {
     const ordenCreada = await this.rutinasRepository.createOrderRoutine(

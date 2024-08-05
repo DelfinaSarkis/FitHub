@@ -18,5 +18,6 @@ import { Rutina } from 'src/Rutina/Rutina.entity';
   ],
   controllers: [FilesUploadController],
   providers: [FilesUploadService, FilesUploadRepository, CloudinaryConfig],
+  exports: [FilesUploadService, FilesUploadRepository],
 })
 export class FilesUploadModule {}

@@ -61,7 +61,11 @@ export class CreateRutinaDto {
 
   @IsArray()
   @IsOptional()
-  imgUrl: string[];
+  imgUrl?: string[];
+
+  @IsArray()
+  @IsOptional()
+  videoUrl?: string[];
 }
 
 export class UpdateRutinaDto {
@@ -110,4 +114,12 @@ export class UpdateRutinaDto {
   @IsEnum(DifficultyLevel)
   @IsNotEmpty()
   difficultyLevel?: DifficultyLevel;
+
+  @IsArray()
+  @IsOptional()
+  imgUrl?: string[];
+
+  @IsArray()
+  @IsOptional()
+  videoUrl?: string[];
 }
