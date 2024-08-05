@@ -12,11 +12,14 @@ import { ReciboService } from 'src/Recibo/recibo.service';
 import { Recibo } from 'src/Recibo/recibo.entity';
 import { ReciboRepository } from 'src/Recibo/recibo.repository';
 import { UsersRepository } from 'src/User/User.repository';
+import { FilesUploadService } from 'src/files-upload/files-upload.service';
+import { FilesUploadModule } from 'src/files-upload/files-upload.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Rutina, Category, Users, Ejercicio, Recibo]),
     ReciboModule,
+    FilesUploadModule,
   ],
   controllers: [RutinaController],
   providers: [
@@ -25,6 +28,8 @@ import { UsersRepository } from 'src/User/User.repository';
     ReciboService,
     ReciboRepository,
     UsersRepository,
+    FilesUploadService,
   ],
+  exports: [RutinaRepository],
 })
 export class RutinaModule {}
