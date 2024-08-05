@@ -77,11 +77,18 @@ export class AuthRepository {
     const hassPass = await bcrypt.hash(password, 10)
 
     const newUser = await this.usersRepository.save({name,email,password:hassPass})
-    const payload = { email: newUser.email, newUser: newUser.id, role: newUser.role };
-    const token = this.jwtService.sign(payload);
-
-    
-    return { token: token };
+    if(newUser){
+      const to = email;
+      const subject = 'Bienvenido/a a FitHub - Tu entrenador personalizado';
+      const text = `Hola ${name}, te has registrado en FitHub. Tu contraseña es: ${password}. Recuerda cambiarla en tu perfil.`;
+      await this.mailerService.notificarRegistro(to, subject, text);
+      const payload = { email: newUser.email, newUser: newUser.id, role: newUser.role };
+      const token = this.jwtService.sign(payload);
+  
+      
+      return { token: token };
+    }
+    throw new BadRequestException('Algo ha salido mal')
   }
 
   async signupEntrenador(body: CreateUserDto): Promise<string> {
