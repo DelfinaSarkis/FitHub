@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class EjercicioDto {
   /**
@@ -21,4 +21,7 @@ export class EjercicioDto {
    */
   @IsOptional()
   imgUrl: string[];
+
+  @IsString()
+  videoUrl: string;
 }

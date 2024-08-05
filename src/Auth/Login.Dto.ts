@@ -15,3 +15,20 @@ export class loginDto {
   @IsString()
   password: string;
 }
+
+
+export class loginAuthDto{
+  /**
+    * El email del usuario
+    * @example usuario@ejemplo.com
+  */
+  @IsEmail()
+  email: string;
+
+  /**
+   * Nombre del usuario
+   * @example Leonardo Pieroni
+   */
+  @IsString()
+  name:string;
+}

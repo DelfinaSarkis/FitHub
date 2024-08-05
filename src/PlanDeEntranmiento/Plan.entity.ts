@@ -12,10 +12,13 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DifficultyLevel } from './difficultyLevel.enum';
 import { Category } from 'src/Category/Category.entity';
+import { Recibo } from 'src/Recibo/recibo.entity';
+// import { Invoice } from 'src/invoice/invoice.entity';
 
 @Entity({ name: 'plan' })
 export class Plan {
@@ -30,6 +33,9 @@ export class Plan {
 
   @Column({ type: 'varchar' })
   description: string;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  price: number;
 
   @Column()
   location: string;
@@ -57,4 +63,13 @@ export class Plan {
   @ManyToMany(() => Category, (category) => category.plan)
   @JoinTable({ name: 'category-plan' })
   category: Category[];
+
+  @OneToOne(() => Recibo, (recibo) => recibo.plan)
+  recibo: Recibo;
+
+  @Column('text', { array: true, nullable: true })
+  imgUrl: string[];
+
+  // @OneToOne(() => Invoice, (invoice) => invoice.plan)
+  // invoice: Invoice;
 }

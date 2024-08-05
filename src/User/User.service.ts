@@ -17,6 +17,19 @@ export class UserService {
     throw new BadRequestException('No tienes acceso a esta informacion');
   }
 
+  getUserByIdPyR(id: string, idUser) {
+    if (id === idUser) {
+      return this.usersRepository.getUserByIdPyR(id);
+    }
+    throw new BadRequestException('No tienes acceso a esta informacion');
+  }
+  getEntrenadorByIdPyR(id: string, idUser) {
+    if (id === idUser) {
+      return this.usersRepository.getEntrenadorByIdPyR(id);
+    }
+    throw new BadRequestException('No tienes acceso a esta informacion');
+  }
+
   createUser(user: CreateUserDto) {
     return this.usersRepository.createUser(user);
   }

@@ -15,6 +15,8 @@ import { Rutina } from 'src/Rutina/Rutina.entity';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { v4 as uuid } from 'uuid';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
+import { Recibo } from 'src/Recibo/recibo.entity';
+// import { Invoice } from 'src/invoice/invoice.entity';
 
 @Entity({
   name: 'users',
@@ -29,22 +31,22 @@ export class Users {
   @Column({ type: 'varchar', unique: true, length: 100, nullable: false })
   email: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   password: string;
 
-  @Column({ type: 'bigint', unique: true })
+  @Column({ type: 'bigint', unique: true, nullable: true })
   dni: number;
 
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', nullable: true })
   phone: number;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100 , nullable: true})
   country: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   address: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   city: string;
 
   @Column({ default: UserRole.USER })
@@ -79,4 +81,11 @@ export class Users {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => Recibo, (recibo) => recibo.user)
+  @JoinTable({ name: 'recibos-user' })
+  recibos: Recibo[];
+
+  // @OneToMany(() => Invoice, (invoice) => invoice.user)
+  // invoices: Invoice[];
 }

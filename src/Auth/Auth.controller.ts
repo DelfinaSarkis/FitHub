@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Post } from "@nestjs/common";
-import { loginDto } from "./Login.Dto";
+import { loginAuthDto, loginDto } from "./Login.Dto";
 import { AuthService } from "./Auth.Sevice";
 import { CreateUserDto } from "src/User/CreateUser.Dto";
 import { ApiTags } from "@nestjs/swagger";
@@ -21,6 +21,10 @@ export class AuthController {
         return await this.authService.signup(body);
     }
 
+    @Post('auth0')
+    async auth0(@Body() body:loginAuthDto){
+        return await this.authService.auth0(body)
+    }
     @Post('signupentrenador')
     async signupEntrenador(@Body() body:CreateUserDto) {
         return await this.authService.signupEntrenador(body);
