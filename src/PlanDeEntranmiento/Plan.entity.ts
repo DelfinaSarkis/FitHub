@@ -68,7 +68,7 @@ export class Plan {
   recibo: Recibo;
 
   @Column('text', { array: true, nullable: true })
-  imgUrl: string[];
+  imgUrl: string;
 
   @Column('text', { array: true, nullable: true })
   videoUrl: string[];
