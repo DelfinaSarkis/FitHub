@@ -35,7 +35,7 @@ export class PlanRepository {
     difficultyLevel?: DifficultyLevel,
     search?: string,
   ) {
-    const whereConditions: any = { isActive: true };
+    let whereConditions: any = { isActive: true };
 
     if (category) {
       const categoria = await this.categoryRepository.find({
