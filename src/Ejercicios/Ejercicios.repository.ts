@@ -5,6 +5,7 @@ import { CreateUserDto } from 'src/User/CreateUser.Dto';
 import { EjercicioDto } from './CreateEjercicio.dto';
 import { Users } from 'src/User/User.entity';
 import { ILike, Repository } from 'typeorm';
+import { ConflictException } from '@nestjs/common';
 
 export class EjercicioRepository {
   constructor(
@@ -65,5 +66,19 @@ export class EjercicioRepository {
   async updateEjercicio(ejercicio, id) {
     await this.ejercicioRepository.update(id, ejercicio);
     return 'El ejercicio se ha actualizado';
+  }
+
+  async getEjerciciosPropios(id) {
+    const entrenador = await this.userRepository.findOne({ where: { id } });
+    console.log(entrenador);
+    const ejerciciosPropios = await this.ejercicioRepository.find({
+      where: { user: entrenador },
+      relations: ['user'],
+    });
+    if (!ejerciciosPropios) {
+      throw new ConflictException('Ejercicios no encontrados');
+    }
+    console.log(ejerciciosPropios);
+    return ejerciciosPropios;
   }
 }

@@ -1,7 +1,4 @@
 import {
-  IsArray,
-  IsDecimal,
-  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -10,25 +7,25 @@ import {
 } from 'class-validator';
 import { StateRecibo } from './recibo.enum';
 import { Users } from 'src/User/User.entity';
+import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
+import { Rutina } from 'src/Rutina/Rutina.entity';
 
 export class CreateReciboDto {
   @IsUUID('all')
   @IsNotEmpty()
-  userId: string;
+  user: Users;
 
   @IsUUID(undefined, { each: true })
   @IsOptional()
-  planId: string[];
+  plan?: Plan;
 
   @IsUUID(undefined, { each: true })
   @IsOptional()
-  rutinaId: string[];
+  rutina?: Rutina;
 
-  @IsDecimal()
-  @IsOptional()
+  @IsNumber()
   price: number;
 
-  @IsEnum(StateRecibo)
-  @IsOptional()
+  @IsString()
   state: StateRecibo;
 }

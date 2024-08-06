@@ -16,7 +16,7 @@ export class ReciboRepository {
     private readonly reciboRepository: Repository<Recibo>,
   ) {}
 
-  async createRecibo(recibo) {
+  async createRecibo(recibo: CreateReciboDto) {
     const reciboCreado = await this.reciboRepository.create(recibo);
     await this.reciboRepository.save(reciboCreado);
     return reciboCreado;
@@ -29,7 +29,7 @@ export class ReciboRepository {
   async getReciboById(id: string) {
     const reciboBuscado = await this.reciboRepository.findOne({
       where: { id },
-      relations: ['planes', 'rutinas', 'user'],
+      relations: ['plan', 'rutina', 'user'],
     });
     if (!reciboBuscado) {
       throw new NotFoundException('Recibo no encontrado');

@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsUUID,
+} from 'class-validator';
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 
 export class CreateRutinaDto {
@@ -51,6 +58,14 @@ export class CreateRutinaDto {
 
   @IsNumber()
   price: number;
+
+  @IsArray()
+  @IsOptional()
+  imgUrl?: string[];
+
+  @IsArray()
+  @IsOptional()
+  videoUrl?: string[];
 }
 
 export class UpdateRutinaDto {
@@ -99,4 +114,12 @@ export class UpdateRutinaDto {
   @IsEnum(DifficultyLevel)
   @IsNotEmpty()
   difficultyLevel?: DifficultyLevel;
+
+  @IsArray()
+  @IsOptional()
+  imgUrl?: string[];
+
+  @IsArray()
+  @IsOptional()
+  videoUrl?: string[];
 }

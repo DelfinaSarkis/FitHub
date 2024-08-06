@@ -4,6 +4,7 @@ import { Rutina } from './Rutina.entity';
 import { ILike, In, Repository } from 'typeorm';
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -19,6 +20,7 @@ import { decrypt } from 'dotenv';
 import { ReciboService } from 'src/Recibo/recibo.service';
 import { CreateReciboDto } from 'src/Recibo/createRecibo.dto';
 import { Request, Response } from 'express';
+import { StateRecibo } from 'src/Recibo/recibo.enum';
 
 @Injectable()
 export class RutinaRepository {
@@ -208,6 +210,27 @@ export class RutinaRepository {
         id: result.id,
       });
       console.log(result, ' result.........');
+      const userId = req.body.id;
+      const rutinaId = req.body.rutinaId;
+      const user = await this.userRepository.findOneBy({ id: userId });
+      if (!user) {
+        throw new ConflictException('Usuario no encontrado');
+      }
+      const rutina = await this.rutinaRepository.getId(rutinaId);
+      if (!rutina) {
+        throw new ConflictException('Rutina no encontrada');
+      }
+
+      const reciboData = {
+        user,
+        rutinas: [rutina],
+        planes: [],
+        price: Number(req.body.unit_price),
+        state: StateRecibo.PAGADO,
+      };
+
+      await this.reciboService.createRecibo(reciboData);
+
       return result;
     } catch (error) {
       console.error(error);

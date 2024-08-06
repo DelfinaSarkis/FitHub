@@ -31,6 +31,12 @@ export class Ejercicio {
   })
   imgUrl: string[];
 
+  @Column('text', {
+    default: () =>
+      `'{"https://png.pngtree.com/png-clipart/20190630/original/pngtree-img-file-document-icon-png-image_4166554.jpg"}'`,
+  })
+  videoUrl: string;
+
   @ManyToOne(() => Users, (user) => user.exercise)
   @JoinColumn({ name: 'usuario' })
   user: Users;

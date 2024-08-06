@@ -51,7 +51,7 @@ import { ReciboModule } from './Recibo/recibo.module';
     FilesUploadModule,
     CategoryModule,
     MailerModule,
-    SubscriptionsModule,
+    //SubscriptionsModule,
     ReciboModule,
   ],
   controllers: [AppController],
