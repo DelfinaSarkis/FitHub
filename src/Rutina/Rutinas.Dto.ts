@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsString,
   IsUUID,
 } from 'class-validator';
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
@@ -17,14 +18,6 @@ export class CreateRutinaDto {
   @IsArray()
   @IsUUID('all', { each: true })
   exercise: string[];
-
-  /**
-   * UUID del administrador
-   * @example "d4e5f6e7-8e4e-4aee-bbe4-fff67f46b33d"
-   */
-  @IsUUID('all')
-  @IsNotEmpty()
-  admin: string;
 
   /**
    * Lista de categorías
@@ -62,10 +55,6 @@ export class CreateRutinaDto {
   @IsArray()
   @IsOptional()
   imgUrl?: string[];
-
-  @IsArray()
-  @IsOptional()
-  videoUrl?: string[];
 }
 
 export class UpdateRutinaDto {
@@ -76,14 +65,6 @@ export class UpdateRutinaDto {
   @IsArray()
   @IsUUID('all', { each: true })
   exercise?: string[];
-
-  /**
-   * UUID del administrador (opcional)
-   * @example "d4e5f6e7-8e4e-4aee-bbe4-fff67f46b33d"
-   */
-  @IsUUID('all')
-  @IsNotEmpty()
-  admin?: string;
 
   /**
    * Lista de UUIDs de los ejercicios (opcional)
@@ -118,8 +99,4 @@ export class UpdateRutinaDto {
   @IsArray()
   @IsOptional()
   imgUrl?: string[];
-
-  @IsArray()
-  @IsOptional()
-  videoUrl?: string[];
 }

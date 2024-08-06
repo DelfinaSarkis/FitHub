@@ -47,26 +47,8 @@ export class RutinaService {
   async getRutinaById(id) {
     return await this.rutinasRepository.getRutinaById(id);
   }
-  async createRutina(
-    rutina: CreateRutinaDto,
-    userId,
-    files: Express.Multer.File[],
-    resourceType: 'auto' | 'image' | 'video' = 'auto',
-  ) {
-    const newRutina = await this.rutinasRepository.createRutina(rutina, userId);
-
-    if (files) {
-      const filesUrls = await this.filesUploadService.uploadFiles(
-        files,
-        resourceType,
-      );
-      if (resourceType === 'image') {
-        newRutina.imgUrl = filesUrls;
-      } else if (resourceType === 'video') {
-        newRutina.videoUrl = filesUrls;
-      }
-    }
-    return await this.rutinaRepository.save(newRutina);
+  async createRutina(rutina: CreateRutinaDto, userId: string) {
+    return await this.rutinasRepository.createRutina(rutina, userId);
   }
   async createOrderRoutine(req: Request, res: Response) {
     const ordenCreada = await this.rutinasRepository.createOrderRoutine(
