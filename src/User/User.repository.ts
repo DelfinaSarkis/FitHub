@@ -24,7 +24,7 @@ export class UsersRepository {
     const userRyP = await this.userRepository.findOne({
       where: { id, isActive: true },
       select: ['id'],
-      relations: ['routine', 'subsciption'],
+      relations: ['routine', 'subsciption.plan'],
     });
 
     return {
