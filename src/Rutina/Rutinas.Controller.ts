@@ -63,35 +63,9 @@ export class RutinaController {
 
   @Post()
   @UseGuards(AuthGuard)
-  @UseInterceptors(FilesInterceptor('files'))
-  async createRutina(
-    @Req() req,
-    @Body() rutina: CreateRutinaDto,
-    @UploadedFiles(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({
-            maxSize: 1500000,
-            message: 'Tamaño máximo permitido: 1,5 MB',
-          }),
-          new FileTypeValidator({
-            fileType: /(.jpg|.png|.jpeg|.webp|.mp4|.avi|.mov)/,
-          }),
-        ],
-      }),
-    )
-    files: Express.Multer.File[],
-  ) {
-    const resourceType = files[0]?.mimetype.includes('video')
-      ? 'video'
-      : 'image';
-    const userId = req.user.sub;
-    return await this.rutinaService.createRutina(
-      rutina,
-      userId,
-      files,
-      resourceType,
-    );
+  async createRutina(@Req() req, @Body() rutina: CreateRutinaDto) {
+    const userId = req.body.id;
+    return await this.rutinaService.createRutina(rutina, userId);
   }
 
   @Post('create-order')
