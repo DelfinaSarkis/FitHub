@@ -69,7 +69,6 @@ export class RutinaRepository {
       whereConditions = arrSearch.map((term) => ({
         ...whereConditions,
         name: ILike(`%${term}%`),
-        description: ILike(`%${term}%`),
       }));
     }
     console.log(whereConditions);

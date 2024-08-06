@@ -62,7 +62,6 @@ export class PlanRepository {
       whereConditions = arrSearch.map((term) => ({
         ...whereConditions,
         name: ILike(`%${term}%`),
-        description: ILike(`%${term}%`),
       }));
     }
     return this.planRepository.find({
