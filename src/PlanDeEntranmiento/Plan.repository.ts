@@ -35,7 +35,7 @@ export class PlanRepository {
     difficultyLevel?: DifficultyLevel,
     search?: string,
   ) {
-    const whereConditions: any = { isActive: true };
+    let whereConditions: any = { isActive: true };
 
     if (category) {
       const categoria = await this.categoryRepository.find({
@@ -51,20 +51,19 @@ export class PlanRepository {
     if (difficultyLevel !== undefined) {
       whereConditions.difficultyLevel = difficultyLevel;
     }
-    if (search !== undefined) {
-      whereConditions.name = ILike(`%${search}%`);
-      //const stopWords = new Set(['de', 'y', 'el', 'la', 'en', 'a', 'o']); // Lista de palabras de parada
-      //const arrSearch = search
-      //  .split(' ')
-      //  .filter(
-      //    (term) => term.trim() !== '' && !stopWords.has(term.toLowerCase()),
-      //  );
-      //
-      //whereConditions = arrSearch.map((term) => ({
-      //  ...whereConditions,
-      //  name: ILike(`%${term}%`),
-      //  description: ILike(`%${term}%`)
-      //}));
+    if (search) {
+      const stopWords = new Set(['de', 'y', 'el', 'la', 'en', 'a', 'o']); // Lista de palabras de parada
+      const arrSearch = search
+        .split(' ')
+        .filter(
+          (term) => term.trim() !== '' && !stopWords.has(term.toLowerCase()),
+        );
+
+      whereConditions = arrSearch.map((term) => ({
+        ...whereConditions,
+        name: ILike(`%${term}%`),
+        description: ILike(`%${term}%`),
+      }));
     }
     return this.planRepository.find({
       where: whereConditions,
