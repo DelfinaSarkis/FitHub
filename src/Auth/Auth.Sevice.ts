@@ -4,7 +4,6 @@ import { CreateUserDto } from 'src/User/CreateUser.Dto';
 import { MailerService } from 'src/mailer/mailer.service';
 import { loginAuthDto } from './Login.Dto';
 
-
 @Injectable()
 export class AuthService {
   constructor(
