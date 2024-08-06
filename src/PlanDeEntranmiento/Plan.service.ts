@@ -41,27 +41,32 @@ export class PlanService {
     return await this.planRepository.getPlanById(id);
   }
 
-  async createPlan(
-    plan: PlanCreateDto,
-    admin: string,
-    files: Express.Multer.File[],
-    resourceType: 'auto' | 'image' | 'video' = 'auto',
-  ) {
-    console.log(admin);
-    const newPlan = await this.planRepository.createPlan(plan, admin);
-    if (files) {
-      const filesUrls = await this.filesUploadService.uploadFiles(
-        files,
-        resourceType,
-      );
-      if (resourceType === 'image') {
-        newPlan.imgUrl = filesUrls;
-      } else if (resourceType === 'video') {
-        newPlan.videoUrl = filesUrls;
-      }
-    }
+  // async createPlan(
+  //   plan: PlanCreateDto,
+  //   admin: string,
+  //   files: Express.Multer.File[],
+  //   resourceType: 'auto' | 'image' | 'video' = 'auto',
+  // ) {
+  //   console.log(admin);
+  //   const newPlan = await this.planRepository.createPlan(plan, admin);
+  //   if (files) {
+  //     const filesUrls = await this.filesUploadService.uploadFiles(
+  //       files,
+  //       resourceType,
+  //     );
+  //     if (resourceType === 'image') {
+  //       newPlan.imgUrl = filesUrls;
+  //     } else if (resourceType === 'video') {
+  //       newPlan.videoUrl = filesUrls;
+  //     }
+  //   }
 
-    return await this.planesRepository.save(newPlan);
+  //   return await this.planesRepository.save(newPlan);
+  // }
+
+  async createPlan(plan: PlanCreateDto, admin: string) {
+    console.log(admin);
+    return await this.planRepository.createPlan(plan, admin);
   }
 
   async createSubscription(req, res) {

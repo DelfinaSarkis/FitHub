@@ -59,7 +59,7 @@ export class PlanCreateDto {
 
   @IsArray()
   @IsOptional()
-  imgUrl: string[];
+  imgUrl: string;
 }
 
 export class PlanUpdateDto {
