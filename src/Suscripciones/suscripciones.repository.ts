@@ -4,7 +4,8 @@ import { LessThan, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/User/User.entity';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
-// import { InvoiceRepository } from 'src/invoice/invoice.repository';
+import { InvoiceRepository } from 'src/invoice/invoice.repository';
+import { Invoice } from 'src/invoice/invoice.entity';
 
 @Injectable()
 export class SubscriptionsRepository {
@@ -15,7 +16,7 @@ export class SubscriptionsRepository {
     private readonly userRepository: Repository<Users>,
     @InjectRepository(Plan)
     private readonly planRepository: Repository<Plan>,
-    // private readonly invoiceRepository: InvoiceRepository,
+    private readonly invoiceRepository: InvoiceRepository,
   ) {}
 
   async createSubscription(
@@ -56,9 +57,19 @@ export class SubscriptionsRepository {
       dueDate: endDate,
     };
 
-    // await this.invoiceRepository.createInvoice(invoiceData);
+    const invoice = await this.invoiceRepository.createInvoice(invoiceData)
+    await this.sendInvoiceByEmail(invoice);
 
     return subscription;
+  }
+
+  private async sendInvoiceByEmail(invoice: Invoice){
+    const user = invoice.user;
+    const subject = 'Factura de Pago';
+    const text = `Hola ${user.name}, aquí tienes tu factura del plan ${invoice.plan.name}.
+    Monto: ${invoice.amount} ${invoice.currency}
+    Fecha de Pago: ${invoice.paymentDate}
+    Fecha de Vencimiento: ${invoice.dueDate}`;
   }
 
   async findExpiredSubscriptions() {
