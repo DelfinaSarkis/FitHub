@@ -69,7 +69,6 @@ export class RutinaRepository {
       whereConditions = arrSearch.map((term) => ({
         ...whereConditions,
         name: ILike(`%${term}%`),
-        description: ILike(`%${term}%`),
       }));
     }
     console.log(whereConditions);
@@ -212,14 +211,21 @@ export class RutinaRepository {
       console.log(result, ' result.........');
       const userId = req.body.id;
       const rutinaId = req.body.rutinaId;
-      const user = await this.userRepository.findOneBy({ id: userId });
+      const user = await this.userRepository.findOne({where: {id: userId},relations: ['routine']});
+
       if (!user) {
         throw new ConflictException('Usuario no encontrado');
       }
-      const rutina = await this.rutinaRepository.getId(rutinaId);
+      const rutina = await this.rutinaRepository.findOne({where:{id:rutinaId}});
       if (!rutina) {
         throw new ConflictException('Rutina no encontrada');
       }
+      if (user.routine.some(existingRutina => existingRutina.id === rutinaId)) {
+        throw new ConflictException('La rutina ya está asociada con este usuario');
+      }
+
+      user.routine.push(rutina);
+      await this.userRepository.save(user);
 
       const reciboData = {
         user,

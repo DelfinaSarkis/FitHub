@@ -62,7 +62,6 @@ export class PlanRepository {
       whereConditions = arrSearch.map((term) => ({
         ...whereConditions,
         name: ILike(`%${term}%`),
-        description: ILike(`%${term}%`),
       }));
     }
     return this.planRepository.find({
@@ -199,7 +198,7 @@ export class PlanRepository {
       const result = await preference.create({ body });
       res.json({ id: result.id });
 
-      const userId = req.body.userId;
+      const userId = req.body.id;
       const planId = req.body.planId;
 
       this.handlePaymentSuccess(userId, planId);

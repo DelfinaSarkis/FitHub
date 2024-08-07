@@ -13,6 +13,6 @@ import { MailerService } from 'src/mailer/mailer.service';
 @Module({
     imports: [TypeOrmModule.forFeature([Suscripciones, Users, Plan, Invoice])],
     providers: [SubscriptionsRepository, SubscriptionsScheduler, NotificationService, InvoiceRepository, MailerService],
-    exports: [SubscriptionsRepository]
+    exports: [SubscriptionsRepository],
 })
 export class SubscriptionsModule {}
