@@ -40,7 +40,7 @@ export class Users {
   @Column({ type: 'bigint', nullable: true })
   phone: number;
 
-  @Column({ type: 'varchar', length: 100 , nullable: true})
+  @Column({ type: 'varchar', length: 100, nullable: true })
   country: string;
 
   @Column({ type: 'varchar', length: 100, nullable: true })
