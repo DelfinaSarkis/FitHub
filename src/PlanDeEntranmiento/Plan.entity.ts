@@ -18,7 +18,7 @@ import {
 import { DifficultyLevel } from './difficultyLevel.enum';
 import { Category } from 'src/Category/Category.entity';
 import { Recibo } from 'src/Recibo/recibo.entity';
-// import { Invoice } from 'src/invoice/invoice.entity';
+import { Invoice } from 'src/invoice/invoice.entity';
 
 @Entity({ name: 'plan' })
 export class Plan {
@@ -73,6 +73,6 @@ export class Plan {
   @Column('text', { array: true, nullable: true })
   videoUrl: string[];
 
-  // @OneToOne(() => Invoice, (invoice) => invoice.plan)
-  // invoice: Invoice;
+  @OneToMany(() => Invoice, invoice => invoice.plan)
+  invoices: Invoice[];
 }
