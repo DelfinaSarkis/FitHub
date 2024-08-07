@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './CreateUser.Dto';
 import { UsersRepository } from './User.repository';
+import { solicitudCoachDto } from './SolicitudCoachDto';
 
 @Injectable()
 export class UserService {
@@ -32,6 +33,10 @@ export class UserService {
 
   createUser(user: CreateUserDto) {
     return this.usersRepository.createUser(user);
+  }
+
+  solicitudCoach(userId: string, body:solicitudCoachDto) {
+    return this.usersRepository.solicitudCoach(userId, body);
   }
 
   updateUser(user, id: string) {

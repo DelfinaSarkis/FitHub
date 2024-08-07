@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  Post,
   Put,
   Req,
   UseGuards,
@@ -13,6 +14,7 @@ import { UserService } from './User.service';
 import { UpdateUserDto } from './CreateUser.Dto';
 import { AuthGuard } from 'src/Guard/AuthGuar.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { solicitudCoachDto } from './SolicitudCoachDto';
 
 @ApiTags('Usuarios')
 @Controller('users')
@@ -47,6 +49,12 @@ export class UserController {
     return this.userService.getEntrenadorByIdPyR(id, idUser);
   }
 
+  @Post('solictud')
+  @UseGuards(AuthGuard)
+  solicitudCoach(@Req() req,@Body() body: solicitudCoachDto){
+    const userId = req.user.sub;
+    return this.userService.solicitudCoach(userId,body);
+  }
   @Put()
   updateUser(@Body() user: UpdateUserDto, @Param('id') id: string) {
     return this.userService.updateUser(user, id);
