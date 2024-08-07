@@ -57,13 +57,13 @@ export class SubscriptionsRepository {
       dueDate: endDate,
     };
 
-    const invoice = await this.invoiceRepository.createInvoice(invoiceData)
+    const invoice = await this.invoiceRepository.createInvoice(invoiceData);
     await this.sendInvoiceByEmail(invoice);
 
     return subscription;
   }
 
-  private async sendInvoiceByEmail(invoice: Invoice){
+  private async sendInvoiceByEmail(invoice: Invoice) {
     const user = invoice.user;
     const subject = 'Factura de Pago';
     const text = `Hola ${user.name}, aquí tienes tu factura del plan ${invoice.plan.name}.
