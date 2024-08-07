@@ -16,12 +16,12 @@ import { SeederModule } from './Seeder/seeder.module';
 import { CategoryModule } from './Category/Category.module';
 import { MailerModule } from './mailer/mailer.module';
 import { SubscriptionsModule } from './Suscripciones/suscripciones.module';
-import { ScheduleModule } from '@nestjs/schedule';
+//import { ScheduleModule } from '@nestjs/schedule';
 import { ReciboModule } from './Recibo/recibo.module';
 
 @Module({
   imports: [
-    ScheduleModule.forRoot(),
+   //ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeorm],
@@ -51,7 +51,7 @@ import { ReciboModule } from './Recibo/recibo.module';
     FilesUploadModule,
     CategoryModule,
     MailerModule,
-    SubscriptionsModule,
+    //SubscriptionsModule,
     ReciboModule,
   ],
   controllers: [AppController],

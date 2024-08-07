@@ -2,16 +2,21 @@
 import {
   Controller,
   Delete,
+  FileTypeValidator,
   HttpException,
   HttpStatus,
+  MaxFileSizeValidator,
   NotFoundException,
   Param,
+  ParseFilePipe,
   Post,
   Put,
   Query,
   Req,
   Res,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Body, Get } from '@nestjs/common';
 import { RutinaService } from './Rutinas.Service';
@@ -26,6 +31,7 @@ import { auth } from 'express-openid-connect';
 import { AuthGuard } from 'src/Guard/AuthGuar.guard';
 import MercadoPagoConfig from 'mercadopago';
 import { Request, Response } from 'express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 @ApiTags('Rutina')
 @Controller('rutina')
 export class RutinaController {
@@ -57,9 +63,35 @@ export class RutinaController {
 
   @Post()
   @UseGuards(AuthGuard)
-  async createRutina(@Req() req, @Body() rutina: CreateRutinaDto) {
+  @UseInterceptors(FilesInterceptor('files'))
+  async createRutina(
+    @Req() req,
+    @Body() rutina: CreateRutinaDto,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 1500000,
+            message: 'Tamaño máximo permitido: 1,5 MB',
+          }),
+          new FileTypeValidator({
+            fileType: /(.jpg|.png|.jpeg|.webp|.mp4|.avi|.mov)/,
+          }),
+        ],
+      }),
+    )
+    files: Express.Multer.File[],
+  ) {
+    const resourceType = files[0]?.mimetype.includes('video')
+      ? 'video'
+      : 'image';
     const userId = req.user.sub;
-    return await this.rutinaService.createRutina(rutina, userId);
+    return await this.rutinaService.createRutina(
+      rutina,
+      userId,
+      files,
+      resourceType,
+    );
   }
 
   @Post('create-order')

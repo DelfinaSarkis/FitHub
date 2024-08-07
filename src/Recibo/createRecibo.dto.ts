@@ -1,18 +1,27 @@
-import { IsNumber, IsString, IsUUID } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import { StateRecibo } from './recibo.enum';
 import { Users } from 'src/User/User.entity';
-import { Rutina } from 'src/Rutina/Rutina.entity';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
+import { Rutina } from 'src/Rutina/Rutina.entity';
 
 export class CreateReciboDto {
-  @IsUUID()
+  @IsUUID('all')
+  @IsNotEmpty()
   user: Users;
 
-  @IsUUID()
-  rutinas: Rutina[];
+  @IsUUID(undefined, { each: true })
+  @IsOptional()
+  plan?: Plan;
 
-  @IsUUID()
-  planes: Plan[];
+  @IsUUID(undefined, { each: true })
+  @IsOptional()
+  rutina?: Rutina;
 
   @IsNumber()
   price: number;

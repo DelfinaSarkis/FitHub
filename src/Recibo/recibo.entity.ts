@@ -6,12 +6,12 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { StateRecibo } from './recibo.enum';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { Rutina } from 'src/Rutina/Rutina.entity';
-
 
 @Entity({
   name: 'Recibos',
@@ -20,7 +20,7 @@ export class Recibo {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'enum', enum: StateRecibo })
   state: StateRecibo;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
@@ -30,11 +30,11 @@ export class Recibo {
   @JoinColumn({ name: 'userId' })
   user: Users;
 
-  @ManyToMany(() => Plan, (plan) => plan.recibo)
-  @JoinTable({ name: 'recibo_plan' })
-  planes: Plan[];
+  @OneToOne(() => Plan, (plan) => plan.recibo, { nullable: true })
+  @JoinColumn({ name: 'recibo_plan' })
+  plan: Plan;
 
-  @ManyToMany(() => Rutina, (rutina) => rutina.recibo)
-  @JoinTable({ name: 'recibo_rutina' })
-  rutinas: Rutina[];
+  @OneToOne(() => Rutina, (rutina) => rutina.recibo, { nullable: true })
+  @JoinColumn({ name: 'recibo_rutina' })
+  rutina: Rutina;
 }

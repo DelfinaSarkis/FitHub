@@ -11,6 +11,7 @@ import { UsersRepository } from 'src/User/User.repository';
 import { PlanModule } from 'src/PlanDeEntranmiento/Plan.module';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { PlanService } from 'src/PlanDeEntranmiento/Plan.service';
+import { FilesUploadModule } from 'src/files-upload/files-upload.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PlanService } from 'src/PlanDeEntranmiento/Plan.service';
     CategoryModule,
     AuthModule,
     usersModule,
+    FilesUploadModule,
     TypeOrmModule.forFeature([Users, Plan]),
   ],
   providers: [SeederService, UsersRepository, PlanService],

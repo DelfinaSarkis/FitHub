@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthRepository } from './Auth.Repository';
 import { CreateUserDto } from 'src/User/CreateUser.Dto';
 import { MailerService } from 'src/mailer/mailer.service';
+import { loginAuthDto } from './Login.Dto';
 
 @Injectable()
 export class AuthService {
@@ -42,5 +43,8 @@ export class AuthService {
       return 'Algo ha salido mal';
     }
     return 'entrenador creado';
+  }
+  async auth0(body: loginAuthDto){
+    return await this.authRepository.auth0(body)
   }
 }

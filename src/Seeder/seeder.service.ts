@@ -23,6 +23,7 @@ const ejercicios1: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263913/rutina-para-masa-muscular_ee5yn9.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Burpees',
@@ -31,6 +32,7 @@ const ejercicios1: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263935/woman-1284656_640_sc6p2l.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Flexiones',
@@ -38,6 +40,7 @@ const ejercicios1: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263930/SMVh-8GKw_2000x1500__1_limyou.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Zancadas',
@@ -46,6 +49,7 @@ const ejercicios1: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263879/rutina-masa-muscular_acibol.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Saltos de caja',
@@ -54,6 +58,7 @@ const ejercicios1: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722221475/m4cyxwkghibwa1e0jbuj.webp',
     ],
+    videoUrl: '',
   },
 ];
 
@@ -64,6 +69,7 @@ const ejercicios2: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263855/mujer-haciendo-ejercicio-de-levantamiento-de-pesas_tdjmwm.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Biceps',
@@ -71,6 +77,7 @@ const ejercicios2: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263829/mujer-morena-atletica-haciendo-ejercicio-pesas-club-gimnasia_613910-16352_jdvoxm.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Sentadillas',
@@ -79,6 +86,7 @@ const ejercicios2: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263674/mujer-adulta-joven-haciendo-ejercicios-fuerza-gimnasio_1153-4611_uiyf7a.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Press de banca',
@@ -87,6 +95,7 @@ const ejercicios2: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263660/joven-ropa-deportiva-clase-ejercicios-gimnasio_1150-12372_p3hwe7.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Peso muerto',
@@ -95,6 +104,7 @@ const ejercicios2: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
     ],
+    videoUrl: '',
   },
 ];
 
@@ -106,6 +116,7 @@ const ejercicios3: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263650/gimnasio-gimnasio-ejercicio-hombre-listo-para-ejercicio-con-tetera-bell_hd2vs6.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Battle Ropes',
@@ -114,6 +125,7 @@ const ejercicios3: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263597/entrenamiento-entrenamiento-deportivo-joven-hermosa-gimnasio_155003-41224_h6mf06.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Russian Twists',
@@ -122,6 +134,7 @@ const ejercicios3: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263583/ejercicios-de-gimnasio-696x464.jpg_ch1rsk.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Pull-ups',
@@ -130,6 +143,7 @@ const ejercicios3: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263614/gettyimages-653821928-2-669e262f6807d_n9mvwd.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Overhead Squats',
@@ -138,6 +152,7 @@ const ejercicios3: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263554/ejercicio-basico-sentadillas_905x603_dxg3m3.webp',
     ],
+    videoUrl: '',
   },
 ];
 
@@ -149,6 +164,7 @@ const ejercicios4: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263449/culturista-femenina-entrenando-triceps-gimnasio_651396-310_dwth19.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Clean and Jerk',
@@ -157,6 +173,7 @@ const ejercicios4: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263378/captura-de-pantalla-2024-07-08-a-las-10-15-54-668ba04d1ef77_mbivoi.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Snatch',
@@ -165,6 +182,7 @@ const ejercicios4: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263342/1503312524_654564_1503312763_noticia_normal_recorte1_fk6gsq.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Mountain Climbers',
@@ -173,6 +191,7 @@ const ejercicios4: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263325/450_1000_wu5ilc.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Remos con barra',
@@ -181,6 +200,7 @@ const ejercicios4: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
     ],
+    videoUrl: '',
   },
 ];
 
@@ -192,6 +212,7 @@ const ejercicios5: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722221475/m4cyxwkghibwa1e0jbuj.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Plank',
@@ -200,6 +221,7 @@ const ejercicios5: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722215838/if0bnghyz2ngedrvji2y.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Lateral Lunges',
@@ -208,6 +230,7 @@ const ejercicios5: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722168731/oqm26mav3opy3ihr6r1v.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Push Press',
@@ -216,6 +239,7 @@ const ejercicios5: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722215838/if0bnghyz2ngedrvji2y.webp',
     ],
+    videoUrl: '',
   },
   {
     titulo: 'Medicine Ball Slams',
@@ -224,6 +248,7 @@ const ejercicios5: EjercicioDto[] = [
     imgUrl: [
       'https://res.cloudinary.com/dae25mckx/image/upload/v1722263583/ejercicios-de-gimnasio-696x464.jpg_ch1rsk.webp',
     ],
+    videoUrl: '',
   },
 ];
 

@@ -10,6 +10,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
@@ -39,6 +40,9 @@ export class Rutina {
   @Column('text', { array: true, nullable: true })
   imgUrl: string[];
 
+  @Column('text', { array: true, nullable: true })
+  videoUrl: string[];
+
   @Column({ type: 'varchar', length: 100 })
   difficultyLevel: DifficultyLevel;
 
@@ -64,7 +68,6 @@ export class Rutina {
   @Column({ default: true })
   isActive: boolean;
 
-  @ManyToMany(() => Recibo, (recibo) => recibo.rutinas)
-  @JoinTable({ name: 'rutinas-recibos' })
-  recibo: Recibo[];
+  @OneToOne(() => Recibo, (recibo) => recibo.rutina)
+  recibo: Recibo;
 }

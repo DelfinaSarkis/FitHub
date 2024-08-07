@@ -1,4 +1,3 @@
-
 import { Plan } from "src/PlanDeEntranmiento/Plan.entity";
 import { Users } from "src/User/User.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
