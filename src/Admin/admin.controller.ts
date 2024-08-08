@@ -15,7 +15,7 @@ export class AdminController {
 
     @Post('solicitudCoach')
     @UseGuards(AuthGuard)
-    async aceptarSolicitud(@Req() req, @Query('respuesta') respuesta: resEnum, coach: string){
+    async aceptarSolicitud(@Req() req, @Query('respuesta') respuesta: resEnum, @Query('coach')coach: string){
         return await this.adminService.aceptarSolicitud(req.user.sub, coach, respuesta);
     }
     

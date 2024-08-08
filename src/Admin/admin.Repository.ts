@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotAcceptableException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { MailerService } from "src/mailer/mailer.service";
 import { Users } from "src/User/User.entity";
@@ -25,51 +25,56 @@ export class AdminRepository {
     async aceptarSolicitud(id:string, coach:string) {
         const admin = await this.userRepository.findOne({where:{id}});
         if(admin.role !== 'admin') {
-            throw new Error('No tienes permisos para realizar esta accion');
+            throw new BadRequestException('No tienes permisos para realizar esta accion');
         }
         const user = await this.userRepository.findOne({where:{id:coach}});
         if(user.solicitud === SolicitudState.PENDING) {
-            await this.userRepository.update(id, {solicitud:SolicitudState.ACCEPTED, role:UserRole.ENTRENADOR});
+            await this.userRepository.update(coach, {solicitud:SolicitudState.ACCEPTED, role:UserRole.ENTRENADOR});
             await this.mailerService.notificarRegistro(user.email, 'Solicitud aceptada', 'Tu solicitud ha sido aceptada, bienvenido a FitHub');
             return 'Solicitud aceptada';
         }
         if(user.solicitud === SolicitudState.DENIED) {
-            throw new Error('Ya tienes una solicitud denegada, comunicarte con la administracion');
+            throw new BadRequestException('Ya tienes una solicitud denegada, comunicarte con la administracion');
         }
-        throw new Error('No hay solicitudes pendientes');
+        throw new BadRequestException('No hay solicitudes pendientes');
     }
 
     async corregirSolicitud(id:string, coach:string) {
         const admin = await this.userRepository.findOne({where:{id}});
         if(admin.role !== 'admin') {
-            throw new Error('No tienes permisos para realizar esta accion');
+            throw new BadRequestException('No tienes permisos para realizar esta accion');
         }
+
         const user = await this.userRepository.findOne({where:{id:coach}});
+        console.log(user.solicitud, SolicitudState.CORRECTION);
+        if (user.solicitud === SolicitudState.CORRECTION) {
+            throw new BadRequestException('Ya esta en correccion');
+        }
         if(user.solicitud === SolicitudState.PENDING) {
-            await this.userRepository.update(id, {solicitud:SolicitudState.CORRECTION});
-            await this.mailerService.notificarRegistro(user.email, 'Solicitud en correccion', 'Tu perfil de entrenador es interesante, por favor corregir la docuemntancion y vuelve a realizar la solicitud');
+            await this.userRepository.update(coach, {solicitud:SolicitudState.CORRECTION});
+            await this.mailerService.notificarRegistro(user.email, 'Solicitud en correccion', 'Tu perfil de entrenador es interesante. Por favor, corrige la documentación y vuelve a realizar la solicitud.');
             return 'Solicitud en correccion';
         }
         if(user.solicitud === SolicitudState.DENIED) {
-            throw new Error('Solicitud denegada');
+            throw new BadRequestException('Solicitud denegada');
         }
-        throw new Error('No hay solicitudes pendientes');
+        throw new BadRequestException('No hay solicitudes pendientes');
     }
 
     async denegarSolicitud (id:string, coach:string) {
         const admin = await this.userRepository.findOne({where:{id}});
         if(admin.role !== 'admin') {
-            throw new Error('No tienes permisos para realizar esta accion');
+            throw new BadRequestException('No tienes permisos para realizar esta accion');
         }
         const user = await this.userRepository.findOne({where:{id:coach}});
         if(user.solicitud === SolicitudState.PENDING) {
-            await this.userRepository.update(id, {solicitud:SolicitudState.DENIED});
+            await this.userRepository.update(coach, {solicitud:SolicitudState.DENIED});
             await this.mailerService.notificarRegistro(user.email, 'Solicitud denegada', 'Tu solicitud ha sido denegada, comunicate con la administracion para mas informacion');
             return 'Solicitud denegada';
         }
         if(user.solicitud === SolicitudState.ACCEPTED) {
-            throw new Error('Ya tenia la solicitud aceptada');
+            throw new BadRequestException('Ya tenia la solicitud aceptada');
         }
-        throw new Error('No hay solicitudes pendientes');
+        throw new BadRequestException('No hay solicitudes pendientes');
     }
 }
