@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
+  HttpException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ import { Preference } from 'mercadopago';
 import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
 import { SubscriptionsRepository } from 'src/Suscripciones/suscripciones.repository';
 import { planClient } from 'config/mercadoPagoPlan.config';
+import { Request, Response, response } from 'express';
 
 @Injectable()
 export class PlanRepository {
@@ -174,7 +176,17 @@ export class PlanRepository {
 
   ////////////////////////////////Mercado Pago///////////////////////////////////////////
 
-  async createOrderPlan(req, res) {
+  // REVISAR EL CHEQUEO DE SI YA EXISTE EL PLAN DENTRO DEL USER. ASI NO COMPRADOS VECES. REVISAR EL INVOICE DE CADUCIDAD
+  async createOrderPlan(req: Request, res: Response) {
+    const userId = req.body.id;
+    const planId = req.body.plandId;
+    // const planYaComprado = await this.planRepository.findOne({
+    //   where: { id: planId },
+    // });
+    // if (planYaComprado) {
+    //   throw new BadRequestException('Usted ya posee este plan');
+    // }
+
     try {
       const body = {
         items: [
@@ -197,9 +209,6 @@ export class PlanRepository {
       const preference = new Preference(planClient);
       const result = await preference.create({ body });
       res.json({ id: result.id });
-
-      const userId = req.body.id;
-      const planId = req.body.planId;
 
       this.handlePaymentSuccess(userId, planId);
     } catch (error) {
