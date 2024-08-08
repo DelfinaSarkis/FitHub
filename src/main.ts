@@ -8,7 +8,7 @@ import MercadoPagoConfig from 'mercadopago';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: 'https://fit-hub-front-end.vercel.app'
+    origin: 'https://fit-hub-front-end.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
