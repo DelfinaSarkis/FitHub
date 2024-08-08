@@ -7,6 +7,11 @@ import MercadoPagoConfig from 'mercadopago';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: ['http://localhost:3000','https://fit-hub-front-end.vercel.app'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
   const documentConfig = new DocumentBuilder()
     .setTitle('FitHub')
     .setDescription('Documentacion del FitHub: Tu entranador personalizado')
@@ -18,11 +23,6 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, documentacion);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(LoggerMidleware);
-  app.enableCors({
-    origin: ['http://localhost:3000','https://fit-hub-front-end.vercel.app'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  });
   await app.listen(3001);
   console.log('Server listening on http://localhost:3001');
 }
