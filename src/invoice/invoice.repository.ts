@@ -1,7 +1,7 @@
-import { InjectRepository } from "@nestjs/typeorm";
-import { Invoice } from "./invoice.entity";
-import { LessThan, Repository } from "typeorm";
-import { Injectable } from "@nestjs/common";
+import { InjectRepository } from '@nestjs/typeorm';
+import { Invoice } from './invoice.entity';
+import { LessThan, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class InvoiceRepository {
@@ -22,6 +22,7 @@ export class InvoiceRepository {
 
     return this.invoiceRepository.find({
       where: { dueDate: LessThan(threeDaysLater) },
+      relations: ['user', 'plan'],
     });
   }
 }

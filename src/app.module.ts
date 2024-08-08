@@ -16,13 +16,13 @@ import { SeederModule } from './Seeder/seeder.module';
 import { CategoryModule } from './Category/Category.module';
 import { MailerModule } from './mailer/mailer.module';
 import { SubscriptionsModule } from './Suscripciones/suscripciones.module';
-//import { ScheduleModule } from '@nestjs/schedule';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ReciboModule } from './Recibo/recibo.module';
 import { AdminModule } from './Admin/admin.module';
 
 @Module({
   imports: [
-   //ScheduleModule.forRoot(),
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeorm],
@@ -53,7 +53,7 @@ import { AdminModule } from './Admin/admin.module';
     FilesUploadModule,
     CategoryModule,
     MailerModule,
-    //SubscriptionsModule,
+    SubscriptionsModule,
     ReciboModule,
   ],
   controllers: [AppController],

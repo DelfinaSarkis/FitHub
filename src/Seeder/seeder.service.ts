@@ -313,10 +313,10 @@ const entrenadores: CreateUserDto[] = [
 const usuarios: CreateUserDto[] = [
   {
     name: 'Lucía Fernández',
-    email: 'lucia.fernandez@mail.com',
+    email: 'dasbrotchen@gmail.com',
     dni: 25000001,
-    password: 'Password123!',
-    passwordConfirm: 'Password123!',
+    password: '12345678!aA',
+    passwordConfirm: '12345678!aA',
     phone: 2664455566,
     country: 'Argentina',
     address: 'Avenida Siempreviva 742',

@@ -103,4 +103,26 @@ export class FilesUploadController {
       resourceType,
     );
   }
+
+  @Post('pdf')
+  @UseInterceptors(FilesInterceptor('files'))
+  uploadPdfFiles(
+    @Param('id') ejercicioId: string,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 1500000, // 1.5 MB
+            message: 'Tamaño máximo permitido: 1,5 MB',
+          }),
+          new FileTypeValidator({
+            fileType: 'application/pdf',
+          }),
+        ],
+      }),
+    )
+    files: Express.Multer.File[],
+  ) {
+    return this.filesUploadService.uploadPdfFiles(files);
+  }
 }

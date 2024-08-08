@@ -6,6 +6,7 @@ import { Users } from 'src/User/User.entity';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { InvoiceRepository } from 'src/invoice/invoice.repository';
 import { Invoice } from 'src/invoice/invoice.entity';
+import { MailerService } from 'src/mailer/mailer.service';
 
 @Injectable()
 export class SubscriptionsRepository {
@@ -17,15 +18,18 @@ export class SubscriptionsRepository {
     @InjectRepository(Plan)
     private readonly planRepository: Repository<Plan>,
     private readonly invoiceRepository: InvoiceRepository,
+    private readonly emailService: MailerService,
   ) {}
 
   async createSubscription(
     userId: string,
     planId: string,
   ): Promise<Suscripciones> {
-    const startDate = new Date();
-    const endDate = new Date();
-    endDate.setMonth(endDate.getMonth() + 1);
+    // const startDate = new Date();
+    const startDate = new Date(2024, 7, 7, 15, 30, 0, 0);
+    // const endDate = new Date();
+    // endDate.setMonth(endDate.getMonth() + 1);
+    const endDate = new Date(2024, 7, 10, 15, 40, 0, 0);
 
     const user = await this.userRepository.findOne({
       where: { id: userId, isActive: true },
@@ -66,10 +70,12 @@ export class SubscriptionsRepository {
   private async sendInvoiceByEmail(invoice: Invoice) {
     const user = invoice.user;
     const subject = 'Factura de Pago';
-    const text = `Hola ${user.name}, aquí tienes tu factura del plan ${invoice.plan.name}.
+    const text = `Hola ${user.name}, aquí tienes tu factura del plan: ${invoice.plan.name}.
     Monto: ${invoice.amount} ${invoice.currency}
     Fecha de Pago: ${invoice.paymentDate}
     Fecha de Vencimiento: ${invoice.dueDate}`;
+
+    await this.emailService.notificarRegistro(user.email, subject, text);
   }
 
   async findExpiredSubscriptions() {
