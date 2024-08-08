@@ -43,7 +43,7 @@ export class Plan {
   @Column()
   latitude: number;
 
-  @Column(
+  @Column()
   longitude: number;
 
   @CreateDateColumn()
