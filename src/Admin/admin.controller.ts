@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Query, Req, UseGuards } from "@nestjs/common";
 import { AdminService } from "./admin.service";
 import { AuthGuard } from "src/Guard/AuthGuar.guard";
+import { resEnum } from "./resEnum";
 
 @Controller('admin')
 export class AdminController {
@@ -12,10 +13,10 @@ export class AdminController {
         return await this.adminService.solicitudCoach(req.user.sub);
     }
 
-    @Post('aceptarSolicitud')
+    @Post('solicitudCoach')
     @UseGuards(AuthGuard)
-    async aceptarSolicitud(@Req() req, coach: string){
-        return await this.adminService.aceptarSolicitud(req.user.sub, coach);
+    async aceptarSolicitud(@Req() req, @Query('respuesta') respuesta: resEnum, coach: string){
+        return await this.adminService.aceptarSolicitud(req.user.sub, coach, respuesta);
     }
     
 }

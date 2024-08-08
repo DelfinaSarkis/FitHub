@@ -4,8 +4,9 @@ export enum UserRole {
   USER = 'user',
 }
 export enum SolicitudState {
-  None = 'none',
+  NONE = 'none',
   PENDING = 'pending',
+  CORRECTION = "correction",
   ACCEPTED = 'accepted',
   DENIED= 'denied'
 }
