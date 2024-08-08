@@ -55,12 +55,16 @@ export class UsersRepository {
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');
     }
-    if (user.solicitud === 'none' || user.solicitud === 'denied') {
+    if (user.solicitud === SolicitudState.NONE || user.solicitud === SolicitudState.CORRECTION) {
       await this.userRepository.update(userId, { ...user, solicitud:SolicitudState.PENDING, cvpdf: body.cvpdf, cvvideo: body.cvvideo });
       return 'Solicitud enviada';
     } else if(user.solicitud === 'pending') {
       return 'Ya tienes una solicitud pendiente';
-    } 
+    } else if(user.solicitud === SolicitudState.ACCEPTED) {
+      return 'Ya eres entrenador';
+    } else if(user.solicitud === SolicitudState.DENIED) {
+      return 'Tu solicitud fue denegada, no puedes enviar otra solicitud, contacta con soporte';
+    }
   }
 
   async createUser(user: CreateUserDto) {
