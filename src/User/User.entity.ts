@@ -51,7 +51,7 @@ export class Users {
   @Column({ default: UserRole.USER })
   role: UserRole;
 
-  @Column({default: SolicitudState.None})
+  @Column({default: SolicitudState.NONE})
   solicitud: SolicitudState;
 
   @Column({type:'varchar',nullable:true})
