@@ -8,7 +8,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { UserRole } from './User.enum';
+import { SolicitudState, UserRole } from './User.enum';
 import { Comentarios } from 'src/Comentario/Comentarios.entity';
 import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
 import { Rutina } from 'src/Rutina/Rutina.entity';
@@ -50,6 +50,15 @@ export class Users {
 
   @Column({ default: UserRole.USER })
   role: UserRole;
+
+  @Column({default: SolicitudState.None})
+  solicitud: SolicitudState;
+
+  @Column({type:'varchar',nullable:true})
+  cvpdf:string;
+
+  @Column({type:'varchar',nullable:true})
+  cvvideo:string;
 
   @ManyToMany(() => Rutina, (rutina) => rutina.users)
   @JoinTable({ name: 'usuario-rutina' })

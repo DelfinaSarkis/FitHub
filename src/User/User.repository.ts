@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { Users } from './User.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './CreateUser.Dto';
+import { SolicitudState } from './User.enum';
 
 @Injectable()
 export class UsersRepository {
@@ -47,6 +48,19 @@ export class UsersRepository {
       planAdmin: entrenadorRyP.planAdmin,
       exercise: entrenadorRyP.exercise,
     };
+  }
+
+  async solicitudCoach(userId, body) {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+    if (user.solicitud === 'none' || user.solicitud === 'denied') {
+      await this.userRepository.update(userId, { ...user, solicitud:SolicitudState.PENDING, cvpdf: body.cvpdf, cvvideo: body.cvvideo });
+      return 'Solicitud enviada';
+    } else if(user.solicitud === 'pending') {
+      return 'Ya tienes una solicitud pendiente';
+    } 
   }
 
   async createUser(user: CreateUserDto) {
