@@ -184,7 +184,29 @@ export class RutinaRepository {
   ////////////////////////////////Mercado Pago///////////////////////////////////////////
 
   async createOrderRoutine(req: Request, res: Response) {
+    const userId = req.body.id;
+    const rutinaId = req.body.rutinaId;
+
     try {
+      const user = await this.userRepository.findOne({
+        where: { id: userId },
+        relations: ['routine'],
+      });
+      if (!user) {
+        throw new ConflictException('Usuario no encontrado');
+      }
+      if (user.routine.some((r) => r.id === rutinaId)) {
+        throw new BadRequestException(
+          'Usted ya ha comprado anteriormente esta rutina',
+        );
+      }
+      const rutina = await this.rutinaRepository.findOne({
+        where: { id: rutinaId },
+      });
+      if (!rutina) {
+        throw new ConflictException('Rutina no encontrada');
+      }
+
       const body = {
         items: [
           {
@@ -208,21 +230,6 @@ export class RutinaRepository {
       res.json({
         id: result.id,
       });
-      console.log(result, ' result.........');
-      const userId = req.body.id;
-      const rutinaId = req.body.rutinaId;
-      const user = await this.userRepository.findOne({where: {id: userId},relations: ['routine']});
-
-      if (!user) {
-        throw new ConflictException('Usuario no encontrado');
-      }
-      const rutina = await this.rutinaRepository.findOne({where:{id:rutinaId}});
-      if (!rutina) {
-        throw new ConflictException('Rutina no encontrada');
-      }
-      if (user.routine.some(existingRutina => existingRutina.id === rutinaId)) {
-        throw new ConflictException('La rutina ya está asociada con este usuario');
-      }
 
       user.routine.push(rutina);
       await this.userRepository.save(user);
@@ -240,7 +247,7 @@ export class RutinaRepository {
       return result;
     } catch (error) {
       console.error(error);
-      res.status(500).send('Error al crear la preferencia de pago');
+      res.status(400).send('Error al crear la preferencia de pago');
     }
   }
 }

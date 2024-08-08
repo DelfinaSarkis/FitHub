@@ -61,8 +61,6 @@ export class SubscriptionsRepository {
       dueDate: endDate,
     };
 
-    console.log('................');
-    console.log(invoiceData, '..................invoice creacion');
     const invoice = await this.invoiceRepository.createInvoice(invoiceData);
     await this.sendInvoiceByEmail(invoice);
 

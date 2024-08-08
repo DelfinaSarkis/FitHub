@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { Repository } from 'typeorm';
@@ -92,6 +96,26 @@ export class FilesUploadService {
     if (uploadResults.length === 0) {
       throw new NotFoundException('No se pudieron cargar los archivos');
     }
+    const fileUrls = uploadResults.map((result) => result.secure_url);
+    return fileUrls;
+  }
+
+  async uploadPdfFiles(files: Express.Multer.File[]) {
+    files.forEach((file) => {
+      if (file.mimetype !== 'application/pdf') {
+        throw new BadRequestException(
+          'Solo se permiten archivos en formato PDF',
+        );
+      }
+    });
+
+    const uploadResults =
+      await this.filesUploadRepository.uploadPdfFiles(files);
+
+    if (uploadResults.length === 0) {
+      throw new NotFoundException('No se pudieron cargar los archivos');
+    }
+
     const fileUrls = uploadResults.map((result) => result.secure_url);
     return fileUrls;
   }
