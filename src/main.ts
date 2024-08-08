@@ -19,7 +19,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(LoggerMidleware);
   app.enableCors({
-    origin: ['http://localhost:3000','https://fit-hub-front-end.vercel.app/'],
+    origin: ['http://localhost:3000','https://fit-hub-front-end.vercel.app'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
