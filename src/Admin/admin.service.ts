@@ -4,40 +4,59 @@ import { AdminRepository } from "./admin.Repository";
 @Injectable()
 export class AdminService {
     constructor(private readonly adminRepository:AdminRepository) {}
-    async solicitudCoach(id:string) {
-        return await this.adminRepository.solicitudCoach(id);
+    async solicitudPending(id:string) {
+        return await this.adminRepository.solicitudPending(id);
     }
 
-    async responderSolicitud(id:string, respuesta, coach?:string, plan?:string, rutina?:string) {
-        if(coach){
+    async responderSolicitud(id:string, respuesta, coach?:string[], plan?:string[], rutina?:string[]) {
+        if(coach.length > 0) {
             if(respuesta === 'aceptar') {
-                return await this.adminRepository.aceptarSolicitud(id, coach);
+                for (const profe of coach) {
+                    return await this.adminRepository.aceptarSolicitud(id, profe);
+                }
             }
             if(respuesta === 'corregir') {
-                return await this.adminRepository.corregirSolicitud(id, coach);
+                for (const profe of coach) {
+                    return await this.adminRepository.corregirSolicitud(id, profe);
+                }
             }
             if(respuesta === 'denegar') {
-                return await this.adminRepository.denegarSolicitud(id, coach);
+                for (const profe of coach) {
+                    return await this.adminRepository.denegarSolicitud(id, profe);
+                }
             }
         } else if (plan) {
             if(respuesta === 'aceptar') {
-                return await this.adminRepository.aceptarSolicitud(id, plan);
+                for (const planRes of plan) {
+                    return await this.adminRepository.aceptarSolicitud(id, planRes);
+                }
             }
             if(respuesta === 'corregir') {
-                return await this.adminRepository.corregirSolicitud(id, plan);
+                for (const planRes of plan) {
+                    return await this.adminRepository.corregirSolicitud(id, planRes);
+                    
+                }
             }
             if(respuesta === 'denegar') {
-                return await this.adminRepository.denegarSolicitud(id, plan);
+                for (const planRes of plan) {
+                    return await this.adminRepository.denegarSolicitud(id, planRes);
+                }
             }
         } else if (rutina) {
             if(respuesta === 'aceptar') {
-                return await this.adminRepository.aceptarSolicitud(id, rutina);
+                for (const rutinaRes of rutina) {
+                    return await this.adminRepository.aceptarSolicitud(id, rutinaRes);
+                }
             }
             if(respuesta === 'corregir') {
-                return await this.adminRepository.corregirSolicitud(id, rutina);
+                for (const rutinaRes of rutina) {
+                    return await this.adminRepository.corregirSolicitud(id, rutinaRes);
+                }
             }
             if(respuesta === 'denegar') {
-                return await this.adminRepository.denegarSolicitud(id, rutina);
+                for (const rutinaRes of rutina) {
+                    return await this.adminRepository.denegarSolicitud(id, rutinaRes);
+                }
             }
         }
     }
