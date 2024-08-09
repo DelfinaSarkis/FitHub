@@ -11,11 +11,12 @@ import { AdminController } from "./admin.controller";
 import { AdminService } from "./admin.service";
 import { AdminRepository } from "./admin.Repository";
 import { MailerService } from "src/mailer/mailer.service";
+import { RolesGuard } from "src/guards/roles.guard";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Users, Rutina, Plan, Recibo, Suscripciones, Invoice])],
     controllers: [AdminController],
-    providers: [AdminService,AdminRepository,MailerService],
+    providers: [AdminService,AdminRepository,MailerService, RolesGuard],
     exports: [],
 })
 export class AdminModule {}
