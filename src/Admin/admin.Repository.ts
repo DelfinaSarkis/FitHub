@@ -23,9 +23,9 @@ export class AdminRepository {
         if(admin.role !== 'admin') {
             throw new Error('No tienes permisos para realizar esta accion');
         }
-        const coachs = await this.userRepository.findOne({where:{solicitud:SolicitudState.PENDING}});
-        const planes = await this.planRepository.findOne({where:{check:SolicitudState.PENDING}});
-        const rutinas = await this.rutinaRepository.findOne({where:{check:SolicitudState.PENDING}});
+        const coachs = await this.userRepository.find({where:{solicitud:SolicitudState.PENDING}});
+        const planes = await this.planRepository.find({where:{check:SolicitudState.PENDING}});
+        const rutinas = await this.rutinaRepository.find({where:{check:SolicitudState.PENDING}});
 
         return {coachs, planes, rutinas};
         
