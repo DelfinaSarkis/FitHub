@@ -46,11 +46,11 @@ export class PlanRepository {
       whereConditions.category = categoria;
     }
 
-    if (location !== undefined) {
+    if (location) {
       whereConditions.location = ILike(`%${location}`);
     }
 
-    if (difficultyLevel !== undefined) {
+    if (difficultyLevel) {
       whereConditions.difficultyLevel = difficultyLevel;
     }
     if (search) {
