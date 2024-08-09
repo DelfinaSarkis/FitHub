@@ -51,6 +51,9 @@ export class Users {
   @Column({ default: UserRole.USER })
   role: UserRole;
 
+  @Column('text', { nullable: true })
+  imgUrl: string;
+
   @ManyToMany(() => Rutina, (rutina) => rutina.users)
   @JoinTable({ name: 'usuario-rutina' })
   routine: Rutina[];
