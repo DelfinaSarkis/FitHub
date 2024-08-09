@@ -25,7 +25,7 @@ export class AdminService {
                     return await this.adminRepository.denegarSolicitud(id, profe);
                 }
             }
-        } else if (plan) {
+        } else if (plan.length > 0) {
             if(respuesta === 'aceptar') {
                 for (const planRes of plan) {
                     return await this.adminRepository.aceptarSolicitud(id, planRes);
@@ -42,7 +42,7 @@ export class AdminService {
                     return await this.adminRepository.denegarSolicitud(id, planRes);
                 }
             }
-        } else if (rutina) {
+        } else if (rutina.length > 0) {
             if(respuesta === 'aceptar') {
                 for (const rutinaRes of rutina) {
                     return await this.adminRepository.aceptarSolicitud(id, rutinaRes);
