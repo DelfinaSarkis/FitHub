@@ -26,4 +26,26 @@ export class FilesUploadRepository {
 
     return Promise.all(uploadPromises);
   }
+
+  async uploadPdfFiles(
+    files: Express.Multer.File[],
+  ): Promise<UploadApiResponse[]> {
+    const uploadPromises = files.map((file) => {
+      return new Promise<UploadApiResponse>((resolve, reject) => {
+        const upload = v2.uploader.upload_stream(
+          { resource_type: 'raw' },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          },
+        );
+        toStream(file.buffer).pipe(upload);
+      });
+    });
+
+    return Promise.all(uploadPromises);
+  }
 }

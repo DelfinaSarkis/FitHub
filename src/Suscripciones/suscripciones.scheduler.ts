@@ -8,7 +8,7 @@ import { LessThan } from "typeorm";
 export class SubscriptionsScheduler {
    constructor(private readonly subscriptionsRepository: SubscriptionsRepository) {}
 
-   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+   @Cron(CronExpression.EVERY_DAY_AT_2PM)
    async handleCron(){
        try{
            const subscriptions = await this.subscriptionsRepository.findExpiredSubscriptions();

@@ -80,6 +80,6 @@ export class Plan {
   @Column('text', { array: true, nullable: true })
   videoUrl: string[];
 
-  @OneToMany(() => Invoice, invoice => invoice.plan)
+  @OneToMany(() => Invoice, (invoice) => invoice.plan)
   invoices: Invoice[];
 }
