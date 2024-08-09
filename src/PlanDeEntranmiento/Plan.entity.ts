@@ -29,7 +29,7 @@ export class Plan {
   @Column({ type: 'varchar', length: 100, nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', default: SolicitudState.NONE })
+  @Column({ type: 'varchar', default: SolicitudState.PENDING })
   check: SolicitudState;
 
   @Column({ type: 'varchar' })

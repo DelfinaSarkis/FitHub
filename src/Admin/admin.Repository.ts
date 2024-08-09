@@ -18,7 +18,7 @@ export class AdminRepository {
 
     ) {}
     
-    async solicitudCoach(id:string) {
+    async solicitudPending(id:string) {
         const admin = await this.userRepository.findOne({where:{id}});
         if(admin.role !== 'admin') {
             throw new Error('No tienes permisos para realizar esta accion');
