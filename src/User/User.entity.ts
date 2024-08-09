@@ -51,6 +51,9 @@ export class Users {
   @Column({ default: UserRole.USER })
   role: UserRole;
 
+  @Column('text', { nullable: true })
+  imgUrl: string;
+
   @Column({default: SolicitudState.NONE})
   solicitud: SolicitudState;
 

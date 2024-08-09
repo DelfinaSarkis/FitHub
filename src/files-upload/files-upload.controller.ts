@@ -5,12 +5,15 @@ import {
   Param,
   ParseFilePipe,
   Post,
+  Req,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesUploadService } from './files-upload.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/Guard/AuthGuar.guard';
 
 @ApiTags('Archivos')
 @Controller('files')
@@ -124,5 +127,37 @@ export class FilesUploadController {
     files: Express.Multer.File[],
   ) {
     return this.filesUploadService.uploadPdfFiles(files);
+  }
+
+  @Post('profile')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FilesInterceptor('files'))
+  uploadImageProfile(
+    @Req() req,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({
+            maxSize: 1500000,
+            message: 'Tamaño máximo permitido: 1,5 MB',
+          }),
+          new FileTypeValidator({
+            fileType: /(.jpg|.png|.jpeg|.webp)/,
+          }),
+        ],
+      }),
+    )
+    files: Express.Multer.File[],
+  ) {
+    const user = req.user;
+    const userId = user.sub;
+    console.log(userId);
+    const resourceType = 'image';
+
+    return this.filesUploadService.uploadImageProfile(
+      files,
+      userId,
+      resourceType,
+    );
   }
 }
