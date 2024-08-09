@@ -17,6 +17,8 @@ import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 import { Categorias } from 'src/Dto/Categorias.Dto';
 import { Category } from 'src/Category/Category.entity';
 import { Recibo } from 'src/Recibo/recibo.entity';
+import { solicitudCoachDto } from 'src/User/SolicitudCoachDto';
+import { SolicitudState } from 'src/User/User.enum';
 
 @Entity({
   name: 'rutina',
@@ -28,8 +30,8 @@ export class Rutina {
   @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ type: 'boolean', default: false })
-  check: boolean;
+  @Column({ type: 'varchar', default: SolicitudState.NONE })
+  check: SolicitudState;
 
   @Column({ type: 'varchar' })
   description: string;

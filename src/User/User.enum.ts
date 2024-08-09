@@ -1,3 +1,5 @@
+import { SetMetadata } from "@nestjs/common";
+
 export enum UserRole {
   ADMIN = 'admin',
   ENTRENADOR = 'entrenador',
@@ -10,3 +12,5 @@ export enum SolicitudState {
   ACCEPTED = 'accepted',
   DENIED= 'denied'
 }
+
+export const Roles = (...role: UserRole[]) => SetMetadata('role', role);

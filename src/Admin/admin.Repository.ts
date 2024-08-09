@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable, NotAcceptableException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { MailerService } from "src/mailer/mailer.service";
+import { Plan } from "src/PlanDeEntranmiento/Plan.entity";
+import { Rutina } from "src/Rutina/Rutina.entity";
 import { Users } from "src/User/User.entity";
 import { SolicitudState, UserRole } from "src/User/User.enum";
 import { UsersRepository } from "src/User/User.repository";
@@ -11,6 +13,8 @@ export class AdminRepository {
     constructor(
         private readonly mailerService:MailerService,
         @InjectRepository(Users) private readonly userRepository: Repository<Users>,
+        @InjectRepository(Plan) private readonly planRepository: Repository<Plan>,
+        @InjectRepository(Rutina) private readonly rutinaRepository: Repository<Rutina>
 
     ) {}
     
@@ -19,62 +23,133 @@ export class AdminRepository {
         if(admin.role !== 'admin') {
             throw new Error('No tienes permisos para realizar esta accion');
         }
-        return await this.userRepository.findOne({where:{solicitud:SolicitudState.PENDING}});
+        const coachs = await this.userRepository.findOne({where:{solicitud:SolicitudState.PENDING}});
+        const planes = await this.planRepository.findOne({where:{check:SolicitudState.PENDING}});
+        const rutinas = await this.rutinaRepository.findOne({where:{check:SolicitudState.PENDING}});
+
+        return {coachs, planes, rutinas};
+        
     }
 
-    async aceptarSolicitud(id:string, coach:string) {
+    async aceptarSolicitud(id:string, coach?:string, plan?:string, rutina?:string) {
         const admin = await this.userRepository.findOne({where:{id}});
         if(admin.role !== 'admin') {
             throw new BadRequestException('No tienes permisos para realizar esta accion');
         }
-        const user = await this.userRepository.findOne({where:{id:coach}});
-        if(user.solicitud === SolicitudState.PENDING) {
-            await this.userRepository.update(coach, {solicitud:SolicitudState.ACCEPTED, role:UserRole.ENTRENADOR});
-            await this.mailerService.notificarRegistro(user.email, 'Solicitud aceptada', 'Tu solicitud ha sido aceptada, bienvenido a FitHub');
-            return 'Solicitud aceptada';
-        }
-        if(user.solicitud === SolicitudState.DENIED) {
-            throw new BadRequestException('Ya tienes una solicitud denegada, comunicarte con la administracion');
-        }
-        throw new BadRequestException('No hay solicitudes pendientes');
-    }
+        if (coach){
+            const user = await this.userRepository.findOne({where:{id:coach}});
+            if(user.solicitud === SolicitudState.PENDING) {
+                await this.userRepository.update(coach, {solicitud:SolicitudState.ACCEPTED, role:UserRole.ENTRENADOR});
+                await this.mailerService.notificarRegistro(user.email, 'Solicitud aceptada', 'Tu solicitud ha sido aceptada, bienvenido a FitHub');
+                return 'Solicitud aceptada';
+            }
+            if(user.solicitud === SolicitudState.DENIED) {
+                throw new BadRequestException('Ya tienes una solicitud denegada, comunicarte con la administracion');
+            }
+            throw new BadRequestException('No hay solicitudes pendientes');
+        } else if (plan){
+            const planSol = await this.planRepository.findOne({where:{id:plan}, relations:['user']});
+            if(planSol.check === SolicitudState.PENDING) {
+                await this.planRepository.update(plan, {check:SolicitudState.ACCEPTED});
+                await this.mailerService.notificarRegistro(planSol.admin.email, 'Solicitud aceptada', 'Tu solicitud ha sido aceptada, tu plan de entrenamineto ya se encuentra activo en FitHub');
+                return 'Solicitud aceptada';
+            } else if (planSol.check === SolicitudState.DENIED) {
+                throw new BadRequestException('Ya tienes una solicitud denegada, comunicarte con la administracion');
 
-    async corregirSolicitud(id:string, coach:string) {
+            }
+        } else if (rutina){
+            const rutinaSol = await this.rutinaRepository.findOne({where:{id:rutina}, relations:['user']});
+            if(rutinaSol.check === SolicitudState.PENDING) {
+                await this.rutinaRepository.update(rutina, {check:SolicitudState.ACCEPTED});
+                await this.mailerService.notificarRegistro(rutinaSol.admin.email, 'Solicitud aceptada', 'Tu solicitud ha sido aceptada, tu rutina ya se encuentra activa en FitHub');
+                return 'Solicitud aceptada';
+            } else if (rutinaSol.check === SolicitudState.DENIED) {
+                throw new BadRequestException('Ya tienes una solicitud denegada, comunicarte con la administracion');
+        }
+    }
+}
+
+    async corregirSolicitud(id:string, coach:string, plan?:string, rutina?:string) {
         const admin = await this.userRepository.findOne({where:{id}});
         if(admin.role !== 'admin') {
             throw new BadRequestException('No tienes permisos para realizar esta accion');
         }
-
-        const user = await this.userRepository.findOne({where:{id:coach}});
-        console.log(user.solicitud, SolicitudState.CORRECTION);
-        if (user.solicitud === SolicitudState.CORRECTION) {
-            throw new BadRequestException('Ya esta en correccion');
-        }
-        if(user.solicitud === SolicitudState.PENDING) {
-            await this.userRepository.update(coach, {solicitud:SolicitudState.CORRECTION});
-            await this.mailerService.notificarRegistro(user.email, 'Solicitud en correccion', 'Tu perfil de entrenador es interesante. Por favor, corrige la documentación y vuelve a realizar la solicitud.');
-            return 'Solicitud en correccion';
-        }
-        if(user.solicitud === SolicitudState.DENIED) {
-            throw new BadRequestException('Solicitud denegada');
+        if(coach){
+            const user = await this.userRepository.findOne({where:{id:coach}});
+            console.log(user.solicitud, SolicitudState.CORRECTION);
+            if (user.solicitud === SolicitudState.CORRECTION) {
+                throw new BadRequestException('Ya esta en correccion');
+            }
+            if(user.solicitud === SolicitudState.PENDING) {
+                await this.userRepository.update(coach, {solicitud:SolicitudState.CORRECTION});
+                await this.mailerService.notificarRegistro(user.email, 'Solicitud en correccion', 'Tu perfil de entrenador es interesante. Por favor, corrige la documentación y vuelve a realizar la solicitud.');
+                return 'Solicitud en correccion';
+            }
+            if(user.solicitud === SolicitudState.DENIED) {
+                throw new BadRequestException('Solicitud denegada');
+            }
+        } else if (plan){
+            const planSol = await this.planRepository.findOne({where:{id:plan}, relations:['user']});
+            if(planSol.check === SolicitudState.CORRECTION) {
+                throw new BadRequestException('Ya esta en correccion');
+            }
+            if(planSol.check === SolicitudState.PENDING) {
+                await this.planRepository.update(plan, {check:SolicitudState.CORRECTION});
+                await this.mailerService.notificarRegistro(planSol.admin.email, 'Solicitud en correccion', 'Tu plan de entrenamiento es interesante. Por favor, corrige la documentación y vuelve a realizar la solicitud.');
+                return 'Solicitud en correccion';
+            } else if (planSol.check === SolicitudState.DENIED) {
+                throw new BadRequestException('Solicitud denegada');
+            }
+        } else if (rutina){
+            const rutinaSol = await this.rutinaRepository.findOne({where:{id:rutina}, relations:['user']});
+            if(rutinaSol.check === SolicitudState.CORRECTION) {
+                throw new BadRequestException('Ya esta en correccion');
+            }
+            if(rutinaSol.check === SolicitudState.PENDING) {
+                await this.rutinaRepository.update(rutina, {check:SolicitudState.CORRECTION});
+                await this.mailerService.notificarRegistro(rutinaSol.admin.email, 'Solicitud en correccion', 'Tu rutina es interesante. Por favor, corrige la documentación y vuelve a realizar la solicitud.');
+                return 'Solicitud en correccion';
+            } else if (rutinaSol.check === SolicitudState.DENIED) {
+                throw new BadRequestException('Solicitud denegada');
+            }
         }
         throw new BadRequestException('No hay solicitudes pendientes');
     }
 
-    async denegarSolicitud (id:string, coach:string) {
-        const admin = await this.userRepository.findOne({where:{id}});
-        if(admin.role !== 'admin') {
-            throw new BadRequestException('No tienes permisos para realizar esta accion');
+    async denegarSolicitud (id:string, coach:string, plan?:string, rutina?:string) {
+        if (coach){
+            const admin = await this.userRepository.findOne({where:{id}});
+            if(admin.role !== 'admin') {
+                throw new BadRequestException('No tienes permisos para realizar esta accion');
+            }
+            const user = await this.userRepository.findOne({where:{id:coach}});
+            if(user.solicitud === SolicitudState.PENDING) {
+                await this.userRepository.update(coach, {solicitud:SolicitudState.DENIED});
+                await this.mailerService.notificarRegistro(user.email, 'Solicitud denegada', 'Tu solicitud ha sido denegada, comunicate con la administracion para mas informacion');
+                return 'Solicitud denegada';
+            }
+            if(user.solicitud === SolicitudState.ACCEPTED) {
+                throw new BadRequestException('Ya tenia la solicitud aceptada');
+            }
+        }else if (plan){
+            const planSol = await this.planRepository.findOne({where:{id:plan}, relations:['user']});
+            if(planSol.check === SolicitudState.PENDING) {
+                await this.planRepository.update(plan, {check:SolicitudState.DENIED});
+                await this.mailerService.notificarRegistro(planSol.admin.email, 'Solicitud denegada', 'Tu solicitud ha sido denegada, comunicate con la administracion para mas informacion');
+                return 'Solicitud denegada';
+            } else if (planSol.check === SolicitudState.ACCEPTED) {
+                throw new BadRequestException('Ya tenia la solicitud aceptada');
+            }
+        } else if (rutina){
+            const rutinaSol = await this.rutinaRepository.findOne({where:{id:rutina}, relations:['user']});
+            if(rutinaSol.check === SolicitudState.PENDING) {
+                await this.rutinaRepository.update(rutina, {check:SolicitudState.DENIED});
+                await this.mailerService.notificarRegistro(rutinaSol.admin.email, 'Solicitud denegada', 'Tu solicitud ha sido denegada, comunicate con la administracion para mas informacion');
+                return 'Solicitud denegada';
+            } else if (rutinaSol.check === SolicitudState.ACCEPTED) {
+                throw new BadRequestException('Ya tenia la solicitud aceptada');
+            }
+            throw new BadRequestException('No hay solicitudes pendientes');
         }
-        const user = await this.userRepository.findOne({where:{id:coach}});
-        if(user.solicitud === SolicitudState.PENDING) {
-            await this.userRepository.update(coach, {solicitud:SolicitudState.DENIED});
-            await this.mailerService.notificarRegistro(user.email, 'Solicitud denegada', 'Tu solicitud ha sido denegada, comunicate con la administracion para mas informacion');
-            return 'Solicitud denegada';
-        }
-        if(user.solicitud === SolicitudState.ACCEPTED) {
-            throw new BadRequestException('Ya tenia la solicitud aceptada');
-        }
-        throw new BadRequestException('No hay solicitudes pendientes');
     }
 }
