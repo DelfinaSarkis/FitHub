@@ -9,56 +9,62 @@ export class AdminService {
     }
 
     async responderSolicitud(id:string, respuesta, coach?:string[], plan?:string[], rutina?:string[]) {
+        console.log(coach.length, plan, rutina,respuesta);
         if(coach.length > 0) {
             if(respuesta === 'aceptar') {
                 for (const profe of coach) {
-                    return await this.adminRepository.aceptarSolicitud(id, profe);
+                    await this.adminRepository.aceptarSolicitud(id, profe);
                 }
             }
             if(respuesta === 'corregir') {
                 for (const profe of coach) {
-                    return await this.adminRepository.corregirSolicitud(id, profe);
+                    await this.adminRepository.corregirSolicitud(id, profe);
                 }
             }
             if(respuesta === 'denegar') {
                 for (const profe of coach) {
-                    return await this.adminRepository.denegarSolicitud(id, profe);
+                    await this.adminRepository.denegarSolicitud(id, profe);
                 }
             }
-        } else if (plan.length > 0) {
+        } 
+        if (plan.length > 0) {
+
             if(respuesta === 'aceptar') {
                 for (const planRes of plan) {
-                    return await this.adminRepository.aceptarSolicitud(id, planRes);
+                    await this.adminRepository.aceptarSolicitud(id, null ,planRes);
                 }
             }
             if(respuesta === 'corregir') {
                 for (const planRes of plan) {
-                    return await this.adminRepository.corregirSolicitud(id, planRes);
+                    await this.adminRepository.corregirSolicitud(id, null ,planRes);
                     
                 }
             }
             if(respuesta === 'denegar') {
                 for (const planRes of plan) {
-                    return await this.adminRepository.denegarSolicitud(id, planRes);
+                    await this.adminRepository.denegarSolicitud(id, null ,planRes);
                 }
             }
-        } else if (rutina.length > 0) {
+        }
+        if (rutina.length > 0) {
+
             if(respuesta === 'aceptar') {
                 for (const rutinaRes of rutina) {
-                    return await this.adminRepository.aceptarSolicitud(id, rutinaRes);
+                    await this.adminRepository.aceptarSolicitud(id, null, null, rutinaRes);
                 }
             }
             if(respuesta === 'corregir') {
                 for (const rutinaRes of rutina) {
-                    return await this.adminRepository.corregirSolicitud(id, rutinaRes);
+                    await this.adminRepository.corregirSolicitud(id, null, null, rutinaRes);
                 }
             }
             if(respuesta === 'denegar') {
                 for (const rutinaRes of rutina) {
-                    return await this.adminRepository.denegarSolicitud(id, rutinaRes);
+                    await this.adminRepository.denegarSolicitud(id, null, null, rutinaRes);
                 }
             }
         }
+        return "Solicitud respondida";
     }
     
 }

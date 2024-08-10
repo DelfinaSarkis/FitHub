@@ -12,14 +12,14 @@ export class AdminController {
 
     @Get('solicitudes')
     @Roles(UserRole.ADMIN)
-    @UseGuards(AuthGuard, RolesGuard)
+    @UseGuards(AuthGuard, /*RolesGuard*/)
     async solicitudPending(@Req() req){
         return await this.adminService.solicitudPending(req.user.sub);
     }
 
     @Post('solicitudCoach')
     @Roles(UserRole.ADMIN)
-    @UseGuards(AuthGuard, RolesGuard)    
+    @UseGuards(AuthGuard, /*RolesGuard*/)
     async aceptarSolicitud(@Req() req, @Body() body:respuestaDto, @Query('respuesta') respuesta:resEnum){
         const {coach, plan, rutina} = body;
         return await this.adminService.responderSolicitud(req.user.sub, respuesta, coach, plan, rutina);
