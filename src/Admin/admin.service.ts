@@ -28,6 +28,7 @@ export class AdminService {
             }
         } 
         if (plan.length > 0) {
+
             if(respuesta === 'aceptar') {
                 for (const planRes of plan) {
                     await this.adminRepository.aceptarSolicitud(id, null ,planRes);
@@ -46,6 +47,7 @@ export class AdminService {
             }
         }
         if (rutina.length > 0) {
+
             if(respuesta === 'aceptar') {
                 for (const rutinaRes of rutina) {
                     await this.adminRepository.aceptarSolicitud(id, null, null, rutinaRes);

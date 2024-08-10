@@ -58,37 +58,6 @@ export class PlanController {
     return await this.planService.getPlanById(id);
   }
 
-  // @Post()
-  // @UseGuards(AuthGuard)
-  // @UseInterceptors(FilesInterceptor('files'))
-  // async createPlan(
-  //   @Req() req,
-  //   @Body() plan: PlanCreateDto,
-  //   @UploadedFiles(
-  //     new ParseFilePipe({
-  //       validators: [
-  //         new MaxFileSizeValidator({
-  //           maxSize: 1500000,
-  //           message: 'Tamaño máximo permitido: 1,5 MB',
-  //         }),
-  //         new FileTypeValidator({
-  //           fileType: /(.jpg|.png|.jpeg|.webp|.mp4|.avi|.mov)/,
-  //         }),
-  //       ],
-  //     }),
-  //   )
-  //   files: Express.Multer.File[],
-  // ) {
-  //   const resourceType = files[0]?.mimetype.includes('video')
-  //     ? 'video'
-  //     : 'image';
-  //   console.log(plan);
-  //   const user = req.user;
-  //   console.log(user);
-  //   const admin = user.sub;
-  //   return await this.planService.createPlan(plan, admin, files, resourceType);
-  // }
-
   @Post()
   @UseGuards(AuthGuard)
   async createPlan(@Req() req, @Body() plan: PlanCreateDto) {
@@ -98,7 +67,7 @@ export class PlanController {
   }
 
   @Post('create-order')
-  async createSubscription(@Req() req: Request, @Res() res: Response) {
+  async createSubscription(@Req() req: Request, @Res() res) {
     const result = await this.planService.createSubscription(req, res);
     return result;
   }

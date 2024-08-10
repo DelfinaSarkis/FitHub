@@ -1,10 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
 import { Repository } from 'typeorm';
 import { FilesUploadRepository } from './files-upload.repository';
 import { Rutina } from 'src/Rutina/Rutina.entity';
-import { RutinaRepository } from 'src/Rutina/Rutina.reposity';
+import { Users } from 'src/User/User.entity';
 
 @Injectable()
 export class FilesUploadService {
@@ -14,6 +18,8 @@ export class FilesUploadService {
     private readonly ejerciciosRepository: Repository<Ejercicio>,
     @InjectRepository(Rutina)
     private readonly rutinaRepository: Repository<Rutina>,
+    @InjectRepository(Users)
+    private readonly usersRepository: Repository<Users>,
   ) {}
 
   async uploadFilesEjercicio(
@@ -94,5 +100,44 @@ export class FilesUploadService {
     }
     const fileUrls = uploadResults.map((result) => result.secure_url);
     return fileUrls;
+  }
+
+  async uploadPdfFiles(files: Express.Multer.File[]) {
+    files.forEach((file) => {
+      if (file.mimetype !== 'application/pdf') {
+        throw new BadRequestException(
+          'Solo se permiten archivos en formato PDF',
+        );
+      }
+    });
+
+    const uploadResults =
+      await this.filesUploadRepository.uploadPdfFiles(files);
+
+    if (uploadResults.length === 0) {
+      throw new NotFoundException('No se pudieron cargar los archivos');
+    }
+
+    const fileUrls = uploadResults.map((result) => result.secure_url);
+    return fileUrls;
+  }
+
+  async uploadImageProfile(
+    files: Express.Multer.File[],
+    userId: string,
+    resourceType: 'auto' | 'image' = 'auto',
+  ) {
+    const uploadResults = await this.filesUploadRepository.uploadFiles(
+      files,
+      resourceType,
+    );
+    if (uploadResults.length === 0) {
+      throw new NotFoundException('No se pudieron cargar los archivos');
+    }
+    const imgUrl = uploadResults[0].secure_url;
+
+    const updateUser = await this.usersRepository.update(userId, { imgUrl });
+
+    return await this.usersRepository.findOne({ where: { id: userId } });
   }
 }

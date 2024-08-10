@@ -12,24 +12,26 @@ export class NotificationService {
     private readonly emailService: MailerService,
   ) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_1AM)
+  @Cron(CronExpression.EVERY_2_HOURS)
   async sendInvoideReminders() {
+    console.log('Cron ejecutado');
     const invoices = await this.invoiceRepository.findInvoicesInThreeDays();
-
-    for (const invoice of invoices) {
-      this.sendReminder(invoice);
+    if (invoices.length !== 0) {
+      for (const invoice of invoices) {
+        this.sendReminder(invoice);
+      }
     }
+    return 'Sin invoice por recordar';
   }
 
   private async sendReminder(invoice: Invoice) {
     const user = invoice.user;
     const plan = invoice.plan;
-
     const subject = 'Recordatorio de suscripción';
-    const text = `Hola ${user.name}, su suscripción al plan ${plan.name} vence en 3 días.`;
+    const text = `Hola ${user.name}, su suscripción al plan: "${plan.name}", vence el ${invoice.dueDate}.`;
 
     console.log(
-      `Enviando reacordatorio a ${user.email}: Su suscripción al plan ${plan.name} vence en 3 días.`,
+      `Enviando reacordatorio a ${user.email}: su suscripción al plan: "${plan.name}", vence el ${invoice.dueDate}.`,
     );
     await this.emailService.notificarRegistro(user.email, subject, text);
   }
