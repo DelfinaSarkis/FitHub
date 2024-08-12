@@ -5,6 +5,7 @@ import { ILike, In, Repository } from 'typeorm';
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -82,7 +83,7 @@ export class RutinaRepository {
   async getRutinaById(id) {
     return await this.rutinaRepository.findOne({
       where: { id, isActive: true },
-      relations: ['category', 'exercise'],
+      relations: ['category', 'exercise', 'recibo'],
     });
   }
   async createRutina(rutina: CreateRutinaDto, userId: string) {
@@ -123,14 +124,14 @@ export class RutinaRepository {
         where: { id: id, admin: userAdmin },
       });
       if (!rutinaToUpdate || rutinaToUpdate.isActive === false) {
-        throw new NotFoundException('Plan no encontrado o eliminado');
+        throw new NotFoundException('Rutina no encontrada o eliminada');
       }
       if (rutina.category) {
         const category = await this.categoryRepository.find({
           where: { id: In(rutina.category) },
         });
         if (category.length !== rutina.category.length) {
-          throw new NotFoundException('Categoria no encontrada');
+          throw new NotFoundException('Categoría no encontrada');
         }
         rutinaToUpdate.category = category;
         await this.rutinaRepository.save(rutinaToUpdate);
@@ -142,14 +143,14 @@ export class RutinaRepository {
         where: { id: id },
       });
       if (!rutinaToUpdate || rutinaToUpdate.isActive === false) {
-        throw new NotFoundException('Plan no encontrado o eliminado');
+        throw new NotFoundException('Rutina no encontrada o eliminada');
       }
       if (rutina.category) {
         const category = await this.categoryRepository.find({
           where: { id: In(rutina.category) },
         });
         if (category.length !== rutina.category.length) {
-          throw new NotFoundException('Categoria no encontrada');
+          throw new NotFoundException('Categoría no encontrada');
         }
         rutinaToUpdate.category = category;
       }
@@ -169,7 +170,7 @@ export class RutinaRepository {
         where: { id: user.sub },
       });
       if (rutina.admin.id !== user.id) {
-        throw new BadRequestException(
+        throw new ForbiddenException(
           'No tines capacidad de eliminar esta rutina',
         );
       }

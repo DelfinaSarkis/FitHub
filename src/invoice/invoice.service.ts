@@ -12,7 +12,7 @@ export class NotificationService {
     private readonly emailService: MailerService,
   ) {}
 
-  @Cron(CronExpression.EVERY_2_HOURS)
+  @Cron(CronExpression.EVERY_DAY_AT_2PM)
   async sendInvoideReminders() {
     console.log('Cron ejecutado');
     const invoices = await this.invoiceRepository.findInvoicesInThreeDays();
