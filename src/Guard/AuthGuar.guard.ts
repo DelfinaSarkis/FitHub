@@ -4,7 +4,6 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  Req,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
@@ -25,15 +24,18 @@ export class AuthGuard implements CanActivate {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
     try {
-      const claveSecret = process.env.JWT_SECRET;
-      const payload = this.jwtService.verify(token, { secret: claveSecret });
+      const payload = this.jwtService.verify(token, { secret: process.env.JWT_SECRET });
       if (!payload) {
         throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
       }
-      (request.user = payload), (request.tokenExpitation = payload.exp);
-    } catch {
+      request.user = payload;
+      request.tokenExpiration = new Date(payload.exp * 1000);
+      request.tokenCreation = new Date(payload.iat * 1000);
+
+      return true;
+
+    } catch (error) {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
-    return true;
   }
 }

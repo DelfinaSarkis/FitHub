@@ -8,18 +8,30 @@ export class RolesGuard implements CanActivate {
     constructor(private readonly reflector:Reflector){}
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
 
-        const roleDefinido = this.reflector.getAllAndOverride<UserRole[]>('role', [
+        const roles = this.reflector.getAllAndOverride<UserRole[]>('roles', [
             context.getHandler(),
-            context.getClass()
+            context.getClass(),
         ]);
+
+        if(!roles){
+            return true;
+        }
         
         const request = context.switchToHttp().getRequest();
-        const userRole = request.user.role;
+        const userRole = request.user?.roles;
 
-        const verificar = roleDefinido.some(rol => rol === userRole)
-        if(!verificar){
-            throw new ForbiddenException('No tienes permiso para acceder a esta ruta');
+        if(!userRole){
+            throw new ForbiddenException('No tienes permisos para acceder a esta ruta');
         }
-        return verificar;
+
+        const hasRole = () =>
+            roles.some((role) => userRole.includes(role));
+
+        const valid = hasRole();
+        if(!valid){
+            throw new ForbiddenException('No tienes permisos para acceder a esta ruta');
+        }
+        
+        return valid;
     }
 }
