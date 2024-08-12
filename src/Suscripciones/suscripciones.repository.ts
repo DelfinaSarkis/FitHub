@@ -6,6 +6,7 @@ import { Users } from 'src/User/User.entity';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { InvoiceRepository } from 'src/invoice/invoice.repository';
 import { Invoice } from 'src/invoice/invoice.entity';
+import { MailerService } from "src/mailer/mailer.service";
 
 @Injectable()
 export class SubscriptionsRepository {
@@ -17,6 +18,7 @@ export class SubscriptionsRepository {
     @InjectRepository(Plan)
     private readonly planRepository: Repository<Plan>,
     private readonly invoiceRepository: InvoiceRepository,
+    private readonly emailService: MailerService
   ) {}
 
   async createSubscription(
@@ -70,6 +72,8 @@ export class SubscriptionsRepository {
     Monto: ${invoice.amount} ${invoice.currency}
     Fecha de Pago: ${invoice.paymentDate}
     Fecha de Vencimiento: ${invoice.dueDate}`;
+
+    await this.emailService.notificarRegistro(user.email, subject, text);
   }
 
   async findExpiredSubscriptions() {

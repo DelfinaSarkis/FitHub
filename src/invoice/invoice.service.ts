@@ -10,7 +10,7 @@ export class NotificationService {
         private readonly emailService: MailerService
     ){}
 
-    @Cron(CronExpression.EVERY_DAY_AT_1AM)
+    @Cron(CronExpression.EVERY_DAY_AT_1PM)
     async sendInvoideReminders(){
         const invoices = await this.invoiceRepository.findInvoicesInThreeDays();
 
