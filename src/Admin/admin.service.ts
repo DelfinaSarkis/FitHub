@@ -4,42 +4,67 @@ import { AdminRepository } from "./admin.Repository";
 @Injectable()
 export class AdminService {
     constructor(private readonly adminRepository:AdminRepository) {}
-    async solicitudCoach(id:string) {
-        return await this.adminRepository.solicitudCoach(id);
+    async solicitudPending(id:string) {
+        return await this.adminRepository.solicitudPending(id);
     }
 
-    async responderSolicitud(id:string, respuesta, coach?:string, plan?:string, rutina?:string) {
-        if(coach){
+    async responderSolicitud(id:string, respuesta, coach?:string[], plan?:string[], rutina?:string[]) {
+        console.log(coach.length, plan, rutina,respuesta);
+        if(coach.length > 0) {
             if(respuesta === 'aceptar') {
-                return await this.adminRepository.aceptarSolicitud(id, coach);
+                for (const profe of coach) {
+                    await this.adminRepository.aceptarSolicitud(id, profe);
+                }
             }
             if(respuesta === 'corregir') {
-                return await this.adminRepository.corregirSolicitud(id, coach);
+                for (const profe of coach) {
+                    await this.adminRepository.corregirSolicitud(id, profe);
+                }
             }
             if(respuesta === 'denegar') {
-                return await this.adminRepository.denegarSolicitud(id, coach);
+                for (const profe of coach) {
+                    await this.adminRepository.denegarSolicitud(id, profe);
+                }
             }
-        } else if (plan) {
+        } 
+        if (plan.length > 0) {
+
             if(respuesta === 'aceptar') {
-                return await this.adminRepository.aceptarSolicitud(id, plan);
+                for (const planRes of plan) {
+                    await this.adminRepository.aceptarSolicitud(id, null ,planRes);
+                }
             }
             if(respuesta === 'corregir') {
-                return await this.adminRepository.corregirSolicitud(id, plan);
+                for (const planRes of plan) {
+                    await this.adminRepository.corregirSolicitud(id, null ,planRes);
+                    
+                }
             }
             if(respuesta === 'denegar') {
-                return await this.adminRepository.denegarSolicitud(id, plan);
-            }
-        } else if (rutina) {
-            if(respuesta === 'aceptar') {
-                return await this.adminRepository.aceptarSolicitud(id, rutina);
-            }
-            if(respuesta === 'corregir') {
-                return await this.adminRepository.corregirSolicitud(id, rutina);
-            }
-            if(respuesta === 'denegar') {
-                return await this.adminRepository.denegarSolicitud(id, rutina);
+                for (const planRes of plan) {
+                    await this.adminRepository.denegarSolicitud(id, null ,planRes);
+                }
             }
         }
+        if (rutina.length > 0) {
+
+            if(respuesta === 'aceptar') {
+                for (const rutinaRes of rutina) {
+                    await this.adminRepository.aceptarSolicitud(id, null, null, rutinaRes);
+                }
+            }
+            if(respuesta === 'corregir') {
+                for (const rutinaRes of rutina) {
+                    await this.adminRepository.corregirSolicitud(id, null, null, rutinaRes);
+                }
+            }
+            if(respuesta === 'denegar') {
+                for (const rutinaRes of rutina) {
+                    await this.adminRepository.denegarSolicitud(id, null, null, rutinaRes);
+                }
+            }
+        }
+        return "Solicitud respondida";
     }
     
 }

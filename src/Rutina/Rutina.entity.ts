@@ -30,7 +30,7 @@ export class Rutina {
   @Column({ type: 'varchar' })
   name: string;
 
-  @Column({ type: 'varchar', default: SolicitudState.NONE })
+  @Column({ type: 'varchar', default: SolicitudState.PENDING })
   check: SolicitudState;
 
   @Column({ type: 'varchar' })
