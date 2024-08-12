@@ -16,12 +16,14 @@ import { SeederModule } from './Seeder/seeder.module';
 import { CategoryModule } from './Category/Category.module';
 import { MailerModule } from './mailer/mailer.module';
 import { SubscriptionsModule } from './Suscripciones/suscripciones.module';
-//import { ScheduleModule } from '@nestjs/schedule';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ReciboModule } from './Recibo/recibo.module';
+import { AdminModule } from './Admin/admin.module';
+import { SuperAdminModule } from './SuperAdmin/SuperAdmin.module';
 
 @Module({
   imports: [
-   //ScheduleModule.forRoot(),
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeorm],
@@ -38,6 +40,7 @@ import { ReciboModule } from './Recibo/recibo.module';
       signOptions: { expiresIn: '1h' },
       secret: process.env.JWT_SECRET,
     }),
+    AdminModule,
     RutinaModule,
     usersModule,
     commentsModule,
@@ -51,8 +54,9 @@ import { ReciboModule } from './Recibo/recibo.module';
     FilesUploadModule,
     CategoryModule,
     MailerModule,
-    //SubscriptionsModule,
+    SubscriptionsModule,
     ReciboModule,
+    SuperAdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

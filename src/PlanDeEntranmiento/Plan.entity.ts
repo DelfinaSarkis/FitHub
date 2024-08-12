@@ -19,6 +19,7 @@ import { DifficultyLevel } from './difficultyLevel.enum';
 import { Category } from 'src/Category/Category.entity';
 import { Recibo } from 'src/Recibo/recibo.entity';
 import { Invoice } from 'src/invoice/invoice.entity';
+import { SolicitudState } from 'src/User/User.enum';
 
 @Entity({ name: 'plan' })
 export class Plan {
@@ -28,8 +29,8 @@ export class Plan {
   @Column({ type: 'varchar', length: 100, nullable: false })
   name: string;
 
-  @Column({ type: 'boolean', default: false })
-  check: boolean;
+  @Column({ type: 'varchar', default: SolicitudState.PENDING })
+  check: SolicitudState;
 
   @Column({ type: 'varchar' })
   description: string;
@@ -39,6 +40,12 @@ export class Plan {
 
   @Column()
   location: string;
+
+  @Column()
+  latitude: number;
+
+  @Column()
+  longitude: number;
 
   @CreateDateColumn()
   date: Date;
@@ -73,6 +80,6 @@ export class Plan {
   @Column('text', { array: true, nullable: true })
   videoUrl: string[];
 
-  @OneToMany(() => Invoice, invoice => invoice.plan)
+  @OneToMany(() => Invoice, (invoice) => invoice.plan)
   invoices: Invoice[];
 }

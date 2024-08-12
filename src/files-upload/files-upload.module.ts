@@ -8,10 +8,11 @@ import { CloudinaryConfig } from 'config/cloudinary';
 import { MulterModule } from '@nestjs/platform-express';
 import * as multer from 'multer';
 import { Rutina } from 'src/Rutina/Rutina.entity';
+import { Users } from 'src/User/User.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Ejercicio, Rutina]),
+    TypeOrmModule.forFeature([Ejercicio, Rutina, Users]),
     MulterModule.register({
       storage: multer.memoryStorage(),
     }),

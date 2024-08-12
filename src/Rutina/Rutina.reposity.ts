@@ -5,6 +5,7 @@ import { ILike, In, Repository } from 'typeorm';
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -69,7 +70,6 @@ export class RutinaRepository {
       whereConditions = arrSearch.map((term) => ({
         ...whereConditions,
         name: ILike(`%${term}%`),
-        description: ILike(`%${term}%`),
       }));
     }
     console.log(whereConditions);
@@ -83,7 +83,7 @@ export class RutinaRepository {
   async getRutinaById(id) {
     return await this.rutinaRepository.findOne({
       where: { id, isActive: true },
-      relations: ['category', 'exercise'],
+      relations: ['category', 'exercise', 'recibo'],
     });
   }
   async createRutina(rutina: CreateRutinaDto, userId: string) {
@@ -124,14 +124,14 @@ export class RutinaRepository {
         where: { id: id, admin: userAdmin },
       });
       if (!rutinaToUpdate || rutinaToUpdate.isActive === false) {
-        throw new NotFoundException('Plan no encontrado o eliminado');
+        throw new NotFoundException('Rutina no encontrada o eliminada');
       }
       if (rutina.category) {
         const category = await this.categoryRepository.find({
           where: { id: In(rutina.category) },
         });
         if (category.length !== rutina.category.length) {
-          throw new NotFoundException('Categoria no encontrada');
+          throw new NotFoundException('Categoría no encontrada');
         }
         rutinaToUpdate.category = category;
         await this.rutinaRepository.save(rutinaToUpdate);
@@ -143,14 +143,14 @@ export class RutinaRepository {
         where: { id: id },
       });
       if (!rutinaToUpdate || rutinaToUpdate.isActive === false) {
-        throw new NotFoundException('Plan no encontrado o eliminado');
+        throw new NotFoundException('Rutina no encontrada o eliminada');
       }
       if (rutina.category) {
         const category = await this.categoryRepository.find({
           where: { id: In(rutina.category) },
         });
         if (category.length !== rutina.category.length) {
-          throw new NotFoundException('Categoria no encontrada');
+          throw new NotFoundException('Categoría no encontrada');
         }
         rutinaToUpdate.category = category;
       }
@@ -170,7 +170,7 @@ export class RutinaRepository {
         where: { id: user.sub },
       });
       if (rutina.admin.id !== user.id) {
-        throw new BadRequestException(
+        throw new ForbiddenException(
           'No tines capacidad de eliminar esta rutina',
         );
       }
@@ -185,7 +185,29 @@ export class RutinaRepository {
   ////////////////////////////////Mercado Pago///////////////////////////////////////////
 
   async createOrderRoutine(req: Request, res: Response) {
+    const userId = req.body.id;
+    const rutinaId = req.body.rutinaId;
+
     try {
+      const user = await this.userRepository.findOne({
+        where: { id: userId },
+        relations: ['routine'],
+      });
+      if (!user) {
+        throw new ConflictException('Usuario no encontrado');
+      }
+      if (user.routine.some((r) => r.id === rutinaId)) {
+        throw new BadRequestException(
+          'Usted ya ha comprado anteriormente esta rutina',
+        );
+      }
+      const rutina = await this.rutinaRepository.findOne({
+        where: { id: rutinaId },
+      });
+      if (!rutina) {
+        throw new ConflictException('Rutina no encontrada');
+      }
+
       const body = {
         items: [
           {
@@ -209,17 +231,9 @@ export class RutinaRepository {
       res.json({
         id: result.id,
       });
-      console.log(result, ' result.........');
-      const userId = req.body.id;
-      const rutinaId = req.body.rutinaId;
-      const user = await this.userRepository.findOneBy({ id: userId });
-      if (!user) {
-        throw new ConflictException('Usuario no encontrado');
-      }
-      const rutina = await this.rutinaRepository.getId(rutinaId);
-      if (!rutina) {
-        throw new ConflictException('Rutina no encontrada');
-      }
+
+      user.routine.push(rutina);
+      await this.userRepository.save(user);
 
       const reciboData = {
         user,
@@ -234,7 +248,7 @@ export class RutinaRepository {
       return result;
     } catch (error) {
       console.error(error);
-      res.status(500).send('Error al crear la preferencia de pago');
+      res.status(400).send('Error al crear la preferencia de pago');
     }
   }
 }
