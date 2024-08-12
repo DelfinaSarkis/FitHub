@@ -19,6 +19,7 @@ import { SubscriptionsModule } from './Suscripciones/suscripciones.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ReciboModule } from './Recibo/recibo.module';
 import { AdminModule } from './Admin/admin.module';
+import { SuperAdminModule } from './SuperAdmin/SuperAdmin.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { AdminModule } from './Admin/admin.module';
     MailerModule,
     SubscriptionsModule,
     ReciboModule,
+    SuperAdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
