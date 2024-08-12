@@ -14,7 +14,7 @@ export class NotificationService {
 
   @Cron(CronExpression.EVERY_DAY_AT_2PM)
   async sendInvoideReminders() {
-    console.log('Cron ejeutado');
+    console.log('Cron ejecutado');
     const invoices = await this.invoiceRepository.findInvoicesInThreeDays();
     if (invoices.length !== 0) {
       for (const invoice of invoices) {
@@ -31,7 +31,7 @@ export class NotificationService {
     const text = `Hola ${user.name}, su suscripción al plan: "${plan.name}", vence el ${invoice.dueDate}.`;
 
     console.log(
-      `Enviando reacordatorio a ${user.email}: Su suscripción al plan ${plan.name} vence en 3 días.`,
+      `Enviando reacordatorio a ${user.email}: su suscripción al plan: "${plan.name}", vence el ${invoice.dueDate}.`,
     );
     await this.emailService.notificarRegistro(user.email, subject, text);
   }

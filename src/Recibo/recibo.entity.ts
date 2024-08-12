@@ -1,6 +1,7 @@
 import { Users } from 'src/User/User.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
@@ -25,6 +26,9 @@ export class Recibo {
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;
+
+  @CreateDateColumn()
+  date: Date;
 
   @ManyToOne(() => Users, (user) => user.recibos)
   @JoinColumn({ name: 'userId' })

@@ -11,7 +11,10 @@ export class CommentsRepository {
     private readonly commentsRepository: Repository<Comentarios>,
   ) {}
 
-  async getAllComments() {
+  async getCommentsRutina() {
+    return this.commentsRepository.find({ where: { isActive: true } });
+  }
+  async getCommentsPlan() {
     return this.commentsRepository.find({ where: { isActive: true } });
   }
 
@@ -21,7 +24,11 @@ export class CommentsRepository {
     });
   }
 
-  async createComment(comment: CommentDto) {
+  async createCommentsRutina(comment: CommentDto) {
+    const comentarioRegistrado = await this.commentsRepository.save(comment);
+    return comentarioRegistrado;
+  }
+  async createCommentsPlan(comment: CommentDto) {
     await this.commentsRepository.save(comment);
     return 'Comentario creado';
   }
@@ -34,7 +41,15 @@ export class CommentsRepository {
     if (!existingComment) {
       throw new Error('Comentario no econtrado');
     }
-    await this.commentsRepository.update(id, comment);
+
+    const updateData = {
+      description: comment.description,
+      score: comment.score,
+      routine: comment.routine,
+      plan: comment.plan,
+    };
+
+    await this.commentsRepository.update(id, updateData);
     const commentUpdate = await this.commentsRepository.findOneBy({ id });
     return commentUpdate;
   }

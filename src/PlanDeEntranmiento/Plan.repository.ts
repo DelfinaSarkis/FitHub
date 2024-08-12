@@ -75,7 +75,10 @@ export class PlanRepository {
   }
 
   async getPlanById(id) {
-    return await this.planRepository.findOne({ where: { id, isActive: true } });
+    return await this.planRepository.findOne({
+      where: { id, isActive: true },
+      relations: ['category'],
+    });
   }
 
   //Validar que es profe
