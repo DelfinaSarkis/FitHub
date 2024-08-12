@@ -14,4 +14,4 @@ export enum SolicitudState {
   DENIED= 'denied'
 }
 
-export const Roles = (...roles: UserRole[]) => SetMetadata('roles', roles);
+export const Roles = (...role: UserRole[]) => SetMetadata('role', role);
