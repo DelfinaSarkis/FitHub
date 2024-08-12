@@ -18,6 +18,7 @@ import { MailerModule } from './mailer/mailer.module';
 import { SubscriptionsModule } from './Suscripciones/suscripciones.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ReciboModule } from './Recibo/recibo.module';
+import { AdminModule } from './Admin/admin.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { ReciboModule } from './Recibo/recibo.module';
       signOptions: { expiresIn: '1h' },
       secret: process.env.JWT_SECRET,
     }),
+    AdminModule,
     RutinaModule,
     usersModule,
     commentsModule,

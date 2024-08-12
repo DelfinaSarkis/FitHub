@@ -37,9 +37,11 @@ export class AuthRepository {
       throw new NotFoundException('Email o password incorrectos');
     }
 
-    const payload = { email: user.email, sub: user.id, role: user.role };
+    const payload = { email: user.email, sub: user.id, role: user.role,  };
 
-    const token = this.jwtService.sign(payload);
+    const token = this.jwtService.sign(payload, {
+      expiresIn: '3h', 
+    });
 
     return { token: token };
   }
