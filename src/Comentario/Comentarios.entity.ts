@@ -1,8 +1,10 @@
+import { Puntuacion } from 'src/Dto/Puntuacion.Dto';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { Rutina } from 'src/Rutina/Rutina.entity';
 import { Users } from 'src/User/User.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -19,8 +21,14 @@ export class Comentarios {
   @Column({ type: 'varchar' })
   description: string;
 
+  @Column()
+  score: Puntuacion;
+
   @Column({ default: true })
   isActive: boolean;
+
+  @CreateDateColumn()
+  date: Date;
 
   @ManyToOne(() => Users, (usuario) => usuario.comments)
   @JoinColumn({ name: 'usurio' })

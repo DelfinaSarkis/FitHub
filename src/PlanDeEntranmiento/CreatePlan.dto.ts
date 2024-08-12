@@ -46,6 +46,14 @@ export class PlanCreateDto {
   @IsNotEmpty()
   location: string;
 
+  @IsNumber()
+  @IsNotEmpty()
+  latitude: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  longitude: number;
+
   /**
    * Nivel de dificultad del plan
    * @example "Easy"

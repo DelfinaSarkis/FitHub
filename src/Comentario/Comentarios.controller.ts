@@ -6,12 +6,16 @@ import {
   Param,
   Post,
   Put,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CommentsService } from './Comentarios.service';
 import { Comentarios } from './Comentarios.entity';
 import { UUID } from 'crypto';
 import { CommentDto } from './Comentario.dto';
+import { Request } from 'express';
+import { AuthGuard } from 'src/Guard/AuthGuar.guard';
 
 @ApiTags('Comentarios')
 @Controller('comentarios')
@@ -19,8 +23,12 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Get()
-  async getComments(): Promise<Comentarios[]> {
-    return await this.commentsService.getComments();
+  async getCommentsRutina(): Promise<Comentarios[]> {
+    return await this.commentsService.getCommentsRutina();
+  }
+  @Get()
+  async getCommentsPlan(): Promise<Comentarios[]> {
+    return await this.commentsService.getCommentsPlan();
   }
 
   @Get(':id')
@@ -28,9 +36,15 @@ export class CommentsController {
     return await this.commentsService.getCommentsById(id);
   }
 
-  @Post()
-  async createComments(@Body() comment: CommentDto) {
-    return await this.commentsService.createComments(comment);
+  @Post('rutina')
+  @UseGuards(AuthGuard)
+  async createCommentsRutina(@Body() comment: CommentDto, @Req() req) {
+    const userId = req.user.sub;
+    return await this.commentsService.createCommentsRutina(comment, userId);
+  }
+  @Post('plan')
+  async createCommentsPlan(@Body() comment: CommentDto) {
+    return await this.commentsService.createCommentsPlan(comment);
   }
 
   @Put(':id')

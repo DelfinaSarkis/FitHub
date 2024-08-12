@@ -41,6 +41,12 @@ export class Plan {
   @Column()
   location: string;
 
+  @Column()
+  latitude: number;
+
+  @Column()
+  longitude: number;
+
   @CreateDateColumn()
   date: Date;
 

@@ -30,6 +30,6 @@ import { FilesUploadModule } from 'src/files-upload/files-upload.module';
     UsersRepository,
     FilesUploadService,
   ],
-  exports: [RutinaRepository],
+  exports: [RutinaRepository, RutinaService],
 })
 export class RutinaModule {}
