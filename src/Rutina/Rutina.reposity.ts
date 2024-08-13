@@ -13,7 +13,7 @@ import { Category } from 'src/Category/Category.entity';
 import { CreateRutinaDto } from './Rutinas.Dto';
 import { Users } from 'src/User/User.entity';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
-import { UserRole } from 'src/User/User.enum';
+import { SolicitudState, UserRole } from 'src/User/User.enum';
 import { Preference } from 'mercadopago';
 import { client } from 'config/mercadoPagoRoutine.config';
 import { error } from 'console';
@@ -43,7 +43,7 @@ export class RutinaRepository {
     difficultyLevel?: string,
     search?: string,
   ) {
-    let whereConditions: any = { isActive: true /*check: true*/ };
+    let whereConditions: any = { isActive: true, check: SolicitudState.ACCEPTED };
 
     if (category) {
       const categoria = await this.categoryRepository.findOne({

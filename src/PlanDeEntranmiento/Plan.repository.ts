@@ -12,7 +12,7 @@ import { Category } from 'src/Category/Category.entity';
 import { DifficultyLevel } from './difficultyLevel.enum';
 import { PlanCreateDto } from './CreatePlan.dto';
 import { Users } from 'src/User/User.entity';
-import { UserRole } from 'src/User/User.enum';
+import { SolicitudState, UserRole } from 'src/User/User.enum';
 import { Preference } from 'mercadopago';
 import { Suscripciones } from 'src/Suscripciones/Suscripciones.entity';
 import { SubscriptionsRepository } from 'src/Suscripciones/suscripciones.repository';
@@ -37,7 +37,7 @@ export class PlanRepository {
     difficultyLevel?: DifficultyLevel,
     search?: string,
   ) {
-    let whereConditions: any = { isActive: true };
+    let whereConditions: any = { isActive: true, check: SolicitudState.ACCEPTED };
 
     if (category) {
       const categoria = await this.categoryRepository.find({
