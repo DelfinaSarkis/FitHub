@@ -64,7 +64,7 @@ export class RutinaController {
   @Post()
   @UseGuards(AuthGuard)
   async createRutina(@Req() req, @Body() rutina: CreateRutinaDto) {
-    const userId = req.body.id;
+    const userId = req.user.sub
     return await this.rutinaService.createRutina(rutina, userId);
   }
 
