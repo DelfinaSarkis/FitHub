@@ -11,6 +11,10 @@ export class UserService {
     return this.usersRepository.getAllUsers();
   }
 
+  getCoach() {
+    return this.usersRepository.getCoach();
+  }
+
   getUsersById(id: string, idUser) {
     if (id === idUser) {
       return this.usersRepository.getUserById(id);
