@@ -43,7 +43,7 @@ export class RutinaRepository {
     difficultyLevel?: string,
     search?: string,
   ) {
-    let whereConditions: any = { isActive: true, check: SolicitudState.ACCEPTED };
+    let whereConditions: any = { isActive: true };
 
     if (category) {
       const categoria = await this.categoryRepository.findOne({
