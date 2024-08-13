@@ -9,10 +9,11 @@ import { RutinaModule } from 'src/Rutina/Rutina.module';
 import { UserService } from 'src/User/User.service';
 import { usersModule } from 'src/User/User.module';
 import { Recibo } from 'src/Recibo/recibo.entity';
+import { Rutina } from 'src/Rutina/Rutina.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Comentarios, Recibo]),
+    TypeOrmModule.forFeature([Comentarios, Recibo, Rutina]),
     ReciboModule,
     RutinaModule,
     usersModule,

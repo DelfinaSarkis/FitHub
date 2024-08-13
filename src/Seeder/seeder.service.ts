@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +10,7 @@ import { EjercicioService } from 'src/Ejercicios/Ejercicios.service';
 import { DifficultyLevel } from 'src/PlanDeEntranmiento/difficultyLevel.enum';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { PlanService } from 'src/PlanDeEntranmiento/Plan.service';
+import { RutinaService } from 'src/Rutina/Rutinas.Service';
 import { CreateUserDto } from 'src/User/CreateUser.Dto';
 import { Users } from 'src/User/User.entity';
 import { UsersRepository } from 'src/User/User.repository';
@@ -396,6 +398,7 @@ export class SeederService {
     private readonly authService: AuthService,
     private readonly categoryService: CategoryService,
     private readonly planesService: PlanService,
+    private readonly rutinaService: RutinaService,
     @InjectRepository(Users)
     private readonly userRepositoryUser: Repository<Users>,
     @InjectRepository(Plan)
@@ -488,6 +491,13 @@ export class SeederService {
         difficultyLevel: DifficultyLevel.AVANZADO,
         admin: entrenador1,
         price: 500,
+        latitude: -32.892479,
+        longitude: -68.863985,
+        imgUrl:
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
+        videoUrl: [
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
+        ],
       },
       {
         name: 'Plan de entrenamiento cardiovascular',
@@ -498,6 +508,13 @@ export class SeederService {
         difficultyLevel: DifficultyLevel.INICIAL,
         admin: entrenador1,
         price: 600,
+        latitude: -32.892479,
+        longitude: -68.863985,
+        imgUrl:
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
+        videoUrl: [
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
+        ],
       },
       {
         name: 'Plan de entrenamiento funcional',
@@ -508,6 +525,13 @@ export class SeederService {
         difficultyLevel: DifficultyLevel.INTERMEDIO,
         admin: entrenador2,
         price: 700,
+        latitude: -32.892479,
+        longitude: -68.863985,
+        imgUrl:
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
+        videoUrl: [
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
+        ],
       },
       {
         name: 'Plan de entrenamiento de brazos',
@@ -518,6 +542,13 @@ export class SeederService {
         difficultyLevel: DifficultyLevel.INICIAL,
         admin: entrenador2,
         price: 800,
+        latitude: -32.892479,
+        longitude: -68.863985,
+        imgUrl:
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
+        videoUrl: [
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
+        ],
       },
       {
         name: 'Plan de entrenamiento funcional',
@@ -528,6 +559,13 @@ export class SeederService {
         difficultyLevel: DifficultyLevel.INTERMEDIO,
         admin: entrenador3,
         price: 900,
+        latitude: -32.892479,
+        longitude: -68.863985,
+        imgUrl:
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
+        videoUrl: [
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
+        ],
       },
       {
         name: 'Plan de entrenamiento de brazos',
@@ -538,6 +576,13 @@ export class SeederService {
         difficultyLevel: DifficultyLevel.INTERMEDIO,
         admin: entrenador3,
         price: 1000,
+        latitude: -32.892479,
+        longitude: -68.863985,
+        imgUrl:
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
+        videoUrl: [
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
+        ],
       },
       {
         name: 'Plan de entrenamiento funcional',
@@ -548,6 +593,13 @@ export class SeederService {
         difficultyLevel: DifficultyLevel.AVANZADO,
         admin: entrenador4,
         price: 500,
+        latitude: -32.892479,
+        longitude: -68.863985,
+        imgUrl:
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
+        videoUrl: [
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
+        ],
       },
       {
         name: 'Plan de entrenamiento de pecho y espalda',
@@ -558,6 +610,13 @@ export class SeederService {
         difficultyLevel: DifficultyLevel.AVANZADO,
         admin: entrenador4,
         price: 500,
+        latitude: -32.892479,
+        longitude: -68.863985,
+        imgUrl:
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
+        videoUrl: [
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
+        ],
       },
       {
         name: 'Plan de estiramiento',
@@ -568,6 +627,13 @@ export class SeederService {
         difficultyLevel: DifficultyLevel.INICIAL,
         admin: entrenador5,
         price: 500,
+        latitude: -32.892479,
+        longitude: -68.863985,
+        imgUrl:
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
+        videoUrl: [
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
+        ],
       },
       {
         name: 'Plan de entrenamiento de la flexibilidad',
@@ -578,6 +644,13 @@ export class SeederService {
         difficultyLevel: DifficultyLevel.INICIAL,
         admin: entrenador5,
         price: 500,
+        latitude: -32.892479,
+        longitude: -68.863985,
+        imgUrl:
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263303/5bfbcbd90de69431253497ff-8-ejercicios-para-novatos-en-el-gimnasio_hcjwfl.webp',
+        videoUrl: [
+          'https://res.cloudinary.com/dae25mckx/image/upload/v1722263629/GettyImages-1090188000_cmd2gn.webp',
+        ],
       },
     ];
     console.log(categoria1, categoria2);
@@ -585,5 +658,10 @@ export class SeederService {
     planes.map(async (plan) => await this.planRepository.save(plan));
 
     return 'planes creados';
+  }
+
+  async addSeeders4() {
+
+    return 'rutinas creadas';
   }
 }

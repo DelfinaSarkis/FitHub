@@ -1,4 +1,4 @@
-import { SetMetadata } from "@nestjs/common";
+import { SetMetadata } from '@nestjs/common';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -8,9 +8,9 @@ export enum UserRole {
 export enum SolicitudState {
   NONE = 'none',
   PENDING = 'pending',
-  CORRECTION = "correction",
+  CORRECTION = 'correction',
   ACCEPTED = 'accepted',
-  DENIED= 'denied'
+  DENIED = 'denied',
 }
 
 export const Roles = (...role: UserRole[]) => SetMetadata('role', role);
