@@ -15,6 +15,8 @@ import { UpdateUserDto } from './CreateUser.Dto';
 import { AuthGuard } from 'src/Guard/AuthGuar.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { solicitudCoachDto } from './SolicitudCoachDto';
+import { Roles, UserRole } from './User.enum';
+import { RolesGuard } from 'src/Guard/roles.guard';
 
 @ApiTags('Usuarios')
 @Controller('users')
@@ -22,9 +24,17 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @Roles(UserRole.ADMIN,UserRole.SUPERADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   getUsers() {
     return this.userService.getUsers();
   }
+
+  @Get('coach')
+  getCoach() {
+    return this.userService.getCoach();
+  }
+
 
   @Get(':id')
   @UseGuards(AuthGuard)
