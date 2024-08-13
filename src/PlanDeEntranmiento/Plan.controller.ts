@@ -70,6 +70,8 @@ export class PlanController {
   }
 
   @Post('create-order')
+  @Roles(UserRole.ADMIN, UserRole.SUPERADMIN, UserRole.ENTRENADOR, UserRole.USER)
+  @UseGuards(AuthGuard, RolesGuard)
   async createSubscription(@Req() req: Request, @Res() res) {
     const result = await this.planService.createSubscription(req, res);
     return result;

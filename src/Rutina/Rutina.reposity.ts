@@ -13,7 +13,7 @@ import { Category } from 'src/Category/Category.entity';
 import { CreateRutinaDto } from './Rutinas.Dto';
 import { Users } from 'src/User/User.entity';
 import { Ejercicio } from 'src/Ejercicios/Ejercicios.entity';
-import { UserRole } from 'src/User/User.enum';
+import { SolicitudState, UserRole } from 'src/User/User.enum';
 import { Preference } from 'mercadopago';
 import { client } from 'config/mercadoPagoRoutine.config';
 import { error } from 'console';
@@ -43,7 +43,7 @@ export class RutinaRepository {
     difficultyLevel?: string,
     search?: string,
   ) {
-    let whereConditions: any = { isActive: true /*check: true*/ };
+    let whereConditions: any = { isActive: true };
 
     if (category) {
       const categoria = await this.categoryRepository.findOne({
@@ -159,7 +159,7 @@ export class RutinaRepository {
     }
   }
   async deleteRutina(id, user) {
-    const rutina = await this.rutinaRepository.findOne({ where: { id } });
+    const rutina = await this.rutinaRepository.findOne({ where: { id }, relations: ['admin'] });
 
     if (!rutina || rutina.isActive === false) {
       throw new NotFoundException('Rutina no encontrada o eliminada');
@@ -169,7 +169,7 @@ export class RutinaRepository {
       const userSolicitud = await this.userRepository.findOne({
         where: { id: user.sub },
       });
-      if (rutina.admin.id !== user.id) {
+      if (rutina.admin.id !== userSolicitud.id) {
         throw new ForbiddenException(
           'No tines capacidad de eliminar esta rutina',
         );
