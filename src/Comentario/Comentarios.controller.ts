@@ -23,14 +23,14 @@ import { Roles, UserRole } from 'src/User/User.enum';
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  @Get()
+  @Get('rutinas')
   async getCommentsRutina(
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '10',
   ): Promise<Comentarios[]> {
     return await this.commentsService.getCommentsRutina(page, limit);
   }
-  @Get()
+  @Get('planes')
   async getCommentsPlan(
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '10',
