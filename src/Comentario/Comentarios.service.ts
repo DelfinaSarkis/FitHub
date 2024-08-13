@@ -8,6 +8,7 @@ import { BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Recibo } from 'src/Recibo/recibo.entity';
 import { Repository } from 'typeorm';
+import { Rutina } from 'src/Rutina/Rutina.entity';
 
 export class CommentsService {
   constructor(
@@ -17,19 +18,46 @@ export class CommentsService {
     private readonly usersService: UserService,
     @InjectRepository(Recibo)
     private readonly reciboRepository : Repository<Recibo>,
+    @InjectRepository(Rutina)
+    private readonly rutinaRepository: Repository<Rutina>,
   ) {}
 
-  async getCommentsRutina() {
-    return await this.commentsRepository.getCommentsRutina();
+  async getCommentsRutina(page: string, limit: string) {
+    return await this.commentsRepository.getCommentsRutina(Number(page), Number(limit));
   }
-  async getCommentsPlan() {
-    return await this.commentsRepository.getCommentsPlan();
+  async getCommentsRevision() {
+    return await this.commentsRepository.getCommentsRevision();
+  }
+
+  async getCommentsRutinaById(rutinaId: string) {
+    const rutinaComentada = await this.rutinaRepository.findOne({
+        where: { id: rutinaId },
+        relations: ['comments'],
+    });
+    if (!rutinaComentada || rutinaComentada.comments.length === 0) {
+      return 'No hay comentarios para esta rutina';
+  }
+    console.log(rutinaComentada);
+
+    const totalPuntuacion = rutinaComentada.comments.reduce((total, comment) => {
+        return total + comment.score;
+    }, 0);
+
+    const promedio = totalPuntuacion / rutinaComentada.comments.length;
+    const totalDeComentarios = rutinaComentada.comments.length;
+
+    return {rutinaComentada, promedio, totalDeComentarios};
+}
+
+  async getCommentsPlan(page: string, limit: string) {
+    return await this.commentsRepository.getCommentsPlan(Number(page), Number(limit));
   }
 
   async getCommentsById(id: string) {
     return await this.commentsRepository.getCommentById(id);
   }
 
+  //Revisar porque si tipeo como CommentDTO me da error
   async createCommentsRutina(comment, userId: string) {
     const { routine } = comment;
     // const rutinaId = routine.id;
@@ -61,9 +89,6 @@ export class CommentsService {
     await this.commentsRepository.createCommentsRutina(comment);
     return comment;
   }
-
-
-
 
   async createCommentsPlan(comment: CommentDto) {
     await this.commentsRepository.createCommentsPlan(comment);

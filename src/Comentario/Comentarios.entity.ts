@@ -10,6 +10,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { EstadoComentario } from './EstadoComentario.Enum';
 
 @Entity({
   name: 'Comentarios',
@@ -26,6 +27,9 @@ export class Comentarios {
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column({ default: EstadoComentario.PUBLICADO })
+  state: EstadoComentario;
 
   @CreateDateColumn()
   date: Date;

@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comentarios } from './Comentarios.entity';
 import { CommentDto } from './Comentario.dto';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
+import { Rutina } from 'src/Rutina/Rutina.entity';
+import { EstadoComentario } from './EstadoComentario.Enum';
 
 @Injectable()
 export class CommentsRepository {
@@ -11,11 +13,32 @@ export class CommentsRepository {
     private readonly commentsRepository: Repository<Comentarios>,
   ) {}
 
-  async getCommentsRutina() {
-    return this.commentsRepository.find({ where: { isActive: true } });
+  async getCommentsRutina(page: number, limit: number) {
+    return this.commentsRepository.find({
+      where: {
+        isActive: true,
+        routine: { id: Not(IsNull()) },
+        plan: IsNull(),
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+      relations: ['routine'],
+    });
   }
-  async getCommentsPlan() {
-    return this.commentsRepository.find({ where: { isActive: true } });
+
+  async getCommentsRevision() {
+    return this.commentsRepository.find({
+      where: { state: EstadoComentario.OBSERVADO },
+    });
+  }
+
+  async getCommentsPlan(page: number, limit: number) {
+    return this.commentsRepository.find({
+      where: { isActive: true, plan: { id: Not(IsNull()) }, routine: IsNull() },
+      skip: (page - 1) * limit,
+      take: limit,
+      relations: ['plan'],
+    });
   }
 
   async getCommentById(id: string) {

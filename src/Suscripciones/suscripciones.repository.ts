@@ -26,10 +26,10 @@ export class SubscriptionsRepository {
     planId: string,
   ): Promise<Suscripciones> {
     // const startDate = new Date();
-    const startDate = new Date(2024, 7, 9, 15, 30, 0, 0);
+    const startDate = new Date(2024, 7, 12, 15, 30, 0, 0);
     // const endDate = new Date();
     // endDate.setMonth(endDate.getMonth() + 1);
-    const endDate = new Date(2024, 7, 11, 15, 40, 0, 0);
+    const endDate = new Date(2024, 7, 15, 15, 40, 0, 0);
 
     const user = await this.userRepository.findOne({
       where: { id: userId, isActive: true },

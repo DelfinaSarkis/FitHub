@@ -83,7 +83,7 @@ export class RutinaRepository {
   async getRutinaById(id) {
     return await this.rutinaRepository.findOne({
       where: { id, isActive: true },
-      relations: ['category', 'exercise', 'recibo'],
+      relations: ['category', 'exercise', 'recibo', 'comments'],
     });
   }
   async createRutina(rutina: CreateRutinaDto, userId: string) {

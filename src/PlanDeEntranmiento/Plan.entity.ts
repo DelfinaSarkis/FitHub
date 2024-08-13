@@ -41,10 +41,10 @@ export class Plan {
   @Column()
   location: string;
 
-  @Column()
+  @Column('double precision')
   latitude: number;
 
-  @Column()
+  @Column('double precision')
   longitude: number;
 
   @CreateDateColumn()

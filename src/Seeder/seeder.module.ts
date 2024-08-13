@@ -12,9 +12,11 @@ import { PlanModule } from 'src/PlanDeEntranmiento/Plan.module';
 import { Plan } from 'src/PlanDeEntranmiento/Plan.entity';
 import { PlanService } from 'src/PlanDeEntranmiento/Plan.service';
 import { FilesUploadModule } from 'src/files-upload/files-upload.module';
+import { RutinaModule } from 'src/Rutina/Rutina.module';
 
 @Module({
   imports: [
+    RutinaModule,
     PlanModule,
     EjercicoModule,
     CategoryModule,
