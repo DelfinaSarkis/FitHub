@@ -1,13 +1,12 @@
-import { IsArray, IsNotEmpty } from "class-validator"
+import { IsArray, IsNotEmpty } from 'class-validator';
 
 export class respuestaDto {
+  @IsArray()
+  coach: string[];
 
-    @IsArray()
-    coach: string[]
+  @IsArray()
+  plan: string[];
 
-    @IsArray()
-    plan: string[]
-
-    @IsArray()
-    rutina: string[]
+  @IsArray()
+  rutina: string[];
 }
