@@ -159,7 +159,7 @@ export class RutinaRepository {
     }
   }
   async deleteRutina(id, user) {
-    const rutina = await this.rutinaRepository.findOne({ where: { id } });
+    const rutina = await this.rutinaRepository.findOne({ where: { id }, relations: ['admin'] });
 
     if (!rutina || rutina.isActive === false) {
       throw new NotFoundException('Rutina no encontrada o eliminada');
@@ -169,7 +169,7 @@ export class RutinaRepository {
       const userSolicitud = await this.userRepository.findOne({
         where: { id: user.sub },
       });
-      if (rutina.admin.id !== user.id) {
+      if (rutina.admin.id !== userSolicitud.id) {
         throw new ForbiddenException(
           'No tines capacidad de eliminar esta rutina',
         );
