@@ -11,7 +11,7 @@ import { AdminController } from "./admin.controller";
 import { AdminService } from "./admin.service";
 import { AdminRepository } from "./admin.Repository";
 import { MailerService } from "src/mailer/mailer.service";
-import { RolesGuard } from "src/guards/roles.guard";
+import { RolesGuard } from "src/Guard/roles.guard";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Users, Rutina, Plan, Recibo, Suscripciones, Invoice])],

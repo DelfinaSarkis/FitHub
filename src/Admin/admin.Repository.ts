@@ -19,10 +19,6 @@ export class AdminRepository {
     ) {}
     
     async solicitudPending(id:string) {
-        const admin = await this.userRepository.findOne({where:{id}});
-        if(admin.role !== 'admin') {
-            throw new Error('No tienes permisos para realizar esta accion');
-        }
         const coachs = await this.userRepository.find({where:{solicitud:SolicitudState.PENDING}});
         const planes = await this.planRepository.find({where:{check:SolicitudState.PENDING}, relations:['admin','category']});
         const rutinas = await this.rutinaRepository.find({where:{check:SolicitudState.PENDING},relations:['admin','category','exercise']});
@@ -32,10 +28,6 @@ export class AdminRepository {
     }
 
     async aceptarSolicitud(id:string, coach?:string, plan?:string, rutina?:string) {
-        const admin = await this.userRepository.findOne({where:{id}});
-        if(admin.role !== 'admin') {
-            throw new BadRequestException('No tienes permisos para realizar esta accion');
-        }
         if (coach){
             const user = await this.userRepository.findOne({where:{id:coach}});
             if(user.solicitud === SolicitudState.PENDING) {
@@ -70,10 +62,6 @@ export class AdminRepository {
 }
 
     async corregirSolicitud(id:string, profe?:string, planRes?:string, rutinaRes?:string) {
-        const admin = await this.userRepository.findOne({where:{id}});
-        if(admin.role !== 'admin') {
-            throw new BadRequestException('No tienes permisos para realizar esta accion');
-        }
         if(profe){
             const user = await this.userRepository.findOne({where:{id:profe}});
             console.log (user);
@@ -118,10 +106,6 @@ export class AdminRepository {
 
     async denegarSolicitud (id:string, coach:string, plan?:string, rutina?:string) {
         if (coach){
-            const admin = await this.userRepository.findOne({where:{id}});
-            if(admin.role !== 'admin') {
-                throw new BadRequestException('No tienes permisos para realizar esta accion');
-            }
             const user = await this.userRepository.findOne({where:{id:coach}});
             if(user.solicitud === SolicitudState.PENDING) {
                 await this.userRepository.update(coach, {solicitud:SolicitudState.DENIED});
