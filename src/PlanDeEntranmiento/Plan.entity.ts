@@ -74,7 +74,7 @@ export class Plan {
   @OneToOne(() => Recibo, (recibo) => recibo.plan)
   recibo: Recibo;
 
-  @Column('text', { array: true, nullable: true })
+  @Column('text', { nullable: true })
   imgUrl: string;
 
   @Column('text', { array: true, nullable: true })

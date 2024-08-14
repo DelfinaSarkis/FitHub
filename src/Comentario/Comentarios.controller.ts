@@ -39,7 +39,7 @@ export class CommentsController {
   }
 
   @Get('rutina/:id')
-  async getCommentsRutinaById(@Param() id: string, @Req() req) {
+  async getCommentsRutinaById(@Param('id') id: string, @Req() req) {
     const rutinaId = id;
     return await this.commentsService.getCommentsRutinaById(rutinaId);
   }
